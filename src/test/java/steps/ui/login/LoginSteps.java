@@ -1,10 +1,10 @@
-package steps;
+package steps.ui.login;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import net.serenitybdd.annotations.Steps;
-import pages.LoginPage;
+import pages.login.LoginPage;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -16,12 +16,10 @@ public class LoginSteps {
     @Given("Admin is on the login page")
     public void adminIsOnLoginPage() {
         loginPage.openPage();
-        System.out.println("Login page URL: " + loginPage.getDriver().getCurrentUrl());
     }
 
     @When("Admin enters username {string} and password {string}")
     public void enterCredentials(String username, String password) {
-        System.out.println("About to enter credentials. Current URL: " + loginPage.getDriver().getCurrentUrl());
         loginPage.enterUsername(username);
         loginPage.enterPassword(password);
         loginPage.clickLogin();

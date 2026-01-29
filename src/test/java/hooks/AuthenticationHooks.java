@@ -2,30 +2,37 @@ package hooks;
 
 import io.cucumber.java.Before;
 import net.serenitybdd.annotations.Steps;
-import pages.LoginPage;
+import net.thucydides.model.util.EnvironmentVariables;
+import pages.login.LoginPage;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class AuthenticationHooks {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationHooks.class);
 
     @Steps
     LoginPage loginPage;
 
+    private EnvironmentVariables environmentVariables;
+
     @Before("@login_as_admin")
     public void loginAsAdmin() {
-        System.out.println("Hook: Logging in as Admin");
+        LOGGER.info("Hook: Logging in as Admin");
         loginPage.openPage();
-        loginPage.enterUsername("admin");
-        loginPage.enterPassword("admin123");
+        loginPage.enterUsername(environmentVariables.getProperty("credentials.admin.username"));
+        loginPage.enterPassword(environmentVariables.getProperty("credentials.admin.password"));
         loginPage.clickLogin();
         loginPage.waitForSuccessfulLogin();
     }
 
     @Before("@login_as_user")
     public void loginAsUser() {
-        System.out.println("Hook: Logging in as User");
+        LOGGER.info("Hook: Logging in as User");
         loginPage.openPage();
-        // Assuming default user credentials
-        loginPage.enterUsername("testuser");
-        loginPage.enterPassword("test123");
+        loginPage.enterUsername(environmentVariables.getProperty("credentials.user.username"));
+        loginPage.enterPassword(environmentVariables.getProperty("credentials.user.password"));
         loginPage.clickLogin();
         loginPage.waitForSuccessfulLogin();
     }

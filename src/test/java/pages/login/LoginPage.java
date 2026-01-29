@@ -1,4 +1,4 @@
-package pages;
+package pages.login;
 
 import net.serenitybdd.annotations.DefaultUrl;
 import net.serenitybdd.core.annotations.findby.FindBy;
@@ -24,7 +24,6 @@ public class LoginPage extends PageObject {
 
     public void openPage() {
         getDriver().get("http://localhost:8080/ui/login");
-        System.out.println("Explicitly navigated to: " + getDriver().getCurrentUrl());
     }
 
     public void enterUsername(String username) {
@@ -40,7 +39,6 @@ public class LoginPage extends PageObject {
     }
 
     public boolean isDashboardDisplayed() {
-        System.out.println("Current URL: " + getDriver().getCurrentUrl());
         return getDriver().getCurrentUrl().contains("dashboard");
     }
 
@@ -49,20 +47,11 @@ public class LoginPage extends PageObject {
     }
 
     public void waitForSuccessfulLogin() {
-        System.out.println("Waiting for redirect after login...");
-        System.out.println("Current URL before wait: " + getDriver().getCurrentUrl());
-
-        try {
-            waitForCondition()
-                    .withTimeout(Duration.ofSeconds(10))
-                    .until(driver -> {
-                        String currentUrl = driver.getCurrentUrl();
-                        System.out.println("Checking URL: " + currentUrl);
-                        return currentUrl.contains("dashboard") || currentUrl.contains("Plants");
-                    });
-        } catch (Exception e) {
-            System.out.println("Failed to redirect. Final URL: " + getDriver().getCurrentUrl());
-            throw e;
-        }
+        waitForCondition()
+                .withTimeout(Duration.ofSeconds(10))
+                .until(driver -> {
+                    String currentUrl = driver.getCurrentUrl();
+                    return currentUrl.contains("dashboard") || currentUrl.contains("Plants");
+                });
     }
 }
