@@ -17,7 +17,12 @@ public class SalesSteps {
     // Navigation is now handled by NavigationSteps
 
     @Then("Admin should see the sales table")
-    public void verifySalesTable() {
+    public void adminVerifySalesTable() {
+        assertTrue(salesPage.isSalesTableDisplayed(), "Sales table is not displayed");
+    }
+
+    @Then("User should see the sales table")
+    public void userVerifySalesTable() {
         assertTrue(salesPage.isSalesTableDisplayed(), "Sales table is not displayed");
     }
 
@@ -35,6 +40,11 @@ public class SalesSteps {
     @Then("the \"Sell Plant\" button should be visible")
     public void verifySellPlantButtonVisible() {
         assertTrue(salesPage.isSellPlantButtonVisible(), "Sell Plant button is not visible");
+    }
+
+    @Then("the \"Sell Plant\" button should not be visible")
+    public void verifySellPlantButtonNotVisible() {
+        assertTrue(!salesPage.isSellPlantButtonVisible(), "Sell Plant button should not be visible for non-admin users");
     }
 
     @When("Admin clicks the \"Sell Plant\" button")

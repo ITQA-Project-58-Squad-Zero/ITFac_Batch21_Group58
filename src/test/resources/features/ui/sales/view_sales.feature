@@ -1,5 +1,5 @@
 Feature: View Sales
-  As an Admin
+  As an authenticated user
   I want to view sales records
   So that I can track all plant sales transactions
 
@@ -19,3 +19,13 @@ Feature: View Sales
     And Admin clicks the "Sell Plant" button
     Then the "Sell Plant" form should open successfully
 
+  @sales @login_as_user
+  Scenario: SM_UI_U_01 View Sales List (Non-Admin User)
+    When User navigates to the "Sales" page
+    Then User should see the sales table
+    And the sales table should contain the following columns:
+      | Plant       |
+      | Quantity    |
+      | Total Price |
+      | Sold At     |
+    And the "Sell Plant" button should not be visible
