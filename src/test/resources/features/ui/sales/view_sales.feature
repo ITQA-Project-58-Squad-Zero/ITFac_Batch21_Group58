@@ -1,7 +1,7 @@
-Feature: Sales Management
+Feature: View Sales
   As an Admin
-  I want to manage sales
-  So that I can keep track of plant sales
+  I want to view sales records
+  So that I can track all plant sales transactions
 
   @sales @login_as_admin
   Scenario: SM_UI_A_01 View Sales List

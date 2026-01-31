@@ -23,6 +23,9 @@ public class SalesPage extends PageObject {
     @FindBy(xpath = "//a[contains(text(), 'Sell Plant')]")
     WebElementFacade sellPlantButton;
 
+    @FindBy(css = "table.table tbody tr")
+    List<WebElementFacade> tableRows;
+
     public void clickSalesMenu() {
         salesMenuLink.click();
     }
@@ -44,4 +47,14 @@ public class SalesPage extends PageObject {
                 .map(WebElementFacade::getText)
                 .collect(Collectors.toList());
     }
+
+    public boolean isSalePresent(String plantName) {
+        for (WebElementFacade row : tableRows) {
+            if (row.getText().contains(plantName)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
+
