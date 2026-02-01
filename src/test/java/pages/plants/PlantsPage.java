@@ -1,4 +1,4 @@
-package pages.plant_add_edit;
+package pages.plants;
 
 import net.serenitybdd.annotations.DefaultUrl;
 import net.serenitybdd.core.pages.PageObject;
