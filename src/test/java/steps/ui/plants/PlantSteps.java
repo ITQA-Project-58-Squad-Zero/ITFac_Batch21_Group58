@@ -27,6 +27,11 @@ public class PlantSteps {
         addPlantPage.enterPlantName("ThisPlantNameIsWayTooLongToBeAcceptedByTheSystem");
     }
 
+    @When("Admin enters a \"Plant Name\" with less than 3 characters")
+    public void enterShortPlantName() {
+        addPlantPage.enterPlantName("Ab");
+    }
+
     @When("Admin fills remaining fields with valid data")
     public void fillRemainingFields() {
         addPlantPage.selectCategory("category2");
