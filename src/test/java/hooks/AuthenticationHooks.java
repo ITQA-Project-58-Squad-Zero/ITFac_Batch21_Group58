@@ -12,7 +12,6 @@ public class AuthenticationHooks {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationHooks.class);
 
-    @Steps
     LoginPage loginPage;
 
     private EnvironmentVariables environmentVariables;
