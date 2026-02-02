@@ -14,4 +14,10 @@ public class NavigationSteps {
         sideMenu.navigateTo(pageName);
         commonPage.shouldSeePageTitle(pageName);
     }
+
+    @When("User navigates to the {string} page")
+    public void userNavigatesToPage(String pageName) {
+        sideMenu.navigateTo(pageName);
+        commonPage.shouldSeePageTitle(pageName);
+    }
 }

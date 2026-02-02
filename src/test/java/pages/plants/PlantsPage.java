@@ -11,7 +11,18 @@ public class PlantsPage extends PageObject {
     @FindBy(linkText = "Add a Plant")
     WebElementFacade addPlantButton;
 
+    @FindBy(linkText = "Edit")
+    WebElementFacade editButton;
+
     public void clickAddPlantButton() {
         addPlantButton.click();
+    }
+
+    public void shouldAddPlantButtonNotBeVisible() {
+        addPlantButton.shouldNotBeVisible();
+    }
+
+    public void shouldEditButtonNotBeVisible() {
+        editButton.shouldNotBeVisible();
     }
 }

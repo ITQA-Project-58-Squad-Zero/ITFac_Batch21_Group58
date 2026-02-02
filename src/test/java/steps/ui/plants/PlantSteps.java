@@ -81,4 +81,14 @@ public class PlantSteps {
     public void enterValidQuantity() {
         addPlantPage.enterQuantity("10");
     }
+
+    @Then("the \"Add a Plant\" button should not be visible")
+    public void verifyAddPlantButtonNotVisible() {
+        plantsPage.shouldAddPlantButtonNotBeVisible();
+    }
+
+    @Then("the \"Edit\" button should not be visible")
+    public void verifyEditButtonNotVisible() {
+        plantsPage.shouldEditButtonNotBeVisible();
+    }
 }

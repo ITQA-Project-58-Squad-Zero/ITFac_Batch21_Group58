@@ -54,3 +54,13 @@ Feature: Plant Management
     And Admin clicks the "Save" button
     Then the error message "Price must be greater than 0" should be displayed
 
+  @plants @login_as_user
+  Scenario: PM2_UI_U_01 Verify non-admin user cannot see Add a Plant button(non admin user)
+    When User navigates to the "Plants" page
+    Then the "Add a Plant" button should not be visible
+
+  @plants @login_as_user
+  Scenario: PM2_UI_U_02 Verify non-admin user cannot see edit button(non admin user)
+    When User navigates to the "Plants" page
+    Then the "Edit" button should not be visible
+
