@@ -6,6 +6,7 @@ import pages.plants.AddPlantPage;
 import pages.plants.PlantsPage;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.util.List;
 
 public class PlantSteps {
 
@@ -47,5 +48,37 @@ public class PlantSteps {
     @Then("the error message {string} should be displayed")
     public void verifyErrorMessage(String message) {
         assertTrue(addPlantPage.isErrorMessageDisplayed(message), "Error message '" + message + "' is not displayed");
+    }
+
+    @When("Admin leaves all mandatory fields empty")
+    public void leaveAllMandatoryFieldsEmpty() {
+        addPlantPage.clearAllFields();
+    }
+
+    @Then("the following error messages should be displayed")
+    public void verifyErrorMessages(List<String> messages) {
+        for (String message : messages) {
+            assertTrue(addPlantPage.isErrorMessageDisplayed(message), "Error message '" + message + "' is not displayed");
+        }
+    }
+
+    @When("Admin enters a valid Plant Name")
+    public void enterValidPlantName() {
+        addPlantPage.enterPlantName("Valid Plant Name");
+    }
+
+    @When("Admin selects a valid Category")
+    public void selectValidCategory() {
+        addPlantPage.selectCategory("category2");
+    }
+
+    @When("Admin enters a Price of {string}")
+    public void enterPrice(String price) {
+        addPlantPage.enterPrice(price);
+    }
+
+    @When("Admin enters a valid Quantity")
+    public void enterValidQuantity() {
+        addPlantPage.enterQuantity("10");
     }
 }

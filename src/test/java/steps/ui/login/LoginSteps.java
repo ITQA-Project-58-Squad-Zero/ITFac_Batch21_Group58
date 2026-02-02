@@ -10,7 +10,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class LoginSteps {
-    @Steps
     LoginPage loginPage;
 
     @Given("Admin is on the login page")

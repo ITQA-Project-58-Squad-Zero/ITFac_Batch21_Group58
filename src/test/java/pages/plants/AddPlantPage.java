@@ -3,7 +3,9 @@ package pages.plants;
 import net.serenitybdd.annotations.DefaultUrl;
 import net.serenitybdd.core.pages.PageObject;
 import net.serenitybdd.core.pages.WebElementFacade;
+import net.serenitybdd.core.pages.WebElementFacade;
 import net.serenitybdd.core.annotations.findby.FindBy;
+import java.time.Duration;
 
 @DefaultUrl("/ui/plants/add")
 public class AddPlantPage extends PageObject {
@@ -51,6 +53,15 @@ public class AddPlantPage extends PageObject {
     }
 
     public boolean isErrorMessageDisplayed(String message) {
-        return findAll(net.serenitybdd.core.annotations.findby.By.xpath("//*[contains(text(),'" + message + "')]")).size() > 0;
+        return withTimeoutOf(Duration.ofSeconds(5))
+                .find(net.serenitybdd.core.annotations.findby.By.xpath("//div[contains(@class,'text-danger') and contains(text(),'" + message + "')]"))
+                .isVisible();
+    }
+
+    public void clearAllFields() {
+        plantNameInput.clear();
+        categoryDropdown.selectByVisibleText("-- Select Sub Category --"); // Assuming this resets it or just leaving it alone if it's default
+        priceInput.clear();
+        quantityInput.clear();
     }
 }
