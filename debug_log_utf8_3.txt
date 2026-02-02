@@ -1,0 +1,310 @@
+﻿[INFO] Scanning for projects...
+[INFO] 
+[INFO] --------------< net.serenitybdd.starter:cucumber-starter >--------------
+[INFO] Building Sample Serenity BDD project using Cucumber 1.0.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ cucumber-starter ---
+[INFO] Deleting D:\L4S1\ITQA\ITFac_Batch21_Group58\target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ cucumber-starter ---
+[INFO] skip non existing resourceDirectory D:\L4S1\ITQA\ITFac_Batch21_Group58\src\main\resources
+[INFO] 
+[INFO] --- compiler:3.8.1:compile (default-compile) @ cucumber-starter ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ cucumber-starter ---
+[INFO] Copying 6 resources from src\test\resources to target\test-classes
+[INFO] 
+[INFO] --- compiler:3.8.1:testCompile (default-testCompile) @ cucumber-starter ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 12 source files to D:\L4S1\ITQA\ITFac_Batch21_Group58\target\test-classes
+[INFO] 
+[INFO] --- surefire:3.1.2:test (default-test) @ cucumber-starter ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.3.0:jar (default-jar) @ cucumber-starter ---
+[WARNING] JAR will be empty - no content was marked for inclusion!
+[INFO] Building jar: D:\L4S1\ITQA\ITFac_Batch21_Group58\target\cucumber-starter-1.0.0-SNAPSHOT.jar
+[INFO] 
+[INFO] --- failsafe:3.1.2:integration-test (default) @ cucumber-starter ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running starter.CucumberTestSuite
+11:55:27.638 [ForkJoinPool-2-worker-3] INFO  n.thucydides.core.steps.StepEventBus - Loading JUnit Platform configuration parameters from classpath resource [junit-platform.properties].
+11:55:27.676 [ForkJoinPool-2-worker-3] INFO  n.t.m.logging.ConsoleLoggingListener - 
+
+-------------------------------------------------------------------------------------
+     _______. _______ .______       _______ .__   __.  __  .___________.____    ____ 
+    /       ||   ____||   _  \     |   ____||  \ |  | |  | |           |\   \  /   / 
+   |   (----`|  |__   |  |_)  |    |  |__   |   \|  | |  | `---|  |----` \   \/   /  
+    \   \    |   __|  |      /     |   __|  |  . `  | |  |     |  |       \_    _/   
+.----)   |   |  |____ |  |\  \----.|  |____ |  |\   | |  |     |  |         |  |     
+|_______/    |_______|| _| `._____||_______||__| \__| |__|     |__|         |__|    
+                                                                                     
+ News and tutorials at https://serenity-bdd.info                                     
+ Documentation at https://serenity-bdd.github.io                                     
+ Test Automation Training and Coaching: https://www.serenity-dojo.com                
+ Commercial Support: https://www.serenity-dojo.com/serenity-bdd-enterprise-support   
+ Join the Serenity Community on Gitter: https://gitter.im/serenity-bdd/serenity-core 
+-------------------------------------------------------------------------------------
+
+11:55:27.686 [ForkJoinPool-2-worker-3] INFO  n.t.m.logging.ConsoleLoggingListener - Test Suite Started: Admin Login
+11:55:27.746 [ForkJoinPool-2-worker-2] INFO  n.t.m.logging.ConsoleLoggingListener - Test Suite Started: Category Management
+11:55:27.756 [ForkJoinPool-2-worker-1] INFO  n.t.m.logging.ConsoleLoggingListener - Test Suite Started: Sales Management
+
+@sales @login_as_admin
+Scenario: SM_UI_A_03 Verify Sell Plant Button Visibility # classpath:features/ui/sales/manage_sales_orders.feature:17
+
+@category @login_as_admin
+Scenario: CM2_UI_A_04 Create Category via UI (Valid Data)                                  # classpath:features/ui/category.2/category.feature:29
+
+Scenario: Login with invalid credentials                                # classpath:features/ui/login/login.feature:8
+
+@category @login_as_admin
+Scenario: CM2_UI_A_01 View Add Category Page              # classpath:features/ui/category.2/category.feature:7
+11:55:28.140 [ForkJoinPool-2-worker-1] INFO  hooks.AuthenticationHooks - Hook: Logging in as Admin
+11:55:28.140 [ForkJoinPool-2-worker-2] INFO  hooks.AuthenticationHooks - Hook: Logging in as Admin
+11:55:28.148 [ForkJoinPool-2-worker-4] INFO  hooks.AuthenticationHooks - Hook: Logging in as Admin
+11:55:28.282 [ForkJoinPool-2-worker-3] INFO  n.s.c.w.d.ChromeDriverProvider - Starting Chrome driver instance with capabilities:
+11:55:28.282 [ForkJoinPool-2-worker-2] INFO  n.s.c.w.d.ChromeDriverProvider - Starting Chrome driver instance with capabilities:
+11:55:28.282 [ForkJoinPool-2-worker-4] INFO  n.s.c.w.d.ChromeDriverProvider - Starting Chrome driver instance with capabilities:
+11:55:28.282 [ForkJoinPool-2-worker-1] INFO  n.s.c.w.d.ChromeDriverProvider - Starting Chrome driver instance with capabilities:
+11:55:28.285 [ForkJoinPool-2-worker-1] INFO  n.s.c.w.d.ChromeDriverProvider - Capabilities {acceptInsecureCerts: true, browserName: chrome, goog:chromeOptions: {args: [remote-allow-origins=*, test-type, no-sandbox, ignore-certificate-errors, --window-size=1000,800, incognito, disable-infobars, disable-gpu, disable-default-apps, disable-popup-blocking, disable-dev-shm-usage, disable-extensions, disable-web-security, disable-translate, disable-logging, remote-allow-origins=*], extensions: []}}
+11:55:28.285 [ForkJoinPool-2-worker-2] INFO  n.s.c.w.d.ChromeDriverProvider - Capabilities {acceptInsecureCerts: true, browserName: chrome, goog:chromeOptions: {args: [remote-allow-origins=*, test-type, no-sandbox, ignore-certificate-errors, --window-size=1000,800, incognito, disable-infobars, disable-gpu, disable-default-apps, disable-popup-blocking, disable-dev-shm-usage, disable-extensions, disable-web-security, disable-translate, disable-logging, remote-allow-origins=*], extensions: []}}
+11:55:28.285 [ForkJoinPool-2-worker-3] INFO  n.s.c.w.d.ChromeDriverProvider - Capabilities {acceptInsecureCerts: true, browserName: chrome, goog:chromeOptions: {args: [remote-allow-origins=*, test-type, no-sandbox, ignore-certificate-errors, --window-size=1000,800, incognito, disable-infobars, disable-gpu, disable-default-apps, disable-popup-blocking, disable-dev-shm-usage, disable-extensions, disable-web-security, disable-translate, disable-logging, remote-allow-origins=*], extensions: []}}
+11:55:28.285 [ForkJoinPool-2-worker-4] INFO  n.s.c.w.d.ChromeDriverProvider - Capabilities {acceptInsecureCerts: true, browserName: chrome, goog:chromeOptions: {args: [remote-allow-origins=*, test-type, no-sandbox, ignore-certificate-errors, --window-size=1000,800, incognito, disable-infobars, disable-gpu, disable-default-apps, disable-popup-blocking, disable-dev-shm-usage, disable-extensions, disable-web-security, disable-translate, disable-logging, remote-allow-origins=*], extensions: []}}
+  Γ£ö Given Admin is on the login page                                    # steps.ui.login.LoginSteps.adminIsOnLoginPage()
+  Γ£ö When Admin enters username "admin" and password "wrongness"         # steps.ui.login.LoginSteps.enterCredentials(java.lang.String,java.lang.String)
+  Γ£ö Then Admin should see error message "Invalid username or password." # steps.ui.login.LoginSteps.verifyError(java.lang.String)
+
+Scenario: Admin logs in successfully                           # classpath:features/ui/login/login.feature:3
+  Γ£ö Given Admin is on the login page                           # steps.ui.login.LoginSteps.adminIsOnLoginPage()
+  Γ£ö When Admin navigates to the "Sales" page             # steps.ui.common.NavigationSteps.navigateToPage(java.lang.String)
+  Γ£ö When Admin navigates to the "Categories" page         # steps.ui.common.NavigationSteps.navigateToPage(java.lang.String)
+  Γ£ö When Admin navigates to the "Categories" page                                          # steps.ui.common.NavigationSteps.navigateToPage(java.lang.String)
+  Γ£ö And Admin clicks the "Sell Plant" button             # steps.ui.sales.SalesSteps.clickSellPlantButton()
+  Γ£ö Then the "Sell Plant" form should open successfully  # steps.ui.sales.SalesSteps.verifySellPlantFormOpens()
+
+@sales @login_as_admin
+Scenario: SM_UI_A_01 View Sales List                          # classpath:features/ui/sales/manage_sales_orders.feature:7
+11:55:34.456 [ForkJoinPool-2-worker-1] INFO  hooks.AuthenticationHooks - Hook: Logging in as Admin
+  Γ£ö And Admin clicks the "Add A Category" button          # steps.ui.category.CategorySteps.clickAddCategoryButton()
+  Γ£ö Then the "Add Category" page should open successfully # steps.ui.category.CategorySteps.verifyAddCategoryPageOpens()
+
+@category @login_as_admin
+Scenario: CM2_UI_A_02 Validate Category Name Mandatory                   # classpath:features/ui/category.2/category.feature:13
+11:55:34.550 [ForkJoinPool-2-worker-4] INFO  hooks.AuthenticationHooks - Hook: Logging in as Admin
+  Γ£ö And Admin clicks the "Add A Category" button                                           # steps.ui.category.CategorySteps.clickAddCategoryButton()
+  Γ£ö And Admin enters Category Name "TestCat"                                               # steps.ui.category.CategorySteps.enterCategoryName(java.lang.String)
+  Γ£ö When Admin enters username "admin" and password "admin123" # steps.ui.login.LoginSteps.enterCredentials(java.lang.String,java.lang.String)
+  Γ£ö Then Admin should see the dashboard                        # steps.ui.login.LoginSteps.verifyDashboard()
+
+@category @login_as_admin
+Scenario: CM2_UI_A_03 Validate Category Name Length                                              # classpath:features/ui/category.2/category.feature:21
+11:55:35.726 [ForkJoinPool-2-worker-3] INFO  hooks.AuthenticationHooks - Hook: Logging in as Admin
+11:55:35.810 [ForkJoinPool-2-worker-3] INFO  n.s.c.w.d.ChromeDriverProvider - Starting Chrome driver instance with capabilities:
+11:55:35.810 [ForkJoinPool-2-worker-3] INFO  n.s.c.w.d.ChromeDriverProvider - Capabilities {acceptInsecureCerts: true, browserName: chrome, goog:chromeOptions: {args: [remote-allow-origins=*, test-type, no-sandbox, ignore-certificate-errors, --window-size=1000,800, incognito, disable-infobars, disable-gpu, disable-default-apps, disable-popup-blocking, disable-dev-shm-usage, disable-extensions, disable-web-security, disable-translate, disable-logging, remote-allow-origins=*], extensions: []}}
+  Γ£ö And Admin clicks the Save button                                                       # steps.ui.category.CategorySteps.clickSaveButton()
+  Γ£ÿ Then Category "TestCat" should be created successfully and appear in the category list # steps.ui.category.CategorySteps.verifyCategoryCreated(java.lang.String)
+        java.lang.AssertionError: Category creation failed with message: Category name must be between 3 and 10 characters
+        	at steps.ui.category.CategorySteps.verifyCategoryCreated(CategorySteps.java:61)
+        	at Γ£╜.Category "TestCat" should be created successfully and appear in the category list(classpath:features/ui/category.2/category.feature:34)
+  Γ£ö When Admin navigates to the "Sales" page                  # steps.ui.common.NavigationSteps.navigateToPage(java.lang.String)
+  Γ£ö When Admin navigates to the "Categories" page                        # steps.ui.common.NavigationSteps.navigateToPage(java.lang.String)
+  Γ£ö Then Admin should see the sales table                     # steps.ui.sales.SalesSteps.verifySalesTable()
+  Γ£ö And the sales table should contain the following columns: # steps.ui.sales.SalesSteps.verifyTableColumns(io.cucumber.datatable.DataTable)
+      | Plant       |
+      | Quantity    |
+      | Total Price |
+      | Sold At     |
+  Γ£ö And Admin clicks the "Add A Category" button                         # steps.ui.category.CategorySteps.clickAddCategoryButton()
+  Γ£ö And Admin leaves the Category Name empty                             # steps.ui.category.CategorySteps.leaveCategoryNameEmpty()
+  Γ£ö And Admin clicks the Save button                                     # steps.ui.category.CategorySteps.clickSaveButton()
+  Γ£ö Then Admin should see validation message "Category name is required" # steps.ui.category.CategorySteps.verifyValidationMessage(java.lang.String)
+  Γ£ö When Admin navigates to the "Categories" page                                                # steps.ui.common.NavigationSteps.navigateToPage(java.lang.String)
+  Γ£ö And Admin clicks the "Add A Category" button                                                 # steps.ui.category.CategorySteps.clickAddCategoryButton()
+  Γ£ö And Admin enters Category Name "AB"                                                          # steps.ui.category.CategorySteps.enterCategoryName(java.lang.String)
+  Γ£ö And Admin clicks the Save button                                                             # steps.ui.category.CategorySteps.clickSaveButton()
+  Γ£ö Then Admin should see validation message "Category name must be between 3 and 10 characters" # steps.ui.category.CategorySteps.verifyValidationMessage(java.lang.String)
+11:55:41.332 [ForkJoinPool-2-worker-1] INFO  n.t.m.logging.ConsoleLoggingListener - 
+  _____   ___   ___   _____     ___   _____     _     ___   _____   ___   ___  
+ |_   _| | __| / __| |_   _|   / __| |_   _|   /_\   | _ \ |_   _| | __| |   \ 
+   | |   | _|  \__ \   | |     \__ \   | |    / _ \  |   /   | |   | _|  | |) |
+   |_|   |___| |___/   |_|     |___/   |_|   /_/ \_\ |_|_\   |_|   |___| |___/ 
+
+SM_UI_A_01 View Sales List(sales-management;sm-ui-a-01-view-sales-list)
+--------------------------------------------------------------------------------
+11:55:41.344 [ForkJoinPool-2-worker-1] INFO  n.t.m.logging.ConsoleLoggingListener - 
+  _____   ___   ___   _____     ___     _     ___   ___   ___   ___  
+ |_   _| | __| / __| |_   _|   | _ \   /_\   / __| / __| | __| |   \ 
+   | |   | _|  \__ \   | |     |  _/  / _ \  \__ \ \__ \ | _|  | |) |
+   |_|   |___| |___/   |_|     |_|   /_/ \_\ |___/ |___/ |___| |___/ 
+
+SM_UI_A_01 View Sales List
+----------------------------------------------------------------------
+11:55:41.352 [ForkJoinPool-2-worker-1] INFO  n.t.m.logging.ConsoleLoggingListener - 
+  _____   ___   ___   _____     ___   _____     _     ___   _____   ___   ___  
+ |_   _| | __| / __| |_   _|   / __| |_   _|   /_\   | _ \ |_   _| | __| |   \ 
+   | |   | _|  \__ \   | |     \__ \   | |    / _ \  |   /   | |   | _|  | |) |
+   |_|   |___| |___/   |_|     |___/   |_|   /_/ \_\ |_|_\   |_|   |___| |___/ 
+
+SM_UI_A_03 Verify Sell Plant Button Visibility(sales-management;sm-ui-a-03-verify-sell-plant-button-visibility)
+--------------------------------------------------------------------------------
+11:55:41.354 [ForkJoinPool-2-worker-1] INFO  n.t.m.logging.ConsoleLoggingListener - 
+  _____   ___   ___   _____     ___     _     ___   ___   ___   ___  
+ |_   _| | __| / __| |_   _|   | _ \   /_\   / __| / __| | __| |   \ 
+   | |   | _|  \__ \   | |     |  _/  / _ \  \__ \ \__ \ | _|  | |) |
+   |_|   |___| |___/   |_|     |_|   /_/ \_\ |___/ |___/ |___| |___/ 
+
+SM_UI_A_03 Verify Sell Plant Button Visibility
+----------------------------------------------------------------------
+11:55:41.362 [ForkJoinPool-2-worker-1] INFO  n.t.m.logging.ConsoleLoggingListener - 
+  _____   ___   ___   _____     ___   _____     _     ___   _____   ___   ___  
+ |_   _| | __| / __| |_   _|   / __| |_   _|   /_\   | _ \ |_   _| | __| |   \ 
+   | |   | _|  \__ \   | |     \__ \   | |    / _ \  |   /   | |   | _|  | |) |
+   |_|   |___| |___/   |_|     |___/   |_|   /_/ \_\ |_|_\   |_|   |___| |___/ 
+
+CM2_UI_A_01 View Add Category Page(category-management;cm2-ui-a-01-view-add-category-page)
+--------------------------------------------------------------------------------
+11:55:41.365 [ForkJoinPool-2-worker-1] INFO  n.t.m.logging.ConsoleLoggingListener - 
+  _____   ___   ___   _____     ___     _     ___   ___   ___   ___  
+ |_   _| | __| / __| |_   _|   | _ \   /_\   / __| / __| | __| |   \ 
+   | |   | _|  \__ \   | |     |  _/  / _ \  \__ \ \__ \ | _|  | |) |
+   |_|   |___| |___/   |_|     |_|   /_/ \_\ |___/ |___/ |___| |___/ 
+
+CM2_UI_A_01 View Add Category Page
+----------------------------------------------------------------------
+11:55:41.372 [ForkJoinPool-2-worker-1] INFO  n.t.m.logging.ConsoleLoggingListener - 
+  _____   ___   ___   _____     ___   _____     _     ___   _____   ___   ___  
+ |_   _| | __| / __| |_   _|   / __| |_   _|   /_\   | _ \ |_   _| | __| |   \ 
+   | |   | _|  \__ \   | |     \__ \   | |    / _ \  |   /   | |   | _|  | |) |
+   |_|   |___| |___/   |_|     |___/   |_|   /_/ \_\ |_|_\   |_|   |___| |___/ 
+
+CM2_UI_A_02 Validate Category Name Mandatory(category-management;cm2-ui-a-02-validate-category-name-mandatory)
+--------------------------------------------------------------------------------
+11:55:41.374 [ForkJoinPool-2-worker-1] INFO  n.t.m.logging.ConsoleLoggingListener - 
+  _____   ___   ___   _____     ___     _     ___   ___   ___   ___  
+ |_   _| | __| / __| |_   _|   | _ \   /_\   / __| / __| | __| |   \ 
+   | |   | _|  \__ \   | |     |  _/  / _ \  \__ \ \__ \ | _|  | |) |
+   |_|   |___| |___/   |_|     |_|   /_/ \_\ |___/ |___/ |___| |___/ 
+
+CM2_UI_A_02 Validate Category Name Mandatory
+----------------------------------------------------------------------
+11:55:41.383 [ForkJoinPool-2-worker-1] INFO  n.t.m.logging.ConsoleLoggingListener - 
+  _____   ___   ___   _____     ___   _____     _     ___   _____   ___   ___  
+ |_   _| | __| / __| |_   _|   / __| |_   _|   /_\   | _ \ |_   _| | __| |   \ 
+   | |   | _|  \__ \   | |     \__ \   | |    / _ \  |   /   | |   | _|  | |) |
+   |_|   |___| |___/   |_|     |___/   |_|   /_/ \_\ |_|_\   |_|   |___| |___/ 
+
+CM2_UI_A_03 Validate Category Name Length(category-management;cm2-ui-a-03-validate-category-name-length)
+--------------------------------------------------------------------------------
+11:55:41.383 [ForkJoinPool-2-worker-1] INFO  n.t.m.logging.ConsoleLoggingListener - 
+  _____   ___   ___   _____     ___     _     ___   ___   ___   ___  
+ |_   _| | __| / __| |_   _|   | _ \   /_\   / __| / __| | __| |   \ 
+   | |   | _|  \__ \   | |     |  _/  / _ \  \__ \ \__ \ | _|  | |) |
+   |_|   |___| |___/   |_|     |_|   /_/ \_\ |___/ |___/ |___| |___/ 
+
+CM2_UI_A_03 Validate Category Name Length
+----------------------------------------------------------------------
+11:55:41.394 [ForkJoinPool-2-worker-1] INFO  n.t.m.logging.ConsoleLoggingListener - 
+  _____   ___   ___   _____     ___   _____     _     ___   _____   ___   ___  
+ |_   _| | __| / __| |_   _|   / __| |_   _|   /_\   | _ \ |_   _| | __| |   \ 
+   | |   | _|  \__ \   | |     \__ \   | |    / _ \  |   /   | |   | _|  | |) |
+   |_|   |___| |___/   |_|     |___/   |_|   /_/ \_\ |_|_\   |_|   |___| |___/ 
+
+CM2_UI_A_04 Create Category via UI (Valid Data)(category-management;cm2-ui-a-04-create-category-via-ui-(valid-data))
+--------------------------------------------------------------------------------
+11:55:41.410 [ForkJoinPool-2-worker-1] INFO  n.t.m.logging.ConsoleLoggingListener - 
+  _____   ___   ___   _____     ___   _____     _     ___   _____   ___   ___  
+ |_   _| | __| / __| |_   _|   / __| |_   _|   /_\   | _ \ |_   _| | __| |   \ 
+   | |   | _|  \__ \   | |     \__ \   | |    / _ \  |   /   | |   | _|  | |) |
+   |_|   |___| |___/   |_|     |___/   |_|   /_/ \_\ |_|_\   |_|   |___| |___/ 
+
+Admin logs in successfully(admin-login;admin-logs-in-successfully)
+--------------------------------------------------------------------------------
+11:55:41.413 [ForkJoinPool-2-worker-1] INFO  n.t.m.logging.ConsoleLoggingListener - 
+  _____   ___   ___   _____     ___     _     ___   ___   ___   ___  
+ |_   _| | __| / __| |_   _|   | _ \   /_\   / __| / __| | __| |   \ 
+   | |   | _|  \__ \   | |     |  _/  / _ \  \__ \ \__ \ | _|  | |) |
+   |_|   |___| |___/   |_|     |_|   /_/ \_\ |___/ |___/ |___| |___/ 
+
+Admin logs in successfully
+----------------------------------------------------------------------
+11:55:41.424 [ForkJoinPool-2-worker-1] INFO  n.t.m.logging.ConsoleLoggingListener - 
+  _____   ___   ___   _____     ___   _____     _     ___   _____   ___   ___  
+ |_   _| | __| / __| |_   _|   / __| |_   _|   /_\   | _ \ |_   _| | __| |   \ 
+   | |   | _|  \__ \   | |     \__ \   | |    / _ \  |   /   | |   | _|  | |) |
+   |_|   |___| |___/   |_|     |___/   |_|   /_/ \_\ |_|_\   |_|   |___| |___/ 
+
+Login with invalid credentials(admin-login;login-with-invalid-credentials)
+--------------------------------------------------------------------------------
+11:55:41.426 [ForkJoinPool-2-worker-1] INFO  n.t.m.logging.ConsoleLoggingListener - 
+  _____   ___   ___   _____     ___     _     ___   ___   ___   ___  
+ |_   _| | __| / __| |_   _|   | _ \   /_\   / __| / __| | __| |   \ 
+   | |   | _|  \__ \   | |     |  _/  / _ \  \__ \ \__ \ | _|  | |) |
+   |_|   |___| |___/   |_|     |_|   /_/ \_\ |___/ |___/ |___| |___/ 
+
+Login with invalid credentials
+----------------------------------------------------------------------
+[ERROR] Tests run: 8, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 15.05 s <<< FAILURE! -- in starter.CucumberTestSuite
+[ERROR] Category Management.CM2_UI_A_04 Create Category via UI (Valid Data) -- Time elapsed: 8.386 s <<< FAILURE!
+java.lang.AssertionError: Category creation failed with message: Category name must be between 3 and 10 characters
+	at steps.ui.category.CategorySteps.verifyCategoryCreated(CategorySteps.java:61)
+	at Γ£╜.Category "TestCat" should be created successfully and appear in the category list(classpath:features/ui/category.2/category.feature:34)
+
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Failures: 
+[ERROR]   Category creation failed with message: Category name must be between 3 and 10 characters
+[INFO] 
+[ERROR] Tests run: 8, Failures: 1, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- serenity:5.0.4:aggregate (serenity-reports) @ cucumber-starter ---
+[INFO] GENERATING REPORTS FOR: D:\L4S1\ITQA\ITFac_Batch21_Group58
+[INFO] GENERATING REPORTS USING 16 THREADS
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] Serenity BDD Test Results
+[INFO]   - Report guide: https://serenity-bdd.github.io
+[INFO]   - Results: 8 tests | 7 passed | 1 failed | 0 errors | 0 compromised | 0 pending | 0 aborted
+[INFO]   - Issues detected:
+[INFO]     - Failed      : 1
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] Generating Serenity BDD Reports
+[INFO]   Γ£ô Summary reports
+[INFO]   Γ£ô Requirements reports
+[INFO]   Γ£ô Result reports
+[INFO]   Γ£ô Error reports
+[INFO] 
+[INFO] Reports generated in 6.6 secs
+[INFO] 
+[INFO] ≡ƒôè Interactive Report: file:///D:/L4S1/ITQA/ITFac_Batch21_Group58/target/site/serenity/index.html
+[INFO] ≡ƒôä Single Page HTML Summary: file:///D:/L4S1/ITQA/ITFac_Batch21_Group58/target/site/serenity/serenity-summary.html
+[INFO] 
+[INFO] --- failsafe:3.1.2:verify (default) @ cucumber-starter ---
+[WARNING]  Parameter 'encoding' (user property 'encoding') is deprecated: since of 2.20.1
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  33.430 s
+[INFO] Finished at: 2026-02-02T11:55:51+05:30
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-failsafe-plugin:3.1.2:verify (default) on project cucumber-starter: There are test failures.
+[ERROR] 
+[ERROR] Please refer to D:\L4S1\ITQA\ITFac_Batch21_Group58\target\failsafe-reports for the individual test results.
+[ERROR] Please refer to dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
