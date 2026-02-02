@@ -55,4 +55,40 @@ public class CategoryPage extends PageObject {
     public boolean isValidationMessageDisplayed() {
         return validationMessage.isVisible();
     }
+
+    public boolean isCategoryDisplayed(String name) {
+        // Wait up to 10 seconds for the category to appear in the table
+        return withTimeoutOf(java.time.Duration.ofSeconds(10))
+                .find(org.openqa.selenium.By.cssSelector("table.table"))
+                .containsText(name);
+    }
+
+    @FindBy(xpath = "//a[contains(text(), 'Cancel')]")
+    WebElementFacade cancelButton;
+
+    public void clickCancelButton() {
+        cancelButton.waitUntilClickable().click();
+    }
+
+    public boolean isCategoryListDisplayed() {
+        return addCategoryButton.isVisible();
+    }
+
+    public boolean isAddCategoryButtonNotVisible() {
+        return !addCategoryButton.isVisible();
+    }
+
+    public void navigateToUrl(String url) {
+        getDriver().get(url);
+    }
+
+    public boolean isAccessDenied() {
+        String pageSource = getDriver().getPageSource();
+        String currentUrl = getDriver().getCurrentUrl();
+        return pageSource.contains("403") || 
+               pageSource.contains("Access Denied") || 
+               pageSource.contains("Forbidden") ||
+               currentUrl.contains("error") || 
+               currentUrl.endsWith("/login");
+    }
 }
