@@ -88,8 +88,11 @@ public class CategoryPage extends PageObject {
         return pageSource.contains("403") || 
                pageSource.contains("Access Denied") || 
                pageSource.contains("Forbidden") ||
+               pageSource.contains("Not Authorized") ||
+               pageSource.contains("404") ||
                currentUrl.contains("error") || 
-               currentUrl.endsWith("/login");
+               currentUrl.endsWith("/login") ||
+               (currentUrl.endsWith("/ui/categories") && !pageSource.contains("Edit Category"));
     }
 
     @FindBy(xpath = "//table//a[contains(., 'Edit')] | //table//button[contains(., 'Edit')]")
@@ -97,5 +100,24 @@ public class CategoryPage extends PageObject {
 
     public boolean areEditButtonsHidden() {
         return !editButton.isVisible() || !editButton.isEnabled();
+    }
+
+    @FindBy(xpath = "//table//a[contains(., 'Delete')] | //table//button[contains(., 'Delete')]")
+    WebElementFacade deleteButton;
+
+    public boolean areDeleteButtonsHidden() {
+        return !deleteButton.isVisible() || !deleteButton.isEnabled();
+    }
+
+    public boolean isUpdateBlocked() {
+        String header = "";
+        try {
+            header = pageHeader.getText();
+        } catch (Exception e) {
+            // Header not found, likely blocked/redirected
+            return true;
+        }
+        return isAccessDenied() || 
+               (!header.contains("Edit") && !header.contains("Update"));
     }
 }

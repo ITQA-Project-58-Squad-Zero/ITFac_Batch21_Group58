@@ -112,4 +112,22 @@ public class CategorySteps {
     public void verifyEditOptionHidden() {
         assertTrue(categoryPage.areEditButtonsHidden(), "Edit option is visible but should not be");
     }
+
+    @When("User attempts to update an existing category")
+    public void attemptCategoryUpdate() {
+        String baseUrl = categoryPage.getDriver().getCurrentUrl().split("/ui")[0];
+        if (baseUrl.isEmpty()) baseUrl = "http://localhost:8080";
+        // Attempt to access an edit page (assuming ID 1 exists or is just a test URL)
+        categoryPage.navigateToUrl(baseUrl + "/ui/categories/edit/1");
+    }
+
+    @Then("the update action should be blocked")
+    public void verifyUpdateBlocked() {
+        assertTrue(categoryPage.isUpdateBlocked(), "Update was not blocked");
+    }
+
+    @Then("the Delete option should not be visible for any category")
+    public void verifyDeleteOptionHidden() {
+        assertTrue(categoryPage.areDeleteButtonsHidden(), "Delete option is visible but should not be");
+    }
 }

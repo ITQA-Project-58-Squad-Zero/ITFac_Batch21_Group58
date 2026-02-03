@@ -54,3 +54,13 @@ Feature: Category Management
   Scenario: CM2_UI_U_03 Verify Edit Category Restriction (User)
     When Admin navigates to the "Categories" page
     Then the Edit option should not be visible for any category
+
+  @category @login_as_user
+  Scenario: CM2_UI_U_04 Block Category Update via UI (User)
+    When User attempts to update an existing category
+    Then the update action should be blocked
+
+  @category @login_as_user
+  Scenario: CM2_UI_U_05 Block Category Deletion via UI (User)
+    When Admin navigates to the "Categories" page
+    Then the Delete option should not be visible for any category
