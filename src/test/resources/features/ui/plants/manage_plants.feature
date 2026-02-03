@@ -64,3 +64,18 @@ Feature: Plant Management
     When User navigates to the "Plants" page
     Then the "Edit" button should not be visible
 
+  @plants @login_as_user
+  Scenario: PM2_UI_U_03 Verify non-admin user cannot see delete button(non admin user)
+    When User navigates to the "Plants" page
+    Then the "Delete" button should not be visible
+
+  @plants @login_as_user
+  Scenario: PM2_UI_U_04 Verify non-admin user cannot access Add Plant page
+    When User navigates to the "Add Plant" page directly via URL
+    Then the "Add Plant" page should not be displayed
+
+  @plants @login_as_user
+  Scenario: PM2_UI_U_05 Verify non-admin user cannot access Edit Plant page
+    When User navigates to the "Edit Plant" page with ID "1" directly via URL
+    Then the "Edit Plant" page should not be displayed
+

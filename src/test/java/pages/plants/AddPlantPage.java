@@ -32,6 +32,14 @@ public class AddPlantPage extends PageObject {
         return getDriver().getCurrentUrl().contains("/ui/plants/add") && pageHeader.isVisible();
     }
 
+    public void navigateToPage() {
+        open();
+    }
+
+    public boolean isPageHeaderVisible() {
+        return pageHeader.isVisible();
+    }
+
     public void enterPlantName(String name) {
         plantNameInput.type(name);
     }

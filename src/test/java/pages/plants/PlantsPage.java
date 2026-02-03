@@ -14,6 +14,9 @@ public class PlantsPage extends PageObject {
     @FindBy(linkText = "Edit")
     WebElementFacade editButton;
 
+    @FindBy(css = "button[data-bs-target='#deleteModal']")
+    WebElementFacade deleteButton;
+
     public void clickAddPlantButton() {
         addPlantButton.click();
     }
@@ -24,5 +27,9 @@ public class PlantsPage extends PageObject {
 
     public void shouldEditButtonNotBeVisible() {
         editButton.shouldNotBeVisible();
+    }
+
+    public void shouldDeleteButtonNotBeVisible() {
+        deleteButton.shouldNotBeVisible();
     }
 }

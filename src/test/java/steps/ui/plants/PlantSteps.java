@@ -3,6 +3,7 @@ package steps.ui.plants;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import pages.plants.AddPlantPage;
+import pages.plants.EditPlantPage;
 import pages.plants.PlantsPage;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -12,6 +13,7 @@ public class PlantSteps {
 
     PlantsPage plantsPage;
     AddPlantPage addPlantPage;
+    EditPlantPage editPlantPage;
 
     @When("Admin clicks the \"Add a Plant\" button")
     public void clickAddPlantButton() {
@@ -90,5 +92,30 @@ public class PlantSteps {
     @Then("the \"Edit\" button should not be visible")
     public void verifyEditButtonNotVisible() {
         plantsPage.shouldEditButtonNotBeVisible();
+    }
+
+    @Then("the \"Delete\" button should not be visible")
+    public void verifyDeleteButtonNotVisible() {
+        plantsPage.shouldDeleteButtonNotBeVisible();
+    }
+
+    @When("User navigates to the \"Add Plant\" page directly via URL")
+    public void navigateToAddPlantDirectly() {
+        addPlantPage.navigateToPage();
+    }
+
+    @Then("the \"Add Plant\" page should not be displayed")
+    public void verifyAddPlantPageNotDisplayed() {
+        assertTrue(!addPlantPage.isPageHeaderVisible(), "Add Plant page is displayed for non-admin user");
+    }
+
+    @When("User navigates to the \"Edit Plant\" page with ID {string} directly via URL")
+    public void navigateToEditPlantDirectly(String id) {
+        addPlantPage.getDriver().get(addPlantPage.getDriver().getCurrentUrl().split("/ui/")[0] + "/ui/plants/edit/" + id);
+    }
+
+    @Then("the \"Edit Plant\" page should not be displayed")
+    public void verifyEditPlantPageNotDisplayed() {
+        assertTrue(!editPlantPage.isPageHeaderVisible(), "Edit Plant page is displayed for non-admin user");
     }
 }
