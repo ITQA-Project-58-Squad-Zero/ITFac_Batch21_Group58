@@ -5,6 +5,8 @@ import net.serenitybdd.core.annotations.findby.FindBy;
 import net.serenitybdd.core.pages.PageObject;
 import net.serenitybdd.core.pages.WebElementFacade;
 
+import org.openqa.selenium.By;
+
 import java.time.Duration;
 
 @DefaultUrl("/ui/login")
@@ -27,15 +29,15 @@ public class LoginPage extends PageObject {
     }
 
     public void enterUsername(String username) {
-        usernameField.waitUntilVisible().type(username);
+        $(By.name("username")).waitUntilVisible().type(username);
     }
 
     public void enterPassword(String password) {
-        passwordField.waitUntilVisible().type(password);
+        $(By.name("password")).waitUntilVisible().type(password);
     }
 
     public void clickLogin() {
-        loginButton.waitUntilClickable().click();
+        $(By.cssSelector("button[type='submit']")).waitUntilClickable().click();
     }
 
     public boolean isDashboardDisplayed() {
@@ -43,7 +45,7 @@ public class LoginPage extends PageObject {
     }
 
     public String getErrorMessage() {
-        return errorMessage.getText();
+        return $(By.cssSelector("div.alert.alert-danger.text-center")).getText();
     }
 
     public void waitForSuccessfulLogin() {
