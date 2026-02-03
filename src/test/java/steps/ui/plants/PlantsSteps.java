@@ -41,6 +41,55 @@ public class PlantsSteps {
         // displayed");
     }
 
+    // ========== PAGINATION STEPS FOR TC_PL_UI_002 ==========
+
+    @Then("pagination controls should be visible")
+    public void verifyPaginationControlsVisible() {
+        assertTrue(plantsPage.arePaginationControlsVisible(), "Pagination controls are not visible");
+    }
+
+    @When("Admin clicks the Next page button")
+    public void clickNextPage() {
+        plantsPage.clickNextPage();
+    }
+
+    @When("Admin clicks the Previous page button")
+    public void clickPreviousPage() {
+        plantsPage.clickPreviousPage();
+    }
+
+    private List<String> recordedPlantNames;
+
+    @When("Admin records the current plant names")
+    public void recordCurrentPlantNames() {
+        recordedPlantNames = plantsPage.getCurrentPagePlantNames();
+    }
+
+    @Then("the plant records should change")
+    public void verifyPlantRecordsChanged() {
+        List<String> currentNames = plantsPage.getCurrentPagePlantNames();
+        assertTrue(!currentNames.equals(recordedPlantNames),
+                "Plant records did not change after pagination. Previous: " + recordedPlantNames + ", Current: "
+                        + currentNames);
+    }
+
+    @Then("the Previous button should be disabled")
+    public void verifyPreviousButtonDisabled() {
+        assertTrue(plantsPage.isPreviousButtonDisabled(), "Previous button should be disabled on first page");
+    }
+
+    @Then("the Previous button should be enabled")
+    public void verifyPreviousButtonEnabled() {
+        assertTrue(!plantsPage.isPreviousButtonDisabled(), "Previous button should be enabled");
+    }
+
+    @Then("the admin should be on page {int}")
+    public void verifyCurrentPage(int expectedPage) {
+        int actualPage = plantsPage.getActivePageNumber();
+        assertTrue(actualPage == expectedPage,
+                "Expected to be on page " + expectedPage + " but was on page " + actualPage);
+    }
+
     @When("Admin searches for plant {string}")
     public void searchForPlant(String name) {
         plantsPage.searchForPlant(name);
