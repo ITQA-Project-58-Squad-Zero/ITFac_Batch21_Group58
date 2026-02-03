@@ -49,3 +49,8 @@ Feature: Category Management
   Scenario: CM2_UI_U_02 Block Direct URL Access to Add Category Page (User)
     When User attempts to access the Add Category page directly
     Then User should be redirected to Access Denied page or Login page
+
+  @category @login_as_user
+  Scenario: CM2_UI_U_03 Verify Edit Category Restriction (User)
+    When Admin navigates to the "Categories" page
+    Then the Edit option should not be visible for any category

@@ -107,4 +107,9 @@ public class CategorySteps {
     public void verifyAccessDenied() {
         assertTrue(categoryPage.isAccessDenied(), "User was not blocked from accessing the page");
     }
+
+    @Then("the Edit option should not be visible for any category")
+    public void verifyEditOptionHidden() {
+        assertTrue(categoryPage.areEditButtonsHidden(), "Edit option is visible but should not be");
+    }
 }

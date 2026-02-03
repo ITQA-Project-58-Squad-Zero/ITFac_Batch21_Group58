@@ -91,4 +91,11 @@ public class CategoryPage extends PageObject {
                currentUrl.contains("error") || 
                currentUrl.endsWith("/login");
     }
+
+    @FindBy(xpath = "//table//a[contains(., 'Edit')] | //table//button[contains(., 'Edit')]")
+    WebElementFacade editButton;
+
+    public boolean areEditButtonsHidden() {
+        return !editButton.isVisible() || !editButton.isEnabled();
+    }
 }
