@@ -3,6 +3,7 @@ package steps.api.sales;
 import api.client.BaseApiClient;
 import api.client.auth.AuthApiClient;
 import api.client.sales.SalesApiClient;
+import api.context.ApiResponseContext;
 import api.models.auth.LoginResponse;
 import api.models.common.Plant;
 import api.models.sales.SaleResponse;
@@ -78,11 +79,7 @@ public class SalesSteps {
     @When("I request the sale details by ID {int}")
     public void iRequestTheSaleDetailsByID(int id) {
         response = salesApiClient.getSaleById(id);
-    }
-
-    @Then("the response status code should be {int}")
-    public void theResponseStatusCodeShouldBe(int statusCode) {
-        response.then().statusCode(statusCode);
+        ApiResponseContext.setResponse(response);
     }
 
     @Then("the response body should return correct sale details having id {int}")
@@ -100,6 +97,7 @@ public class SalesSteps {
     @When("I request all sales")
     public void iRequestAllSales() {
         response = salesApiClient.getAllSales();
+        ApiResponseContext.setResponse(response);
     }
 
     @Then("the response body should contain a list of sales")
@@ -111,6 +109,7 @@ public class SalesSteps {
     @When("I create a sale for plant ID {int} with quantity {int}")
     public void iCreateASaleForPlantIDWithQuantity(int plantId, int quantity) {
         response = salesApiClient.createSale(plantId, quantity);
+        ApiResponseContext.setResponse(response);
     }
 
     @Then("the response body should return correct sale details")
