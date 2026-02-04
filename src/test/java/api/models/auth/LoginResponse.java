@@ -1,4 +1,4 @@
-﻿package api.models.auth;
+package api.models.auth;
 
 public class LoginResponse {
     private String token;

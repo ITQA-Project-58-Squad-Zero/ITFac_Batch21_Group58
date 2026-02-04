@@ -1,25 +1,38 @@
-﻿package api.client;
+package api.client;
 
-import net.serenitybdd.rest.SerenityRest;
-import net.thucydides.core.util.EnvironmentVariables;
-import net.thucydides.core.util.SystemEnvironmentVariables;
+import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.specification.RequestSpecification;
+import net.serenitybdd.model.environment.EnvironmentSpecificConfiguration;
+import net.thucydides.model.util.EnvironmentVariables;
+import net.serenitybdd.rest.SerenityRest;
 
-public abstract class BaseApiClient {
-    protected static final EnvironmentVariables ENV = SystemEnvironmentVariables.createEnvironmentVariables();
+public class BaseApiClient {
+
+    private static String authToken;
+    private EnvironmentVariables environmentVariables;
 
     protected String getBaseUrl() {
-        return ENV.getProperty("environments.default.api.base.url", "http://localhost:8080/api");
+        return EnvironmentSpecificConfiguration.from(environmentVariables)
+                .getProperty("api.base.url");
     }
 
     protected RequestSpecification getRequestSpec() {
-        return SerenityRest.given()
-                .baseUri(getBaseUrl())
-                .contentType("application/json")
-                .accept("application/json");
+        RequestSpecBuilder builder = new RequestSpecBuilder()
+                .setBaseUri(getBaseUrl())
+                .setContentType("application/json");
+        
+        if (authToken != null) {
+            builder.addHeader("Authorization", "Bearer " + authToken);
+        }
+        
+        return SerenityRest.given().spec(builder.build());
     }
 
-    protected RequestSpecification getAuthenticatedRequestSpec(String authToken) {
-        return getRequestSpec().header("Authorization", authToken);
+    public static void setAuthToken(String token) {
+        authToken = token;
+    }
+
+    public static String getAuthToken() {
+        return authToken;
     }
 }
