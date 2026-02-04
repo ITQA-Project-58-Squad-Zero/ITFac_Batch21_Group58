@@ -26,6 +26,9 @@ public class SalesPage extends PageObject {
     @FindBy(css = "table.table tbody tr")
     List<WebElementFacade> tableRows;
 
+    @FindBy(css = "table.table tbody tr td form button.btn-outline-danger, table.table tbody tr td button.btn-outline-danger")
+    List<WebElementFacade> deleteButtons;
+
     public void clickSalesMenu() {
         salesMenuLink.click();
     }
@@ -55,6 +58,20 @@ public class SalesPage extends PageObject {
             }
         }
         return false;
+    }
+
+    public boolean areDeleteButtonsVisible() {
+        // Check if any delete buttons are visible
+        for (WebElementFacade deleteButton : deleteButtons) {
+            if (deleteButton.isVisible()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public int getDeleteButtonCount() {
+        return deleteButtons.size();
     }
 }
 

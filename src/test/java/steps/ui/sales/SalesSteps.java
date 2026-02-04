@@ -102,5 +102,40 @@ public class SalesSteps {
         assertTrue(stillOnForm || hasError, 
                 "Sale was created - user was redirected away from Create Sale page and no validation error shown");
     }
+
+    @Then("delete buttons should not be visible for any sales record")
+    public void verifyDeleteButtonsNotVisible() {
+        boolean deleteButtonsVisible = salesPage.areDeleteButtonsVisible();
+        assertTrue(!deleteButtonsVisible, 
+                "Delete buttons should not be visible for non-admin users, but found " + 
+                salesPage.getDeleteButtonCount() + " delete button(s)");
+    }
+
+    @When("User attempts to access the Sell Plant page directly via URL")
+    public void userAttemptsDirectAccessToSellPlantPage() {
+        createSalePage.open();
+    }
+
+    @Then("User should be denied access or redirected")
+    public void verifyAccessDeniedOrRedirected() {
+        String currentUrl = createSalePage.getDriver().getCurrentUrl();
+        // User should either see a 403/unauthorized page or be redirected away from /sales/new
+        boolean isOnSellPlantPage = currentUrl.contains("/ui/sales/new");
+        boolean isOnForbiddenPage = currentUrl.contains("403") || 
+                                    currentUrl.contains("forbidden") || 
+                                    currentUrl.contains("unauthorized");
+        boolean wasRedirected = !isOnSellPlantPage;
+        
+        assertTrue(wasRedirected || isOnForbiddenPage, 
+                "User should not have access to Sell Plant page. Current URL: " + currentUrl);
+    }
+
+    @Then("the Sell Plant form should not be accessible")
+    public void verifySellPlantFormNotAccessible() {
+        boolean isFormOpen = createSalePage.isPageOpen();
+        assertTrue(!isFormOpen, 
+                "Sell Plant form should not be accessible for non-admin users. Current URL: " + 
+                createSalePage.getDriver().getCurrentUrl());
+    }
 }
 
