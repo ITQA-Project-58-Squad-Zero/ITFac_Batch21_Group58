@@ -20,11 +20,6 @@ public class CategoriesSteps {
 
     private Response response;
 
-    @Given("the admin has a valid session")
-    public void theAdminHasAValidSession() {
-        assertThat(BaseApiClient.getAuthToken()).isNotNull();
-    }
-
     @Given("a category exists with ID {int}")
     public void aCategoryExistsWithId(int id) {
         // Precondition: category is assumed to exist (seeded or created)

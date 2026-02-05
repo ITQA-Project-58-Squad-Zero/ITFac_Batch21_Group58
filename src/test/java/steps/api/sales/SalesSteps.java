@@ -59,18 +59,6 @@ public class SalesSteps {
         assertThat(sales.length).isEqualTo(initialSalesCount);
     }
 
-    @Given("the admin has a valid session")
-    public void theAdminHasAValidSession() {
-        // Authentication handled by @admin_auth hook
-        assertThat(BaseApiClient.getAuthToken()).isNotNull();
-    }
-
-    @Given("the user has a valid session")
-    public void theUserHasAValidSession() {
-        // Authentication handled by @user_auth hook
-        assertThat(BaseApiClient.getAuthToken()).isNotNull();
-    }
-
     @Given("a sale exists with ID {int}")
     public void aSaleExistsWithID(int id) {
         // Precondition: We assume the sale exists in the system or is seeded
