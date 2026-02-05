@@ -44,11 +44,15 @@ Feature: Categories Management
     Then the categories table should show only matching results for "{string}"
 
   @categories @login_as_admin @TC009
-  Scenario: TC009 Filter by Parent Category (Admin)
+  Scenario Outline: TC009 Filter by Parent Category (Admin)
     When Admin navigates to the "Categories" page
-    And Admin selects parent category "{string}" from the filter dropdown
+    And Admin selects parent category "<parentName>" from the filter dropdown
     And Admin clicks the search button
-    Then the categories table should show only categories under parent "{string}"
+    Then the categories table should show only categories under parent "<parentName>"
+
+    Examples:
+      | parentName |
+      | Flowers    |
 
   @categories @login_as_admin @TC010
   Scenario: TC010 Sorting by ID Name Parent (Admin)
@@ -110,23 +114,31 @@ Feature: Categories Management
     Then the full category list should be displayed again
 
   @categories @login_as_admin @TC017
-  Scenario: TC017 Filter by Parent Category Clear Filter (Admin)
+  Scenario Outline: TC017 Filter by Parent Category Clear Filter (Admin)
     When Admin navigates to the "Categories" page
     And Admin notes the total number of categories displayed
-    When Admin selects parent category "{string}" from the filter dropdown
+    When Admin selects parent category "<parentName>" from the filter dropdown
     And Admin clicks the search button
-    Then the categories table should show only categories under parent "{string}"
+    Then the categories table should show only categories under parent "<parentName>"
     When Admin clears the parent filter
     And Admin clicks the search button
     Then the full category list should be displayed again
 
+    Examples:
+      | parentName |
+      | Flowers    |
+
   @categories @login_as_admin @TC018
-  Scenario: TC018 Combined Search Parent Filter (Admin)
+  Scenario Outline: TC018 Combined Search Parent Filter (Admin)
     When Admin navigates to the "Categories" page
-    When Admin selects parent category "{string}" from the filter dropdown
-    And Admin enters "{string}" in the category search box
+    When Admin selects parent category "<parentName>" from the filter dropdown
+    And Admin enters "<keyword>" in the category search box
     And Admin clicks the search button
-    Then the categories table should show results matching both parent "{string}" and keyword "{string}"
+    Then the categories table should show results matching both parent "<parentName>" and keyword "<keyword>"
+
+    Examples:
+      | parentName | keyword  |
+      | Flowers    | Flowers  |
 
   @categories @login_as_user @TC019
   Scenario: TC019 Sorting Works With Parent Null Values (Non-Admin User)
