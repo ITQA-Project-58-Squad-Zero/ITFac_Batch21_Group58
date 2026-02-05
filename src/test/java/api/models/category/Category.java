@@ -3,19 +3,23 @@ package api.models.category;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.List;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Category {
     private Integer id;
     private String name;
-    private Integer parentId;
+    private Object parent; // Can be a String (name), Integer (ID), or Map (nested object)
+    private List<String> subCategories;
     
     public Category() {}
 
-    public Category(Integer id, String name, Integer parentId) {
+    public Category(Integer id, String name, Object parent, List<String> subCategories) {
         this.id = id;
         this.name = name;
-        this.parentId = parentId;
+        this.parent = parent;
+        this.subCategories = subCategories;
     }
 
     public Integer getId() {
@@ -34,11 +38,19 @@ public class Category {
         this.name = name;
     }
 
-    public Integer getParentId() {
-        return parentId;
+    public Object getParent() {
+        return parent;
     }
 
-    public void setParentId(Integer parentId) {
-        this.parentId = parentId;
+    public void setParent(Object parent) {
+        this.parent = parent;
+    }
+
+    public List<String> getSubCategories() {
+        return subCategories;
+    }
+
+    public void setSubCategories(List<String> subCategories) {
+        this.subCategories = subCategories;
     }
 }

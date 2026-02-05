@@ -9,7 +9,7 @@ import net.serenitybdd.rest.SerenityRest;
 
 public class BaseApiClient {
 
-    private static String authToken;
+    private static ThreadLocal<String> authToken = new ThreadLocal<>();
     private static ThreadLocal<Response> lastResponse = new ThreadLocal<>();
     private EnvironmentVariables environmentVariables;
 
@@ -31,18 +31,19 @@ public class BaseApiClient {
                 .setBaseUri(getBaseUrl())
                 .setContentType("application/json");
         
-        if (authToken != null) {
-            builder.addHeader("Authorization", "Bearer " + authToken);
+        String token = authToken.get();
+        if (token != null) {
+            builder.addHeader("Authorization", "Bearer " + token);
         }
         
         return SerenityRest.given().spec(builder.build());
     }
 
     public static void setAuthToken(String token) {
-        authToken = token;
+        authToken.set(token);
     }
 
     public static String getAuthToken() {
-        return authToken;
+        return authToken.get();
     }
 }
