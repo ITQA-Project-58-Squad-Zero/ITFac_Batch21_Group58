@@ -52,4 +52,12 @@ public class SideMenu extends PageObject {
     public boolean isDashboardActive() {
         return dashboardLink.getAttribute("class").contains("active");
     }
+
+    public boolean isInventoryDisabled() {
+        return inventoryLink.getAttribute("class").contains("disabled");
+    }
+
+    public String getInventoryTooltip() {
+        return inventoryLink.getAttribute("title");
+    }
 }

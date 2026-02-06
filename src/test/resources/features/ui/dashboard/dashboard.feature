@@ -54,7 +54,6 @@ Feature: Dashboard
     Then the Plants page should be displayed
 
   @dashboard @login_as_admin
-  Scenario: TC_DASH_UI_009 Navigate to Inventory Page
+  Scenario: TC_DASH_UI_009 Verify Inventory Page Disabled
     Then Admin should see the Dashboard page
-    When Admin clicks Inventory from navigation menu
-    Then the Inventory page should be displayed
+    Then the Inventory link should be disabled with tooltip "Inventory page coming soon"

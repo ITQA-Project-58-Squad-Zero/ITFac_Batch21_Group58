@@ -145,4 +145,11 @@ public class DashboardSteps {
         assertTrue(inventoryPage.isInventoryPageDisplayed(),
                 "Inventory page is not displayed");
     }
+
+    @Then("the Inventory link should be disabled with tooltip {string}")
+    public void verifyInventoryLinkDisabled(String expectedTooltip) {
+        assertTrue(sideMenu.isInventoryDisabled(), "Inventory link should be disabled");
+        String actualTooltip = sideMenu.getInventoryTooltip();
+        assertEquals(expectedTooltip, actualTooltip, "Tooltip text mismatch");
+    }
 }
