@@ -23,6 +23,7 @@ public class LoginSteps {
         loginPage.enterUsername(username);
         loginPage.enterPassword(password);
         loginPage.clickLogin();
+        loginPage.waitForSuccessfulLogin();
     }
 
     @Then("Admin should see the dashboard")
