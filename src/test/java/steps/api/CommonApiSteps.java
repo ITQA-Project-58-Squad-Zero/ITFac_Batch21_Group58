@@ -12,11 +12,16 @@ public class CommonApiSteps {
     @Then("the response status code should be {int}")
     public void theResponseStatusCodeShouldBe(int statusCode) {
         Response response = ApiResponseContext.getResponse();
+
         if (response == null) {
-            throw new IllegalStateException("No API response was set. Ensure a When step that performs an API call has run.");
+            response = BaseApiClient.getLastResponse();
         }
+
+        if (response == null) {
+            throw new IllegalStateException(
+                    "No API response was set. Ensure a When step that performs an API call has run.");
+        }
+
         response.then().statusCode(statusCode);
-        assertThat(BaseApiClient.getLastResponse()).isNotNull();
-        BaseApiClient.getLastResponse().then().statusCode(statusCode);
     }
 }

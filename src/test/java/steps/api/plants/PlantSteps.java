@@ -5,6 +5,8 @@ import api.client.plants.PlantApiClient;
 import api.client.category.CategoryApiClient;
 import api.models.common.Plant;
 import api.models.common.Category;
+import api.models.plants.PlantSummary;
+import api.context.ApiResponseContext;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -21,14 +23,14 @@ public class PlantSteps {
 
     @Steps
     PlantApiClient plantApiClient;
-    
+
     @Steps
     CategoryApiClient categoryApiClient;
 
     private Response response;
     private Plant createdPlant;
     private int plantIdToEdit;
-    
+
     private int validSubCategoryId;
     private int validParentCategoryId;
 
@@ -49,30 +51,34 @@ public class PlantSteps {
                 if (statusCode == 201) {
                     System.out.println("Found Valid Sub-Category ID: " + i);
                     validSubCategoryId = i;
-                    // We also successfully created a plant, might as well use it if needed, 
+                    // We also successfully created a plant, might as well use it if needed,
                     // but validPlantIDExists will create another one which is fine.
                     // Clean up? No delete endpoint known.
-                    if (validParentCategoryId != 0) break; // Found both
+                    if (validParentCategoryId != 0)
+                        break; // Found both
                 } else if (statusCode == 400) {
-                     // Likely a parent category or other validation error
-                     // Check message if possible, but assuming 400 with valid plant data = Parent Category issue
-                     // "Plants can only be added to sub-categories"
-                     String body = resp.getBody().asString();
-                     if (body.contains("sub-categories")) {
-                         System.out.println("Found Parent Category ID: " + i);
-                         validParentCategoryId = i;
-                         if (validSubCategoryId != 0) break; // Found both
-                     }
+                    // Likely a parent category or other validation error
+                    // Check message if possible, but assuming 400 with valid plant data = Parent
+                    // Category issue
+                    // "Plants can only be added to sub-categories"
+                    String body = resp.getBody().asString();
+                    if (body.contains("sub-categories")) {
+                        System.out.println("Found Parent Category ID: " + i);
+                        validParentCategoryId = i;
+                        if (validSubCategoryId != 0)
+                            break; // Found both
+                    }
                 }
             }
-            
+
             if (validSubCategoryId == 0) {
-                System.out.println("WARNING: Could not find any valid sub-category in IDs 1-20. Tests will likely fail.");
+                System.out
+                        .println("WARNING: Could not find any valid sub-category in IDs 1-20. Tests will likely fail.");
                 // Fallback to 2 just in case?
-                validSubCategoryId = 2; 
+                validSubCategoryId = 2;
             }
             if (validParentCategoryId == 0) {
-                 validParentCategoryId = 1; // Fallback
+                validParentCategoryId = 1; // Fallback
             }
         }
     }
@@ -80,19 +86,19 @@ public class PlantSteps {
     @Given("Valid plant ID exists")
     public void validPlantIDExists() {
         validSubCategoryExists(); // Ensure IDs are resolved
-        
+
         Plant plant = new Plant();
         plant.setName("Ant " + System.currentTimeMillis());
         plant.setPrice(100.0);
         plant.setQuantity(10);
-        
-        Response resp = plantApiClient.createPlant(plant, validSubCategoryId); 
-        
-        if(resp.statusCode() == 201) {
+
+        Response resp = plantApiClient.createPlant(plant, validSubCategoryId);
+
+        if (resp.statusCode() == 201) {
             plantIdToEdit = resp.as(Plant.class).getId();
         } else {
-             System.out.println("Failed to setup Valid Plant ID. Status: " + resp.statusCode());
-             resp.then().log().all();
+            System.out.println("Failed to setup Valid Plant ID. Status: " + resp.statusCode());
+            resp.then().log().all();
         }
     }
 
@@ -102,11 +108,11 @@ public class PlantSteps {
         plant.setName("Ant " + System.currentTimeMillis());
         plant.setPrice(150.0);
         plant.setQuantity(25);
-        
-        response = plantApiClient.createPlant(plant, validSubCategoryId); 
+
+        response = plantApiClient.createPlant(plant, validSubCategoryId);
         response.then().log().all();
     }
-    
+
     @When("Send POST request with valid Name, Price, Quantity to valid category {int}")
     public void sendPOSTRequestWithValidDataToCategory(int categoryId) {
         // Ignore Gherkin input, use probed ID
@@ -114,8 +120,8 @@ public class PlantSteps {
         plant.setName("Ant " + System.currentTimeMillis());
         plant.setPrice(150.0);
         plant.setQuantity(25);
-        
-        response = plantApiClient.createPlant(plant, validSubCategoryId); 
+
+        response = plantApiClient.createPlant(plant, validSubCategoryId);
     }
 
     @When("Send POST request with JSON body missing Name")
@@ -124,7 +130,7 @@ public class PlantSteps {
         // Name is missing
         invalidPlant.put("price", 150.0);
         invalidPlant.put("quantity", 25);
-        
+
         response = plantApiClient.createPlantRaw(invalidPlant, validSubCategoryId);
     }
 
@@ -134,8 +140,8 @@ public class PlantSteps {
         plant.setName("Invalid Cat Plant");
         plant.setPrice(100.0);
         plant.setQuantity(10);
-        
-        response = plantApiClient.createPlant(plant, validParentCategoryId); 
+
+        response = plantApiClient.createPlant(plant, validParentCategoryId);
     }
 
     @When("Send POST request with Price = 0 or negative")
@@ -144,7 +150,7 @@ public class PlantSteps {
         plant.setName("Invalid Price Plant");
         plant.setPrice(-10.0);
         plant.setQuantity(10);
-        
+
         response = plantApiClient.createPlant(plant, validSubCategoryId);
     }
 
@@ -154,9 +160,9 @@ public class PlantSteps {
         updateData.setName("Updated Plant Name");
         updateData.setPrice(200.0);
         updateData.setQuantity(50);
-        
-        int id = (plantIdToEdit > 0) ? plantIdToEdit : 30; 
-        
+
+        int id = (plantIdToEdit > 0) ? plantIdToEdit : 30;
+
         response = plantApiClient.updatePlant(id, updateData);
     }
 
@@ -167,28 +173,41 @@ public class PlantSteps {
 
     @Then("Verify HTTP status code is {int}")
     public void verifyHTTPStatusCodeIs(int statusCode) {
-         response.then().statusCode(statusCode);
+        response.then().statusCode(statusCode);
     }
 
     @Then("API returns success and plant is created")
     public void apiReturnsSuccessAndPlantIsCreated() {
-         Plant responsePlant = response.as(Plant.class);
-         assertThat(responsePlant.getId()).isGreaterThan(0);
-         assertThat(responsePlant.getName()).contains("Ant");
+        Plant responsePlant = response.as(Plant.class);
+        assertThat(responsePlant.getId()).isGreaterThan(0);
+        assertThat(responsePlant.getName()).contains("Ant");
     }
 
     @Then("API returns validation error and plant is not created")
     public void apiReturnsValidationErrorAndPlantIsNotCreated() {
         // Placeholder
     }
-    
+
     @Then("API returns 400 Bad Request")
     public void apiReturns400BadRequest() {
         response.then().statusCode(400);
     }
-    
+
     @Then("API returns 200 OK")
     public void apiReturns200OK() {
         response.then().statusCode(200);
+    }
+
+    @When("I request the plant summary")
+    public void iRequestThePlantSummary() {
+        response = plantApiClient.getPlantSummary();
+        ApiResponseContext.setResponse(response);
+    }
+
+    @Then("the response body should contain totalPlants and lowStockPlants")
+    public void theResponseBodyShouldContainTotalPlantsAndLowStockPlants() {
+        PlantSummary summary = response.as(PlantSummary.class);
+        assertThat(summary.getTotalPlants()).isGreaterThanOrEqualTo(0);
+        assertThat(summary.getLowStockPlants()).isGreaterThanOrEqualTo(0);
     }
 }

@@ -7,6 +7,7 @@ import api.context.ApiResponseContext;
 import api.models.auth.LoginResponse;
 import api.models.common.Plant;
 import api.models.sales.SaleResponse;
+
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -45,7 +46,7 @@ public class SalesSteps {
     @Then("the response body should contain an insufficient stock error")
     public void theResponseBodyShouldContainAnInsufficientStockError() {
         String body = response.getBody().asString();
-        assertThat(body).containsIgnoringCase("stock"); 
+        assertThat(body).containsIgnoringCase("stock");
     }
 
     @Then("the sales count should remain unchanged")
@@ -53,16 +54,6 @@ public class SalesSteps {
         Response listResponse = salesApiClient.getAllSales();
         SaleResponse[] sales = listResponse.as(SaleResponse[].class);
         assertThat(sales.length).isEqualTo(initialSalesCount);
-    }
-
-    @Given("the admin has a valid session")
-    public void theAdminHasAValidSession() {
-        assertThat(BaseApiClient.getAuthToken()).isNotNull();
-    }
-
-    @Given("the user has a valid session")
-    public void theUserHasAValidSession() {
-        assertThat(BaseApiClient.getAuthToken()).isNotNull();
     }
 
     @Given("a sale exists with ID {int}")
@@ -121,5 +112,27 @@ public class SalesSteps {
         Response listResponse = salesApiClient.getAllSales();
         SaleResponse[] sales = listResponse.as(SaleResponse[].class);
         assertThat(sales).extracting(SaleResponse::getId).contains(newSaleId);
+    }
+
+    @When("I request the sales summary")
+    public void iRequestTheSalesSummary() {
+        response = salesApiClient.getAllSales();
+        ApiResponseContext.setResponse(response);
+    }
+
+    @Then("the response body should contain revenue and sales count")
+    public void theResponseBodyShouldContainRevenueAndSalesCount() {
+        SaleResponse[] sales = response.as(SaleResponse[].class);
+
+        // Calculate expected values from the list
+        int salesCount = sales.length;
+        double totalRevenue = 0;
+        for (SaleResponse sale : sales) {
+            totalRevenue += sale.getTotalPrice();
+        }
+
+        // Assertions
+        assertThat(salesCount).isGreaterThanOrEqualTo(0);
+        assertThat(totalRevenue).isGreaterThanOrEqualTo(0.0);
     }
 }

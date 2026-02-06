@@ -24,4 +24,10 @@ public class SalesApiClient extends BaseApiClient {
                 .when()
                 .post(SALES_ENDPOINT + "/plant/" + plantId);
     }
+
+    public Response getSalesSummary() {
+        return getRequestSpec()
+                .when()
+                .get(SALES_ENDPOINT + "/summary");
+    }
 }
