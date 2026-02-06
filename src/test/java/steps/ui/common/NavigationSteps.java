@@ -10,7 +10,19 @@ public class NavigationSteps {
     CommonPage commonPage;
 
     @When("Admin navigates to the {string} page")
-    public void navigateToPage(String pageName) {
+    public void adminNavigatesToPage(String pageName) {
+        sideMenu.navigateTo(pageName);
+        commonPage.shouldSeePageTitle(pageName);
+    }
+
+    @When("User navigates to the {string} page")
+    public void userNavigatesToPage(String pageName) {
+        sideMenu.navigateTo(pageName);
+        commonPage.shouldSeePageTitle(pageName);
+    }
+
+    @When("User navigates to the {string} page")
+    public void userNavigatesToPage(String pageName) {
         sideMenu.navigateTo(pageName);
         commonPage.shouldSeePageTitle(pageName);
     }
