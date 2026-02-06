@@ -11,6 +11,7 @@ public class Category {
     private Integer id;
     private String name;
     private Object parent; // Can be a String (name), Integer (ID), or Map (nested object)
+    private String parentName; // Mapped from JSON response
     private List<String> subCategories;
     
     public Category() {}
@@ -44,6 +45,14 @@ public class Category {
 
     public void setParent(Object parent) {
         this.parent = parent;
+    }
+
+    public String getParentName() {
+        return parentName;
+    }
+
+    public void setParentName(String parentName) {
+        this.parentName = parentName;
     }
 
     public List<String> getSubCategories() {

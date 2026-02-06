@@ -4,12 +4,15 @@ import api.client.BaseApiClient;
 import api.client.plants.PlantApiClient;
 import api.client.category.CategoryApiClient;
 import api.models.common.Plant;
-import api.models.common.Category;
+import api.models.category.Category;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.response.Response;
 import net.serenitybdd.annotations.Steps;
+import api.client.auth.AuthApiClient;
+import api.models.auth.LoginResponse;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
@@ -25,6 +28,9 @@ public class PlantSteps {
     @Steps
     CategoryApiClient categoryApiClient;
 
+    @Steps
+    AuthApiClient authApiClient;
+
     private Response response;
     private Plant createdPlant;
     private int plantIdToEdit;
@@ -35,44 +41,48 @@ public class PlantSteps {
     @Given("Valid sub-category exists")
     public void validSubCategoryExists() {
         if (validSubCategoryId == 0) {
-            System.out.println("Probing for valid sub-category and parent category IDs...");
-            Plant probePlant = new Plant();
-            probePlant.setName("Probe " + System.currentTimeMillis());
-            probePlant.setPrice(100.0);
-            probePlant.setQuantity(10);
-
-            for (int i = 1; i <= 20; i++) {
-                // Try to create a plant with this category ID
-                Response resp = plantApiClient.createPlant(probePlant, i);
-                int statusCode = resp.statusCode();
-
-                if (statusCode == 201) {
-                    System.out.println("Found Valid Sub-Category ID: " + i);
-                    validSubCategoryId = i;
-                    // We also successfully created a plant, might as well use it if needed, 
-                    // but validPlantIDExists will create another one which is fine.
-                    // Clean up? No delete endpoint known.
-                    if (validParentCategoryId != 0) break; // Found both
-                } else if (statusCode == 400) {
-                     // Likely a parent category or other validation error
-                     // Check message if possible, but assuming 400 with valid plant data = Parent Category issue
-                     // "Plants can only be added to sub-categories"
-                     String body = resp.getBody().asString();
-                     if (body.contains("sub-categories")) {
-                         System.out.println("Found Parent Category ID: " + i);
-                         validParentCategoryId = i;
-                         if (validSubCategoryId != 0) break; // Found both
-                     }
+            // Ensure we are admin to list all categories
+            String originalToken = BaseApiClient.getAuthToken();
+            try {
+                if (originalToken == null) {
+                    LoginResponse loginResp = authApiClient.login("admin", "admin123");
+                    BaseApiClient.setAuthToken(loginResp.getToken());
                 }
-            }
-            
-            if (validSubCategoryId == 0) {
-                System.out.println("WARNING: Could not find any valid sub-category in IDs 1-20. Tests will likely fail.");
-                // Fallback to 2 just in case?
-                validSubCategoryId = 2; 
-            }
-            if (validParentCategoryId == 0) {
-                 validParentCategoryId = 1; // Fallback
+
+                Response response = categoryApiClient.getAllCategories();
+                Category[] categories = response.as(Category[].class);
+
+                // Find a sub-category (has parent name that is not "-")
+                Category subCat = Arrays.stream(categories)
+                        .filter(c -> c.getParentName() != null && !"-".equals(c.getParentName()))
+                        .findFirst()
+                        .orElse(null);
+
+                // Find a parent category (no parent name or "-")
+                Category parentCat = Arrays.stream(categories)
+                        .filter(c -> c.getParentName() == null || "-".equals(c.getParentName()))
+                        .findFirst()
+                        .orElse(null);
+
+                if (subCat != null) {
+                    validSubCategoryId = subCat.getId();
+                    System.out.println("Found Valid Sub-Category ID: " + validSubCategoryId);
+                } else {
+                     // Fallback or create? For now throw meaningful error or fallback
+                     throw new RuntimeException("No sub-category found in system. Please seed data.");
+                }
+
+                if (parentCat != null) {
+                    validParentCategoryId = parentCat.getId();
+                    System.out.println("Found Valid Parent Category ID: " + validParentCategoryId);
+                } else {
+                     throw new RuntimeException("No parent category found in system. Please seed data.");
+                }
+
+            } finally {
+                 if (originalToken != null) {
+                     BaseApiClient.setAuthToken(originalToken);
+                 }
             }
         }
     }
@@ -109,13 +119,14 @@ public class PlantSteps {
     
     @When("Send POST request with valid Name, Price, Quantity to valid category {int}")
     public void sendPOSTRequestWithValidDataToCategory(int categoryId) {
-        // Ignore Gherkin input, use probed ID
+        // Use the provided categoryId from the feature file (User data says 3 is Succulent/Indoor)
         Plant plant = new Plant();
         plant.setName("Ant " + System.currentTimeMillis());
         plant.setPrice(150.0);
         plant.setQuantity(25);
         
-        response = plantApiClient.createPlant(plant, validSubCategoryId); 
+        // Use the explicit ID from the scenario
+        response = plantApiClient.createPlant(plant, categoryId); 
     }
 
     @When("Send POST request with JSON body missing Name")
