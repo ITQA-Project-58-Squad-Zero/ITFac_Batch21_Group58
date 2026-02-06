@@ -6,6 +6,8 @@ import net.serenitybdd.core.pages.PageObject;
 import net.serenitybdd.core.pages.WebElementFacade;
 import org.openqa.selenium.By;
 
+import org.openqa.selenium.By;
+
 import java.time.Duration;
 
 @DefaultUrl("/ui/login")
@@ -52,7 +54,7 @@ public class LoginPage extends PageObject {
     }
 
     public String getErrorMessage() {
-        return errorMessage.getText();
+        return $(By.cssSelector("div.alert.alert-danger.text-center")).getText();
     }
 
     public void waitForSuccessfulLogin() {
