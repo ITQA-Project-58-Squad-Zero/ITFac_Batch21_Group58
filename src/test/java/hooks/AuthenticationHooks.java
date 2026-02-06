@@ -12,8 +12,10 @@ public class AuthenticationHooks {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationHooks.class);
 
+
     private LoginPage loginPage;
     private EnvironmentVariables environmentVariables = SystemEnvironmentVariables.currentEnvironmentVariables();
+
 
     private String getProperty(String key) {
         return environmentVariables.getProperty(key);
