@@ -120,9 +120,8 @@
                     <systemPropertyVariables>
                         <webdriver.base.url>${webdriver.base.url}</webdriver.base.url>
                     </systemPropertyVariables>
-                    <parallel>classes</parallel>
                     <parallel>methods</parallel>
-                    <useUnlimitedThreads>true</useUnlimitedThreads>
+                    <threadCount>2</threadCount>
                 </configuration>
                 <executions>
                     <execution>
@@ -149,7 +148,7 @@
                 <configuration>
                     <tags>${tags}</tags>
                     <reports>single-page-html</reports>
-<!--                    <generateFullReport>true</generateFullReport>-->
+                   <generateFullReport>true</generateFullReport>
                 </configuration>
                 <dependencies>
                     <dependency>
