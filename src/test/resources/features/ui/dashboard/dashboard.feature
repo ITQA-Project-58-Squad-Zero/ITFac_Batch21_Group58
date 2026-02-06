@@ -1,0 +1,60 @@
+Feature: Dashboard
+  As an authenticated user
+  I want to view the dashboard after login
+  So that I can see an overview of the system
+
+  @dashboard @login_as_admin
+  Scenario: TC_DASH_UI_001 Load Dashboard After Login
+    Then Admin should see the Dashboard page
+    And the Dashboard should display the Categories card
+    And the Dashboard should display the Plants card
+    And the Dashboard should display the Sales card
+    And the Dashboard should display the Inventory card
+
+  @dashboard @login_as_admin
+  Scenario: TC_DASH_UI_002 Verify Dashboard Navigation Highlight
+    Then Admin should see the Dashboard page
+    And the Dashboard menu item should be highlighted as active
+
+  @dashboard @login_as_admin
+  Scenario: TC_DASH_UI_003 Verify Category Summary
+    Then Admin should see the Dashboard page
+    And the Categories card should display "5" Main categories
+    And the Categories card should display "4" Sub categories
+
+  @dashboard @login_as_admin
+  Scenario: TC_DASH_UI_004 Verify Plants Summary
+    Then Admin should see the Dashboard page
+    And the Plants card should display "12" Total plants
+    And the Plants card should display "3" Low Stock plants
+
+  @dashboard @login_as_admin
+  Scenario: TC_DASH_UI_005 Verify Sales Summary
+    Then Admin should see the Dashboard page
+    And the Sales card should display valid Revenue
+    And the Sales card should display valid Sales count
+
+  @dashboard @login_as_user
+  Scenario: TC_DASH_UI_006 Dashboard Visible for User Role
+    Then User should see the Dashboard page
+    And the Dashboard should display the Categories card
+    And the Dashboard should display the Plants card
+    And the Dashboard should display the Sales card
+
+  @dashboard @login_as_admin
+  Scenario: TC_DASH_UI_007 Navigate to Categories Page
+    Then Admin should see the Dashboard page
+    When Admin clicks Categories from navigation menu
+    Then the Categories page should be displayed
+
+  @dashboard @login_as_admin
+  Scenario: TC_DASH_UI_008 Navigate to Plants Page
+    Then Admin should see the Dashboard page
+    When Admin clicks Plants from navigation menu
+    Then the Plants page should be displayed
+
+  @dashboard @login_as_admin
+  Scenario: TC_DASH_UI_009 Navigate to Inventory Page
+    Then Admin should see the Dashboard page
+    When Admin clicks Inventory from navigation menu
+    Then the Inventory page should be displayed
