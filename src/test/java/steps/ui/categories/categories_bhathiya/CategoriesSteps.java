@@ -1,9 +1,9 @@
-package steps.ui.categories;
+package steps.ui.categories.categories_bhathiya;
 
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import pages.categories.CategoriesPage;
+import pages.categories.categories_bhathiya.CategoriesPage;
 
 import java.util.List;
 import java.util.stream.Collectors;

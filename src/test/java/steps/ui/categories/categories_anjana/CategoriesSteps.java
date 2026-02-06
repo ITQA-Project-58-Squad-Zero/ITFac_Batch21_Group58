@@ -1,30 +1,30 @@
-package steps.ui.category;
+package steps.ui.categories.categories_anjana;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import pages.category.CategoryPage;
+import pages.categories.categories_anjana.CategoriesPage;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class CategorySteps {
+public class CategoriesSteps {
 
-    CategoryPage categoryPage;
+    CategoriesPage categoriesPage;
 
     @When("Admin clicks the \"Add A Category\" button")
     public void clickAddCategoryButton() {
-        categoryPage.clickAddCategoryButton();
+        categoriesPage.clickAddCategoryButton();
     }
 
     @Then("the \"Add Category\" page should open successfully")
     public void verifyAddCategoryPageOpens() {
-        assertTrue(categoryPage.isAddCategoryPageDisplayed(), 
+        assertTrue(categoriesPage.isAddCategoryPageDisplayed(), 
                 "Add Category page did not open");
     }
 
     @When("Admin leaves the Category Name empty")
     public void leaveCategoryNameEmpty() {
-        categoryPage.leaveCategoryNameEmpty();
+        categoriesPage.leaveCategoryNameEmpty();
     }
 
     private String currentCategoryName;
@@ -36,20 +36,20 @@ public class CategorySteps {
             name = "Cat" + (System.currentTimeMillis() % 100000);
         }
         currentCategoryName = name;
-        categoryPage.enterCategoryName(name);
+        categoriesPage.enterCategoryName(name);
     }
 
     @When("Admin clicks the Save button")
     public void clickSaveButton() {
-        categoryPage.clickSaveButton();
+        categoriesPage.clickSaveButton();
     }
 
     @Then("Admin should see validation message {string}")
     public void verifyValidationMessage(String expectedMessage) {
-        assertTrue(categoryPage.isValidationMessageDisplayed(), 
+        assertTrue(categoriesPage.isValidationMessageDisplayed(), 
                 "Validation message is not displayed");
-        assertTrue(categoryPage.getValidationMessage().contains(expectedMessage),
-                "Expected message: " + expectedMessage + " but got: " + categoryPage.getValidationMessage());
+        assertTrue(categoriesPage.getValidationMessage().contains(expectedMessage),
+                "Expected message: " + expectedMessage + " but got: " + categoriesPage.getValidationMessage());
     }
 
     @Then("Category {string} should be created successfully and appear in the category list")
@@ -59,22 +59,22 @@ public class CategorySteps {
             nameToCheck = currentCategoryName;
         }
 
-        if (categoryPage.isValidationMessageDisplayed()) {
-            throw new AssertionError("Category creation failed with message: " + categoryPage.getValidationMessage());
+        if (categoriesPage.isValidationMessageDisplayed()) {
+            throw new AssertionError("Category creation failed with message: " + categoriesPage.getValidationMessage());
         }
 
-        assertTrue(categoryPage.isCategoryDisplayed(nameToCheck),
+        assertTrue(categoriesPage.isCategoryDisplayed(nameToCheck),
                 "Category " + nameToCheck + " was not found in the list");
     }
 
     @When("Admin clicks the Cancel button")
     public void clickCancelButton() {
-        categoryPage.clickCancelButton();
+        categoriesPage.clickCancelButton();
     }
 
     @Then("Admin should be redirected to the Categories list page")
     public void verifyRedirectToCategoryList() {
-        assertTrue(categoryPage.isCategoryListDisplayed(), "Category list page is not displayed");
+        assertTrue(categoriesPage.isCategoryListDisplayed(), "Category list page is not displayed");
     }
 
     @Given("User is logged in")
@@ -84,50 +84,40 @@ public class CategorySteps {
 
     @Then("the \"Add A Category\" button should not be visible")
     public void verifyAddCategoryButtonNotVisible() {
-        assertTrue(categoryPage.isAddCategoryButtonNotVisible(), "Add Category button is visible but should not be");
+        assertTrue(categoriesPage.isAddCategoryButtonNotVisible(), "Add Category button is visible but should not be");
     }
 
     @When("User attempts to access the Add Category page directly")
     public void attemptDirectAccess() {
-        // Assuming base URL is handled or we use a relative path if supported, 
-        // but getDriver().get() usually wants absolute. 
-        // However, Serenity might handle relative if we use openAt? 
-        // Let's rely on retrieving the base URL from environment or constructing it.
-        // For simplicity and robustness given existing code style, we might try to construct it 
-        // or just use the page default URL logic if possible, but the requirement is specific.
-        // Let's assume the Serenity properties have the base URL.
-        // Ideally: categoryPage.openUrl(categoryPage.getDriver().getCurrentUrl().replaceAll("/ui/categories.*", "") + "/ui/categories/add");
-        // A safer bet locally if we don't know the exact host:
-        String baseUrl = categoryPage.getDriver().getCurrentUrl().split("/ui")[0]; 
+        String baseUrl = categoriesPage.getDriver().getCurrentUrl().split("/ui")[0]; 
         if (baseUrl.isEmpty()) baseUrl = "http://localhost:8080"; // Fallback
-        categoryPage.navigateToUrl(baseUrl + "/ui/categories/add");
+        categoriesPage.navigateToUrl(baseUrl + "/ui/categories/add");
     }
 
     @Then("User should be redirected to Access Denied page or Login page")
     public void verifyAccessDenied() {
-        assertTrue(categoryPage.isAccessDenied(), "User was not blocked from accessing the page");
+        assertTrue(categoriesPage.isAccessDenied(), "User was not blocked from accessing the page");
     }
 
     @Then("the Edit option should not be visible for any category")
     public void verifyEditOptionHidden() {
-        assertTrue(categoryPage.areEditButtonsHidden(), "Edit option is visible but should not be");
+        assertTrue(categoriesPage.areEditButtonsHidden(), "Edit option is visible but should not be");
     }
 
     @When("User attempts to update an existing category")
     public void attemptCategoryUpdate() {
-        String baseUrl = categoryPage.getDriver().getCurrentUrl().split("/ui")[0];
+        String baseUrl = categoriesPage.getDriver().getCurrentUrl().split("/ui")[0];
         if (baseUrl.isEmpty()) baseUrl = "http://localhost:8080";
-        // Attempt to access an edit page (assuming ID 1 exists or is just a test URL)
-        categoryPage.navigateToUrl(baseUrl + "/ui/categories/edit/1");
+        categoriesPage.navigateToUrl(baseUrl + "/ui/categories/edit/1");
     }
 
     @Then("the update action should be blocked")
     public void verifyUpdateBlocked() {
-        assertTrue(categoryPage.isUpdateBlocked(), "Update was not blocked");
+        assertTrue(categoriesPage.isUpdateBlocked(), "Update was not blocked");
     }
 
     @Then("the Delete option should not be visible for any category")
     public void verifyDeleteOptionHidden() {
-        assertTrue(categoryPage.areDeleteButtonsHidden(), "Delete option is visible but should not be");
+        assertTrue(categoriesPage.areDeleteButtonsHidden(), "Delete option is visible but should not be");
     }
 }

@@ -1,4 +1,4 @@
-package pages.categories;
+package pages.categories.categories_bhathiya;
 
 import net.serenitybdd.annotations.DefaultUrl;
 import net.serenitybdd.core.pages.PageObject;

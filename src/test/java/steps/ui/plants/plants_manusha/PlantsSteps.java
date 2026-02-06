@@ -1,4 +1,4 @@
-package steps.ui.plants;
+package steps.ui.plants.plants_manusha;
 
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;

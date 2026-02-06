@@ -1,4 +1,4 @@
-package pages.category;
+package pages.categories.categories_anjana;
 
 import net.serenitybdd.annotations.DefaultUrl;
 import net.serenitybdd.core.pages.PageObject;
@@ -6,7 +6,7 @@ import net.serenitybdd.core.pages.WebElementFacade;
 import net.serenitybdd.core.annotations.findby.FindBy;
 
 @DefaultUrl("/ui/categories")
-public class CategoryPage extends PageObject {
+public class CategoriesPage extends PageObject {
 
     @FindBy(css = "a[href='/ui/categories/add']")
     WebElementFacade addCategoryButton;

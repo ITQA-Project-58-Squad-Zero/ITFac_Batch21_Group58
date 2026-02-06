@@ -1,4 +1,4 @@
-package steps.ui.plants;
+package steps.ui.plants.plants_ridmi;
 
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -9,7 +9,7 @@ import pages.plants.PlantsPage;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.List;
 
-public class PlantSteps {
+public class PlantsSteps {
 
     PlantsPage plantsPage;
     AddPlantPage addPlantPage;
