@@ -55,19 +55,15 @@ public class SalesSteps {
         assertThat(sales.length).isEqualTo(initialSalesCount);
     }
 
-    @Given("the admin has a valid session")
-    public void theAdminHasAValidSession() {
-        assertThat(BaseApiClient.getAuthToken()).isNotNull();
-    }
 
-    @Given("the user has a valid session")
-    public void theUserHasAValidSession() {
-        assertThat(BaseApiClient.getAuthToken()).isNotNull();
-    }
 
     @Given("a sale exists with ID {int}")
     public void aSaleExistsWithID(int id) {
-        // Precondition
+        Response resp = salesApiClient.getSaleById(id);
+        if (resp.getStatusCode() == 404) {
+            throw new AssertionError("Prerequisite failed: Sale with ID " + id + " does not exist. Please seed the database.");
+        }
+        assertThat(resp.getStatusCode()).withFailMessage("Failed to check sale existence").isEqualTo(200);
     }
 
     @When("I request the sale details by ID {int}")
