@@ -28,27 +28,27 @@ Feature: Plants Search and Sort Functionality
   Scenario: TC_PL_UI_003 Search Plants by Name
     Given at least one plant exists in the system
     When Admin navigates to the Plant List page
-    And Admin enters "Rose" in the search field
+    And Admin enters "Monstera" in the search field
     And Admin clicks the Search button
-    Then only plants matching "Rose" should be displayed
-    And all displayed plant names should contain "Rose"
+    Then only plants matching "Monstera" should be displayed
+    And all displayed plant names should contain "Monstera"
 
   @Plants @Search @MultiWord @KnownBug
   Scenario: TC_PL_UI_003b Search Plants by Multi-Word Name (Known Bug)
-    Given a plant named "Red Rose" exists in the system
+    Given a plant named "Snake Plant" exists in the system
     When Admin navigates to the Plant List page
-    And Admin enters "Red Rose" in the search field
+    And Admin enters "Snake Plant" in the search field
     And Admin clicks the Search button
-    Then only plants matching "Red Rose" should be displayed
-    And the plant "Red Rose" should be in the results
+    Then only plants matching "Snake Plant" should be displayed
+    And the plant "Snake Plant" should be in the results
 
   @Plants @Filter
   Scenario: TC_PL_UI_004 Filter Plants by Category
     When Admin navigates to the Plant List page
-    And Admin selects "Rose" from the category dropdown
+    And Admin selects "Succulent" from the category dropdown
     And Admin clicks the Search button
-    Then only plants belonging to category "Rose" should be displayed
-    And all displayed plants should have category "Rose"
+    Then only plants belonging to category "Succulent" should be displayed
+    And all displayed plants should have category "Succulent"
 
   @Plants @Sort
   Scenario: TC_PL_UI_005 Sort Plants by Name

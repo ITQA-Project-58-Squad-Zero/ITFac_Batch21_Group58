@@ -21,6 +21,10 @@ public class PlantsPage extends PageObject {
         addPlantButton.click();
     }
 
+    public boolean isAddPlantButtonVisible() {
+        return addPlantButton.isVisible();
+    }
+
     public void shouldAddPlantButtonNotBeVisible() {
         addPlantButton.shouldNotBeVisible();
     }

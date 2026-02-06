@@ -29,9 +29,9 @@ Feature: Category Management
   Scenario: CM2_UI_A_04 Create Category via UI (Valid Data)
     When Admin navigates to the "Categories" page
     And Admin clicks the "Add A Category" button
-    And Admin enters Category Name "TestCat"
+    And Admin enters Category Name "Tropical"
     And Admin clicks the Save button
-    Then Category "TestCat" should be created successfully and appear in the category list
+    Then Category "Tropical" should be created successfully and appear in the category list
 
   @category @login_as_admin
   Scenario: CM2_UI_A_05 Cancel Add/Edit Category (Admin)

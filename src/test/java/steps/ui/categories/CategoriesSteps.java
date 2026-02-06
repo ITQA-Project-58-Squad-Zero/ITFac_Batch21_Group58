@@ -37,7 +37,7 @@ public class CategoriesSteps {
                 "Edit and/or Delete actions should be disabled for non-admin user");
     }
 
-    @Then("pagination controls should be visible")
+    @Then("category pagination controls should be visible")
     public void verifyPaginationVisible() {
         assertTrue(categoriesPage.isPaginationVisible(), "Pagination controls are not visible");
     }
@@ -76,7 +76,7 @@ public class CategoriesSteps {
                 "Categories table should still be displayed with updated records");
     }
 
-    @Then("the {string} button should be visible")
+    @Then("the category {string} button should be visible")
     public void verifyAddCategoryButtonVisible(String buttonName) {
         if (buttonName.equals("Add Category")) {
             assertTrue(categoriesPage.isAddCategoryButtonVisible(),
@@ -202,23 +202,23 @@ public class CategoriesSteps {
                 matchingCount, parentName));
     }
 
-    @When("Admin clicks the {string} column header")
+    @When("Admin clicks the category {string} column header")
     public void clickColumnHeader(String columnName) {
         // Use smart click that ensures ascending order on first click
         categoriesPage.clickColumnHeaderToAscending(columnName);
     }
 
-    @When("Admin clicks the {string} column header again")
+    @When("Admin clicks the category {string} column header again")
     public void clickColumnHeaderAgain(String columnName) {
         categoriesPage.clickColumnHeader(columnName);
     }
 
-    @When("User clicks the {string} column header")
+    @When("User clicks the category {string} column header")
     public void userClickColumnHeader(String columnName) {
         categoriesPage.clickColumnHeaderToAscending(columnName);
     }
 
-    @When("User clicks the {string} column header again")
+    @When("User clicks the category {string} column header again")
     public void userClickColumnHeaderAgain(String columnName) {
         categoriesPage.clickColumnHeader(columnName);
     }
@@ -395,7 +395,7 @@ public class CategoriesSteps {
                 "Sorting should handle null parent values correctly (grouped together)");
     }
 
-    @Then("the {string} button should not be visible")
+    @Then("the category {string} button should not be visible")
     public void verifyButtonNotVisible(String buttonName) {
         if (buttonName.equals("Add Category")) {
             assertTrue(categoriesPage.isAddCategoryButtonNotVisible(),

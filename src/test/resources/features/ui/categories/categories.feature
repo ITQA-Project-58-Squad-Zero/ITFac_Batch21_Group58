@@ -26,7 +26,7 @@ Feature: Categories Management
       | ID     |
       | Name   |
       | Parent |
-    And pagination controls should be visible
+    And category pagination controls should be visible
     When Admin clicks the next page in categories
     Then the current page number should change
     And the category records should update
@@ -34,7 +34,7 @@ Feature: Categories Management
   @categories @login_as_admin @TC007
   Scenario: TC007 Add Category Button Visible (Admin)
     When Admin navigates to the "Categories" page
-    Then the "Add Category" button should be visible
+    Then the category "Add Category" button should be visible
 
   @categories @login_as_admin @TC008
   Scenario: TC008 Search by Category Name (Admin)
@@ -52,22 +52,22 @@ Feature: Categories Management
 
     Examples:
       | parentName |
-      | Flowers    |
+      | Indoor     |
 
   @categories @login_as_admin @TC010
   Scenario: TC010 Sorting by ID Name Parent (Admin)
     When Admin navigates to the "Categories" page
-    And Admin clicks the "ID" column header
+    And Admin clicks the category "ID" column header
     Then the categories should be sorted by ID in ascending order
-    When Admin clicks the "ID" column header again
+    When Admin clicks the category "ID" column header again
     Then the categories should be sorted by ID in descending order
-    When Admin clicks the "Name" column header
+    When Admin clicks the category "Name" column header
     Then the categories should be sorted by Name in ascending order
-    When Admin clicks the "Name" column header again
+    When Admin clicks the category "Name" column header again
     Then the categories should be sorted by Name in descending order
-    When Admin clicks the "Parent" column header
+    When Admin clicks the category "Parent" column header
     Then the categories should be sorted by Parent in ascending order
-    When Admin clicks the "Parent" column header again
+    When Admin clicks the category "Parent" column header again
     Then the categories should be sorted by Parent in descending order
 
   @categories @login_as_admin @TC011
@@ -81,7 +81,7 @@ Feature: Categories Management
     When Admin navigates to the "Categories" page
     Then the categories table should be displayed
     And the initial page should show limited rows based on page size
-    And pagination controls should be visible
+    And category pagination controls should be visible
 
   @categories @login_as_user @TC014
   Scenario: TC014 Pagination Next Previous Navigation (Non-Admin User)
@@ -106,7 +106,7 @@ Feature: Categories Management
   Scenario: TC016 Category Search Reset Clear (Non-Admin User)
     When User navigates to the "Categories" page
     And User notes the total number of categories displayed
-    When User enters "Flowers" in the category search box
+    When User enters "Indoor" in the category search box
     And User clicks the search button
     Then the categories table should show filtered results
     When User clears the search text
@@ -126,7 +126,7 @@ Feature: Categories Management
 
     Examples:
       | parentName |
-      | Flowers    |
+      | Indoor     |
 
   @categories @login_as_admin @TC018
   Scenario Outline: TC018 Combined Search Parent Filter (Admin)
@@ -138,19 +138,19 @@ Feature: Categories Management
 
     Examples:
       | parentName | keyword  |
-      | Flowers    | Flowers  |
+      | Indoor     | Monstera |
 
   @categories @login_as_user @TC019
   Scenario: TC019 Sorting Works With Parent Null Values (Non-Admin User)
     When User navigates to the "Categories" page
-    When User clicks the "Parent" column header
+    When User clicks the category "Parent" column header
     Then the categories should be sorted by Parent in ascending order
     And sorting should handle null parent values correctly
-    When User clicks the "Parent" column header again
+    When User clicks the category "Parent" column header again
     Then the categories should be sorted by Parent in descending order
     And sorting should handle null parent values correctly
 
   @categories @login_as_user @TC020
   Scenario: TC020 Non-Admin Cannot Access Add Category Action
     When User navigates to the "Categories" page
-    Then the "Add Category" button should not be visible
+    Then the category "Add Category" button should not be visible

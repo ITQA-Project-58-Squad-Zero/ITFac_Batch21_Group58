@@ -37,7 +37,7 @@ public class PlantSteps {
 
     @When("Admin fills remaining fields with valid data")
     public void fillRemainingFields() {
-        addPlantPage.selectCategory("category2");
+        addPlantPage.selectCategory("Succulent");
         addPlantPage.enterPrice("50.00");
         addPlantPage.enterQuantity("10");
     }
@@ -71,7 +71,7 @@ public class PlantSteps {
 
     @When("Admin selects a valid Category")
     public void selectValidCategory() {
-        addPlantPage.selectCategory("category2");
+        addPlantPage.selectCategory("Succulent");
     }
 
     @When("Admin enters a Price of {string}")
@@ -82,6 +82,11 @@ public class PlantSteps {
     @When("Admin enters a valid Quantity")
     public void enterValidQuantity() {
         addPlantPage.enterQuantity("10");
+    }
+
+    @Then("the \"Add a Plant\" button should be visible")
+    public void verifyAddPlantButtonVisible() {
+        assertTrue(plantsPage.isAddPlantButtonVisible(), "Add a Plant button should be visible for Admin");
     }
 
     @Then("the \"Add a Plant\" button should not be visible")

@@ -105,12 +105,11 @@ public class PlantsSteps {
         plantsPage.clickSearchButton();
     }
 
-    @When("Admin clicks the {string} button")
-    public void clickButton(String buttonName) {
-        if (buttonName.equalsIgnoreCase("Search")) {
-            plantsPage.clickSearchButton();
-        }
+    @When("Admin clicks the \"Search\" button")
+    public void clickSearchButtonWithQuotes() {
+        plantsPage.clickSearchButton();
     }
+
 
     @When("Admin enters {string} in the search box")
     public void enterSearchBox(String term) {
@@ -282,27 +281,6 @@ public class PlantsSteps {
 
     // ========== ADMIN ACTION STEPS FOR TC_PL_UI_A_001 ==========
 
-    @Then("the {string} button should be visible")
-    public void verifyButtonVisibility(String buttonName) {
-        if ("Add a Plant".equals(buttonName)) {
-            assertTrue(plantsPage.isAddPlantButtonVisible(),
-                    "'" + buttonName + "' button is not visible");
-        } else {
-            // Basic fallback or fail if unknown
-            // For valid tests, we expect implemented buttons.
-            throw new IllegalArgumentException("Visibility check not implemented for button: " + buttonName);
-        }
-    }
-
-    @Then("the {string} button should not be visible")
-    public void verifyButtonNotVisible(String buttonName) {
-        if ("Add a Plant".equals(buttonName)) {
-            assertFalse(plantsPage.isAddPlantButtonVisible(),
-                    "'" + buttonName + "' button should NOT be visible");
-        } else {
-            throw new IllegalArgumentException("Visibility check not implemented for button: " + buttonName);
-        }
-    }
 
     @Then("the Edit action should be visible for every plant")
     public void verifyEditActionVisible() {
