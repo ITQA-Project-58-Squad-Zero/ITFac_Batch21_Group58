@@ -37,17 +37,13 @@ public class SalesSteps {
 
     @Then("the response body should contain a validation message")
     public void theResponseBodyShouldContainAValidationMessage() {
-        // Assuming error response has a "message" or "error" field. 
-        // Based on common practices or previous context if available. 
-        // Adjusting expectation if standard Spring/REST error.
         String body = response.getBody().asString();
-        assertThat(body).containsIgnoringCase("quantity"); // Basic check for now
+        assertThat(body).containsIgnoringCase("quantity");
     }
 
     @Then("the response body should contain an insufficient stock error")
     public void theResponseBodyShouldContainAnInsufficientStockError() {
         String body = response.getBody().asString();
-        // Adjust "stock" or "inventory" based on actual API error message
         assertThat(body).containsIgnoringCase("stock"); 
     }
 
@@ -60,35 +56,28 @@ public class SalesSteps {
 
     @Given("the admin has a valid session")
     public void theAdminHasAValidSession() {
-        // Authentication handled by @admin_auth hook
         assertThat(BaseApiClient.getAuthToken()).isNotNull();
     }
 
     @Given("the user has a valid session")
     public void theUserHasAValidSession() {
-        // Authentication handled by @user_auth hook
         assertThat(BaseApiClient.getAuthToken()).isNotNull();
     }
 
     @Given("a sale exists with ID {int}")
     public void aSaleExistsWithID(int id) {
-        // Precondition: We assume the sale exists in the system or is seeded
+        // Precondition
     }
 
     @When("I request the sale details by ID {int}")
     public void iRequestTheSaleDetailsByID(int id) {
         response = salesApiClient.getSaleById(id);
-    }
-
-    @Then("the response status code should be {int}")
-    public void theResponseStatusCodeShouldBe(int statusCode) {
-        response.then().statusCode(statusCode);
+        BaseApiClient.setLastResponse(response);
     }
 
     @Then("the response body should return correct sale details having id {int}")
     public void theResponseBodyShouldReturnCorrectSaleDetailsHavingId(int id) {
         SaleResponse sale = response.as(SaleResponse.class);
-        
         assertThat(sale.getId()).isEqualTo(id);
         assertThat(sale.getPlant()).isNotNull();
         assertThat(sale.getPlant().getName()).isNotNull();
@@ -100,6 +89,7 @@ public class SalesSteps {
     @When("I request all sales")
     public void iRequestAllSales() {
         response = salesApiClient.getAllSales();
+        BaseApiClient.setLastResponse(response);
     }
 
     @Then("the response body should contain a list of sales")
@@ -111,6 +101,7 @@ public class SalesSteps {
     @When("I create a sale for plant ID {int} with quantity {int}")
     public void iCreateASaleForPlantIDWithQuantity(int plantId, int quantity) {
         response = salesApiClient.createSale(plantId, quantity);
+        BaseApiClient.setLastResponse(response);
     }
 
     @Then("the response body should return correct sale details")
