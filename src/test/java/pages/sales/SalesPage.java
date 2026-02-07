@@ -73,5 +73,52 @@ public class SalesPage extends PageObject {
     public int getDeleteButtonCount() {
         return deleteButtons.size();
     }
+
+    public void clickColumnHeader(String columnName) {
+        // Assuming headers are <a> tags inside <th>
+        // Map column name to text in header
+        // Plant, Quantity, Total Price, Sold At
+        findBy("//th/a[contains(text(), '" + columnName + "')]").click();
+    }
+
+    public List<String> getColumnData(String columnName) {
+        // Map column name to index (1-based for xpath nth-child)
+        int columnIndex = 0;
+        switch (columnName) {
+            case "Plant": columnIndex = 1; break; // Name is first
+            case "Quantity": columnIndex = 2; break;
+            case "Total Price": columnIndex = 3; break;
+            case "Sold At": columnIndex = 4; break;
+            default: throw new IllegalArgumentException("Unknown column: " + columnName);
+        }
+
+        return findAll("//table[contains(@class,'table')]//tbody//tr//td[" + columnIndex + "]")
+                .stream()
+                .map(WebElementFacade::getText)
+                .collect(Collectors.toList());
+    }
+
+    public boolean isSorted(List<String> data, String order) {
+        if (data.isEmpty() || data.size() == 1) return true;
+
+        for (int i = 0; i < data.size() - 1; i++) {
+            String current = data.get(i);
+            String next = data.get(i + 1);
+            
+            // Try numeric comparison first for Price/Quantity
+            try {
+                 double v1 = Double.parseDouble(current.replaceAll("[^\\d.]", ""));
+                 double v2 = Double.parseDouble(next.replaceAll("[^\\d.]", ""));
+                 if (order.equalsIgnoreCase("ascending") && v1 > v2) return false;
+                 if (order.equalsIgnoreCase("descending") && v1 < v2) return false;
+            } catch (NumberFormatException e) {
+                 // Fallback to string comparison
+                 int comparison = current.compareToIgnoreCase(next);
+                 if (order.equalsIgnoreCase("ascending") && comparison > 0) return false;
+                 if (order.equalsIgnoreCase("descending") && comparison < 0) return false;
+            }
+        }
+        return true;
+    }
 }
 
