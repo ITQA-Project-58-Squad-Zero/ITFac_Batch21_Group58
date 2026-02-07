@@ -44,4 +44,10 @@ public class PlantApiClient extends BaseApiClient {
                 .when()
                 .put(PLANTS_ENDPOINT + "/" + id);
     }
+
+    public Response deletePlant(int id) {
+        return getRequestSpec()
+                .when()
+                .delete(PLANTS_ENDPOINT + "/" + id);
+    }
 }
