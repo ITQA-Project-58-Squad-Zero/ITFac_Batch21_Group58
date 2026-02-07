@@ -1,7 +1,11 @@
 package api.models.sales;
 
 import api.models.common.Plant;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class SaleResponse {
     private int id;
     private Plant plant;

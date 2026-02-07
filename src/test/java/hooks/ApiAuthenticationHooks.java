@@ -4,6 +4,7 @@ import api.client.BaseApiClient;
 import api.client.auth.AuthApiClient;
 import api.models.auth.LoginResponse;
 import io.cucumber.java.Before;
+import org.assertj.core.api.Assertions;
 import net.serenitybdd.annotations.Steps;
 import net.thucydides.model.util.EnvironmentVariables;
 
@@ -32,6 +33,7 @@ public class ApiAuthenticationHooks {
         if (password == null) password = defaultPass;
 
         LoginResponse response = authApiClient.login(username, password);
+        Assertions.assertThat(response.getToken()).as("Login must return a token").isNotNull();
         BaseApiClient.setAuthToken(response.getToken());
     }
 }
