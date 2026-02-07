@@ -44,10 +44,6 @@ Feature: Plants Management API
     When I request plants sorted by "quantity" in "asc" order
     Then the response status code should be 200
     And the plants should be sorted by quantity in ascending order
-Feature: Plant Management API
-  As an Admin
-  I want to manage plants
-  So that I can maintain the plant inventory
 
   @admin_auth
   Scenario: PM2_API_A_01 Add New Plant (Valid Data)

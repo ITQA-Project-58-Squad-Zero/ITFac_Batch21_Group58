@@ -70,6 +70,7 @@ public class SalesSteps {
     public void iRequestTheSaleDetailsByID(int id) {
         response = salesApiClient.getSaleById(id);
         BaseApiClient.setLastResponse(response);
+        ApiResponseContext.setResponse(response);
     }
 
     @Then("the response body should return correct sale details having id {int}")
@@ -87,6 +88,7 @@ public class SalesSteps {
     public void iRequestAllSales() {
         response = salesApiClient.getAllSales();
         BaseApiClient.setLastResponse(response);
+        ApiResponseContext.setResponse(response);
     }
 
     @Then("the response body should contain a list of sales")
@@ -99,6 +101,7 @@ public class SalesSteps {
     public void iCreateASaleForPlantIDWithQuantity(int plantId, int quantity) {
         response = salesApiClient.createSale(plantId, quantity);
         BaseApiClient.setLastResponse(response);
+        ApiResponseContext.setResponse(response);
     }
 
     @Then("the response body should return correct sale details")
@@ -117,5 +120,59 @@ public class SalesSteps {
         Response listResponse = salesApiClient.getAllSales();
         SaleResponse[] sales = listResponse.as(SaleResponse[].class);
         assertThat(sales).extracting(SaleResponse::getId).contains(newSaleId);
+    }
+
+    private int deletedSaleId;
+
+    @When("I delete the sale by ID from the response")
+    public void iDeleteTheSaleByIDFromTheResponse() {
+        deletedSaleId = response.as(SaleResponse.class).getId();
+        response = salesApiClient.deleteSale(deletedSaleId);
+        BaseApiClient.setLastResponse(response);
+        ApiResponseContext.setResponse(response);
+    }
+
+    @Then("the response status code should be {int} or {int}")
+    public void theResponseStatusCodeShouldBeOr(int statusCode1, int statusCode2) {
+        int actualStatusCode = response.getStatusCode();
+        assertThat(actualStatusCode)
+                .withFailMessage("Expected status code to be %d or %d but was %d", statusCode1, statusCode2, actualStatusCode)
+                .isIn(statusCode1, statusCode2);
+    }
+
+    @When("I request the sale details by the deleted sale ID")
+    public void iRequestTheSaleDetailsByTheDeletedSaleID() {
+        response = salesApiClient.getSaleById(deletedSaleId);
+        BaseApiClient.setLastResponse(response);
+        ApiResponseContext.setResponse(response);
+    }
+
+    @Then("the response body should indicate forbidden access")
+    public void theResponseBodyShouldIndicateForbiddenAccess() {
+        String body = response.getBody().asString();
+        assertThat(body.toLowerCase())
+                .containsAnyOf("forbidden", "access denied", "not authorized", "permission");
+    }
+
+    @When("I attempt to delete the sale with ID {int}")
+    public void iAttemptToDeleteTheSaleWithID(int id) {
+        response = salesApiClient.deleteSale(id);
+        BaseApiClient.setLastResponse(response);
+        ApiResponseContext.setResponse(response);
+    }
+
+    @When("I request paginated sales with page {int} and size {int}")
+    public void iRequestPaginatedSalesWithPageAndSize(int page, int size) {
+        response = salesApiClient.getPagedSales(page, size);
+        BaseApiClient.setLastResponse(response);
+        ApiResponseContext.setResponse(response);
+    }
+
+    @Then("the response should contain at most {int} sales records")
+    public void theResponseShouldContainAtMostSalesRecords(int maxSize) {
+        // Parse the paged response - content array contains the sales
+        java.util.List<?> content = response.jsonPath().getList("content");
+        assertThat(content).isNotNull();
+        assertThat(content.size()).isLessThanOrEqualTo(maxSize);
     }
 }

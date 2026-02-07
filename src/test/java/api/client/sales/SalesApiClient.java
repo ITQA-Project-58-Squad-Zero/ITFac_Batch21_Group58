@@ -24,4 +24,18 @@ public class SalesApiClient extends BaseApiClient {
                 .when()
                 .post(SALES_ENDPOINT + "/plant/" + plantId);
     }
+
+    public Response deleteSale(int id) {
+        return getRequestSpec()
+                .when()
+                .delete(SALES_ENDPOINT + "/" + id);
+    }
+
+    public Response getPagedSales(int page, int size) {
+        return getRequestSpec()
+                .queryParam("page", page)
+                .queryParam("size", size)
+                .when()
+                .get(SALES_ENDPOINT + "/page");
+    }
 }

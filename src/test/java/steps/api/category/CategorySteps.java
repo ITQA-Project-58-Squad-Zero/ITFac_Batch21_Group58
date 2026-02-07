@@ -10,6 +10,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.response.Response;
 import net.serenitybdd.annotations.Steps;
+import api.context.ApiResponseContext;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -90,6 +91,7 @@ public class CategorySteps {
              // System.out.println("DEBUG: Create '" + name + "' failed with " + response.getStatusCode());
         }
         BaseApiClient.setLastResponse(response);
+        ApiResponseContext.setResponse(response);
     }
 
     @When("I create a category with missing name")
@@ -97,6 +99,7 @@ public class CategorySteps {
         Map<String, Object> body = new HashMap<>(); // Empty body
         response = categoryApiClient.createCategory(body);
         BaseApiClient.setLastResponse(response);
+        ApiResponseContext.setResponse(response);
     }
 
     @When("I update the category name to {string}")
@@ -120,6 +123,7 @@ public class CategorySteps {
                  System.out.println("DEBUG: Update failed with status " + response.getStatusCode() + ": " + response.getBody().asString());
             }
             BaseApiClient.setLastResponse(response);
+            ApiResponseContext.setResponse(response);
         } else {
              System.out.println("DEBUG: Available categories: " + Arrays.toString(Arrays.stream(categories).map(Category::getName).toArray()));
              throw new RuntimeException("Target category not found for update test among: " + Arrays.toString(Arrays.stream(categories).map(Category::getName).toArray()));
@@ -138,6 +142,7 @@ public class CategorySteps {
                 
         response = categoryApiClient.deleteCategory(toDelete.getId());
         BaseApiClient.setLastResponse(response);
+        ApiResponseContext.setResponse(response);
     }
 
     @When("I delete the category")
@@ -239,5 +244,6 @@ public class CategorySteps {
             System.out.println("DEBUG: Sub-create failed with status " + response.getStatusCode() + ": " + response.getBody().asString());
         }
         BaseApiClient.setLastResponse(response);
+        ApiResponseContext.setResponse(response);
     }
 }
