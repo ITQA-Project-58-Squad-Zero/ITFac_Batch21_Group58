@@ -3,29 +3,29 @@ Feature: Categories API
   I want to access category data via API
   So that I can verify category endpoints and data
 
-  @admin_auth @TC001
+  @admin_auth @CM_API_A_01
   Scenario: TC001 Get All Categories
     Given the admin has a valid session
     When I request all categories with no name or parentId filter
     Then the response status code should be 200
     And the response body should be a list of categories
 
-  @admin_auth @TC002
+  @admin_auth @CM_API_A_02
   Scenario: TC002 Get Category by ID (Success)
     Given the admin has a valid session
-    And a category exists with ID 1
-    When I request the category by ID 1
+    And a stored category exists in the system
+    When I request the category by the stored category ID
     Then the response status code should be 200
-    And the response body should return the category with id 1
+    And the response body should return the category with the stored ID
 
-  @admin_auth @TC003
+  @admin_auth @CM_API_A_03
   Scenario: TC003 Get Main Categories Only
     Given the admin has a valid session
     When I request main categories
     Then the response status code should be 200
     And each returned category should have no parent
 
-  @admin_auth @TC012
+  @admin_auth @CM_API_A_12
   Scenario: TC012 Get Category Summary
     Given the admin has a valid session
     When I request the categories summary

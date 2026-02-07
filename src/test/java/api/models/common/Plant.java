@@ -1,11 +1,15 @@
 package api.models.common;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Plant {
     private int id;
     private String name;
     private double price;
     private int quantity;
     private Category category;
+    private Integer categoryId;
 
     public int getId() {
         return id;
@@ -45,5 +49,13 @@ public class Plant {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public Integer getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
     }
 }

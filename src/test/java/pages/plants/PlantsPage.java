@@ -36,4 +36,19 @@ public class PlantsPage extends PageObject {
     public void shouldDeleteButtonNotBeVisible() {
         deleteButton.shouldNotBeVisible();
     }
+
+    @FindBy(css = "table tbody tr:first-child td:first-child")
+    WebElementFacade firstPlantIdCell;
+
+    public int getFirstPlantId() {
+        if (firstPlantIdCell.isVisible()) {
+            String idText = firstPlantIdCell.getText().trim();
+            try {
+                return Integer.parseInt(idText);
+            } catch (NumberFormatException e) {
+                return 0;
+            }
+        }
+        return 0;
+    }
 }

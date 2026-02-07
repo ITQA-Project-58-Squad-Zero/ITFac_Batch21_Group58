@@ -8,6 +8,7 @@ import pages.plants.PlantsPage;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.List;
+import api.client.BaseApiClient;
 
 public class PlantsSteps {
 
@@ -122,5 +123,71 @@ public class PlantsSteps {
     @Then("the \"Edit Plant\" page should not be displayed")
     public void verifyEditPlantPageNotDisplayed() {
         assertTrue(!editPlantPage.isPageHeaderVisible(), "Edit Plant page is displayed for non-admin user");
+    }
+
+    // Dynamic plant ID retrieval
+    private int firstAvailablePlantId;
+    
+    @net.serenitybdd.annotations.Steps
+    api.client.plants.PlantsApiClient plantsApiClient;
+    
+    @net.serenitybdd.annotations.Steps
+    api.client.auth.AuthApiClient authApiClient;
+    
+    private net.thucydides.model.util.EnvironmentVariables environmentVariables;
+
+    @io.cucumber.java.en.Given("a first available plant exists")
+    public void aFirstAvailablePlantExists() {
+        // Navigate to plants page and get first plant ID from the table or use API
+        plantsPage.open();
+        firstAvailablePlantId = plantsPage.getFirstPlantId();
+        
+        if (firstAvailablePlantId == 0) {
+            // Seed data using API
+            try {
+                // Use shorter name to avoid validation errors (max 20-25 chars)
+                String shortPlantName = "Plant" + (1000 + new java.util.Random().nextInt(9000));
+                plantsApiClient.createPlant(shortPlantName, 50.0, 10, 1);
+            } catch (AssertionError | Exception e) {
+                 // Likely 403 Forbidden if running as User
+                 // Switch to Admin
+                 String userToken = BaseApiClient.getAuthToken();
+                 
+                 String adminUser = net.serenitybdd.model.environment.EnvironmentSpecificConfiguration.from(environmentVariables)
+                         .getProperty("credentials.admin.username");
+                 String adminPass = net.serenitybdd.model.environment.EnvironmentSpecificConfiguration.from(environmentVariables)
+                         .getProperty("credentials.admin.password");
+                 
+                 if (adminUser != null && adminPass != null) {
+                     try {
+                         api.models.auth.LoginResponse login = authApiClient.login(adminUser, adminPass);
+                         BaseApiClient.setAuthToken(login.getToken());
+                         
+                         // Create Plant
+                         String shortPlantNameAdmin = "Plant" + (1000 + new java.util.Random().nextInt(9000));
+                         plantsApiClient.createPlant(shortPlantNameAdmin, 50.0, 10, 1);
+                     } catch (Exception ex) {
+                         System.err.println("Failed to seed plant data as admin: " + ex.getMessage());
+                     } finally {
+                         // Restore User Token
+                         BaseApiClient.setAuthToken(userToken);
+                     }
+                 } else {
+                     System.err.println("Admin credentials not found for seeding.");
+                 }
+            }
+            
+            plantsPage.open(); // Refresh
+            firstAvailablePlantId = plantsPage.getFirstPlantId();
+        }
+        
+        assertTrue(firstAvailablePlantId > 0, "No plants available in the system");
+    }
+
+    @When("User navigates to the \"Edit Plant\" page with the first available plant ID directly via URL")
+    public void navigateToEditPlantWithFirstAvailablePlantId() {
+        assertTrue(firstAvailablePlantId > 0,
+                "First available plant ID not retrieved. Call 'a first available plant exists' first.");
+        addPlantPage.getDriver().get(addPlantPage.getDriver().getCurrentUrl().split("/ui/")[0] + "/ui/plants/edit/" + firstAvailablePlantId);
     }
 }

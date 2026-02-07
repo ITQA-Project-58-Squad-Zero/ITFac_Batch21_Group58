@@ -49,12 +49,14 @@ public class PlantsPage extends PageObject {
     }
 
     public void enterSearchText(String name) {
+        searchInput.click();
         searchInput.clear();
         searchInput.type(name);
     }
 
     public void clickSearchButton() {
         searchButton.click();
+        waitABit(2000); // Wait for table refresh
         waitFor(plantsTable);
     }
 
@@ -66,6 +68,15 @@ public class PlantsPage extends PageObject {
 
     public void clickReset() {
         resetButton.click();
+    }
+
+    public List<String> getAvailableCategories() {
+        List<WebElementFacade> options = categorySelect.thenFindAll(By.tagName("option"));
+        return options.stream()
+                .map(WebElementFacade::getText)
+                .map(String::trim)
+                .filter(text -> !text.isEmpty() && !text.equalsIgnoreCase("All Categories") && !text.equals("-"))
+                .collect(Collectors.toList());
     }
 
     public boolean isTableDisplayed() {

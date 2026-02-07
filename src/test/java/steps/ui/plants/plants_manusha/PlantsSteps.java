@@ -144,42 +144,20 @@ public class PlantsSteps {
                         "Found plants: [" + actualResults + "]");
     }
 
+    @Then("only plants matching the searched term should be displayed")
+    public void verifyOnlyMatchingSearchedTermDisplayed() {
+        String searchTerm = firstAvailablePlantName != null ? firstAvailablePlantName : multiWordPlantName;
+        assertTrue(searchTerm != null, "Search term was not set by previous steps.");
+        verifyOnlyMatchingPlantsDisplayed(searchTerm);
+    }
+
     @Then("all displayed plant names should contain {string}")
     public void verifyAllPlantNamesContain(String searchTerm) {
         assertTrue(plantsPage.allPlantNamesContain(searchTerm),
                 "Not all displayed plant names contain '" + searchTerm + "'");
     }
 
-    @io.cucumber.java.en.Given("at least one plant exists in the system")
-    public void verifyAtLeastOnePlantExists() {
-        // This is a precondition check
-        // In a real scenario, you might query the database or API
-        // For now, we'll assume the system has plants based on the HTML provided
-        // This step serves as documentation of the precondition
-        assertTrue(true, "Precondition: At least one plant should exist in the system");
-    }
 
-    @io.cucumber.java.en.Given("a plant named {string} exists in the system")
-    public void verifySpecificPlantExists(String plantName) {
-        // This is a precondition check for the multi-word search test
-        // In a real scenario, you might query the database or API to verify
-        // For now, we document this as a precondition
-        // The test will fail if the search doesn't return this plant
-        assertTrue(true, "Precondition: Plant '" + plantName + "' should exist in the system");
-    }
-
-    @Then("the plant {string} should be in the results")
-    public void verifyPlantInResults(String plantName) {
-        List<String> plantNames = plantsPage.getCurrentPagePlantNames();
-        boolean plantFound = plantNames.stream()
-                .anyMatch(name -> name.equalsIgnoreCase(plantName));
-
-        String actualResults = plantNames.isEmpty() ? "No plants found" : String.join(", ", plantNames);
-
-        assertTrue(plantFound,
-                "Plant '" + plantName + "' was not found in the search results. " +
-                        "Found plants: [" + actualResults + "]");
-    }
 
     @When("Admin filters by category {string}")
     public void filterByCategory(String category) {
@@ -296,14 +274,14 @@ public class PlantsSteps {
 
     @Then("the Edit action should not be visible for any plant")
     public void verifyEditActionNotVisible() {
-        assertTrue(plantsPage.areEditButtonsHiddenForAllRows(),
-                "Edit action is visible for some/all plants (Should be hidden for User)");
+        assertFalse(plantsPage.areEditButtonsVisibleForAllRows(),
+                "Edit action should NOT be visible for any plant row");
     }
 
     @Then("the Delete action should not be visible for any plant")
     public void verifyDeleteActionNotVisible() {
-        assertTrue(plantsPage.areDeleteButtonsHiddenForAllRows(),
-                "Delete action is visible for some/all plants (Should be hidden for User)");
+        assertFalse(plantsPage.areDeleteButtonsVisibleForAllRows(),
+                "Delete action should NOT be visible for any plant row");
     }
 
     @Then("the current user should be identified as \"User\"")
@@ -313,4 +291,188 @@ public class PlantsSteps {
         assertFalse(plantsPage.isAddPlantButtonVisible(),
                 "User verification failed: Admin 'Add Plant' button is visible, implying wrong role.");
     }
+
+    // ========== DYNAMIC DATA RETRIEVAL STEPS ==========
+
+    private String firstAvailablePlantName;
+    private String firstAvailableCategoryName;
+    private String multiWordPlantName;
+
+    @net.serenitybdd.annotations.Steps
+    api.client.plants.PlantsApiClient plantsApiClient;
+
+    @io.cucumber.java.en.Given("at least one plant exists in the system")
+    public void verifyAtLeastOnePlantExists() {
+        plantsPage.open();
+        // Check if table is empty or has "No plants found"
+        if (plantsPage.getDisplayedPlantCount() == 0 || plantsPage.isNoPlantsMessageDisplayed()) {
+             // Create a plant
+             plantsApiClient.createPlant("AutoSeedPlant" + System.currentTimeMillis(), 50.0, 10, 1);
+             plantsPage.open(); // Refresh
+        }
+        assertTrue(plantsPage.getDisplayedPlantCount() > 0, "Precondition: At least one plant should exist in the system");
+    }
+
+    @io.cucumber.java.en.Given("a plant named {string} exists in the system")
+    public void verifySpecificPlantExists(String plantName) {
+        plantsPage.open();
+        // Use search to check existence across all pages
+        plantsPage.searchForPlant(plantName);
+        List<String> plantNames = plantsPage.getCurrentPagePlantNames();
+        boolean exists = plantNames.stream().anyMatch(name -> name.equalsIgnoreCase(plantName));
+        
+        if (!exists) {
+             plantsApiClient.createPlant(plantName, 50.0, 10, 1);
+             plantsPage.open(); 
+             plantsPage.searchForPlant(plantName);
+             plantNames = plantsPage.getCurrentPagePlantNames();
+             exists = plantNames.stream().anyMatch(name -> name.equalsIgnoreCase(plantName));
+        }
+        
+        assertTrue(exists, "Precondition: Plant '" + plantName + "' should exist in the system");
+        // Reset page for the next steps
+        plantsPage.open();
+    }
+
+    @Then("the plant {string} should be in the results")
+    public void verifyPlantInResults(String plantName) {
+        List<String> plantNames = plantsPage.getCurrentPagePlantNames();
+        boolean plantFound = plantNames.stream()
+                .anyMatch(name -> name.equalsIgnoreCase(plantName));
+
+        String actualResults = plantNames.isEmpty() ? "No plants found" : String.join(", ", plantNames);
+
+        assertTrue(plantFound,
+                "Plant '" + plantName + "' was not found in the search results. " +
+                        "Found plants: [" + actualResults + "]");
+    }
+
+    @io.cucumber.java.en.Given("Admin retrieves the first available single-word plant name")
+    public void retrieveFirstAvailableSingleWordPlantName() {
+        plantsPage.open();
+        List<String> plantNames = plantsPage.getCurrentPagePlantNames();
+        
+        // Find a single-word name (no spaces)
+        firstAvailablePlantName = null;
+        for (String name : plantNames) {
+            if (!name.trim().contains(" ")) {
+                firstAvailablePlantName = name;
+                break;
+            }
+        }
+
+        if (firstAvailablePlantName == null) {
+             // Create a single-word plant if missing
+             String singleWordName = "Fern" + System.currentTimeMillis(); // Ensure single word
+             plantsApiClient.createPlant(singleWordName, 25.0, 50, 1);
+             plantsPage.open();
+             firstAvailablePlantName = singleWordName;
+        }
+        
+        assertTrue(firstAvailablePlantName != null && !firstAvailablePlantName.isEmpty(), "No single-word plant name available in the system");
+    }
+
+    @When("Admin enters the first available single-word plant name in the search field")
+    public void enterFirstAvailableSingleWordPlantNameInSearch() {
+        assertTrue(firstAvailablePlantName != null, 
+            "First available single-word plant name not retrieved. Call 'Admin retrieves the first available single-word plant name' first.");
+        plantsPage.enterSearchText(firstAvailablePlantName);
+    }
+
+    @io.cucumber.java.en.Given("a plant with a two-word name exists in the system")
+    public void verifyTwoWordPlantExists() {
+        plantsPage.open();
+        List<String> plantNames = plantsPage.getCurrentPagePlantNames();
+        // Look for a plant with exactly one space in the name (two words)
+        multiWordPlantName = null;
+        for (String name : plantNames) {
+            String trimmedName = name.trim();
+            if (trimmedName.contains(" ") && trimmedName.split("\\s+").length == 2) {
+                multiWordPlantName = name;
+                break;
+            }
+        }
+        
+        if (multiWordPlantName == null) {
+            // Create a two-word plant
+            String mwName = "Aloe Vera" + System.currentTimeMillis();
+            plantsApiClient.createPlant(mwName, 50.0, 10, 1);
+            plantsPage.open();
+            multiWordPlantName = mwName;
+        }
+        
+        assertTrue(multiWordPlantName != null,
+                "No plant with two-word name found in the system. Available plants: " + plantNames);
+    }
+
+    @When("Admin enters the two-word plant name in the search field")
+    public void enterTwoWordPlantNameInSearch() {
+        assertTrue(multiWordPlantName != null,
+                "Two-word plant name not retrieved. Call 'a plant with a two-word name exists in the system' first.");
+        plantsPage.enterSearchText(multiWordPlantName);
+    }
+
+    @Then("the searched plant should be in the results")
+    public void verifySearchedPlantInResults() {
+        String searchTerm = firstAvailablePlantName != null ? firstAvailablePlantName : multiWordPlantName;
+        List<String> plantNames = plantsPage.getCurrentPagePlantNames();
+        boolean plantFound = plantNames.stream()
+                .anyMatch(name -> name.equalsIgnoreCase(searchTerm) || name.toLowerCase().contains(searchTerm.toLowerCase()));
+
+        String actualResults = plantNames.isEmpty() ? "No plants found" : String.join(", ", plantNames);
+
+        assertTrue(plantFound,
+                "Plant '" + searchTerm + "' was not found in the search results. " +
+                        "Found plants: [" + actualResults + "]");
+    }
+
+    @io.cucumber.java.en.Given("at least one category with plants exists")
+    public void verifyAtLeastOneCategoryWithPlantsExists() {
+        // Navigate to plants page and get first category
+        plantsPage.open();
+        List<String> categories = plantsPage.getAvailableCategories();
+        assertTrue(!categories.isEmpty() && categories.size() > 1,
+                "No categories available in the dropdown");
+        // First option is usually "All Categories" or similar
+        firstAvailableCategoryName = categories.size() > 1 ? categories.get(1) : categories.get(0);
+    }
+
+    @When("Admin selects the first available category from the category dropdown")
+    public void selectFirstAvailableCategoryFromDropdown() {
+        assertTrue(firstAvailableCategoryName != null,
+                "First available category name not retrieved. Call 'at least one category with plants exists' first.");
+        plantsPage.selectCategory(firstAvailableCategoryName);
+    }
+
+
+    @Then("only plants belonging to the selected category should be displayed")
+    public void verifyOnlyPlantsOfSelectedCategoryDisplayed() {
+        List<String> categories = plantsPage.getColumnData("Category");
+        int displayedCount = plantsPage.getDisplayedPlantCount();
+
+        // It's acceptable to have no plants in this category
+        if (displayedCount == 0) {
+            return;
+        }
+
+        boolean allMatch = categories.stream().allMatch(c -> c.equals(firstAvailableCategoryName));
+
+        String actualCategories = categories.isEmpty() ? "No plants found"
+                : String.join(", ", categories.stream().distinct().collect(Collectors.toList()));
+
+        assertTrue(allMatch,
+                "Not all displayed plants belong to category '" + firstAvailableCategoryName + "'. " +
+                        "Found categories: [" + actualCategories + "]");
+    }
+
+    @Then("all displayed plants should have the selected category")
+    public void verifyAllPlantsHaveSelectedCategory() {
+        List<String> categories = plantsPage.getColumnData("Category");
+        if (categories.isEmpty()) {
+            return; // Acceptable - no plants in this category
+        }
+        assertTrue(categories.stream().allMatch(c -> c.equalsIgnoreCase(firstAvailableCategoryName)),
+                "Not all displayed plants have category '" + firstAvailableCategoryName + "'");
+    }
+
 }

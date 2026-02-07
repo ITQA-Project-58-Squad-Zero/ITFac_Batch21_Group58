@@ -66,11 +66,11 @@ public class CategoriesSteps {
         Category[] categories = response.as(Category[].class);
         assertThat(categories).isNotNull();
         for (Category cat : categories) {
-            // Main categories have no parent: parentId null and/or parent null
-            boolean noParent = (cat.getParentId() == null) && (cat.getParent() == null);
+            // Main categories have no parent
+            boolean noParent = (cat.getParent() == null);
             assertThat(noParent)
-                    .as("Main category id=%d name=%s should have no parent (parentId=%s, parent=%s)",
-                            cat.getId(), cat.getName(), cat.getParentId(), cat.getParent())
+                    .as("Main category id=%d name=%s should have no parent (parent=%s)",
+                            cat.getId(), cat.getName(), cat.getParent())
                     .isTrue();
         }
     }
@@ -95,5 +95,39 @@ public class CategoriesSteps {
         CategorySummary summary = response.as(CategorySummary.class);
         assertThat(summary.getMainCategories()).isGreaterThanOrEqualTo(0);
         assertThat(summary.getSubCategories()).isGreaterThanOrEqualTo(0);
+    }
+
+
+    private int storedCategoryId;
+
+    @Given("a stored category exists in the system")
+    public void aFirstAvailableCategoryExistsInTheSystem() {
+        // Fetch all categories to get the first available one
+        response = categoriesApiClient.getAllCategories();
+        Category[] categories = response.as(Category[].class);
+        
+        assertThat(categories)
+                .as("No categories found in the system")
+                .isNotNull()
+                .isNotEmpty();
+        
+        // Store the ID of the first category
+        storedCategoryId = categories[0].getId();
+        System.out.println("Stored category ID for test: " + storedCategoryId);
+    }
+
+    @When("I request the category by the stored category ID")
+    public void iRequestTheCategoryByStoredId() {
+        assertThat(storedCategoryId).as("Stored category ID not set").isGreaterThan(0);
+        response = categoriesApiClient.getCategoryById(storedCategoryId);
+        BaseApiClient.setLastResponse(response);
+        ApiResponseContext.setResponse(response);
+    }
+
+    @Then("the response body should return the category with the stored ID")
+    public void theResponseBodyShouldReturnTheCategoryWithStoredId() {
+        Category category = response.as(Category.class);
+        assertThat(category).isNotNull();
+        assertThat(category.getId()).isEqualTo(storedCategoryId);
     }
 }

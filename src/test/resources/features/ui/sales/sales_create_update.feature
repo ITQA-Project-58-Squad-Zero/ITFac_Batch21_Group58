@@ -1,10 +1,9 @@
-Feature: Create Sale
+Feature: Sales Management UI - Create Sale
   As an Admin
   I want to create new sales
   So that I can record plant sale transactions
 
-
-  @sales @login_as_admin
+  @sales @login_as_admin @SM_UI_A_04
   Scenario: SM_UI_A_04 Create Sale via UI using Valid Data
     When Admin navigates to the "Sales" page
     And Admin clicks the "Sell Plant" button
@@ -14,7 +13,7 @@ Feature: Create Sale
     Then Admin should be on the Sales list page
     And the newly created sale should appear in the sales table
 
-  @sales @login_as_admin
+  @sales @login_as_admin @SM_UI_A_05
   Scenario Outline: SM_UI_A_05 Validate Sell Plant Form for Invalid Quantity
     When Admin navigates to the "Sales" page
     And Admin clicks the "Sell Plant" button
@@ -26,5 +25,5 @@ Feature: Create Sale
 
     Examples:
       | quantity |
-      | 0        |
+      |        0 |
       |          |

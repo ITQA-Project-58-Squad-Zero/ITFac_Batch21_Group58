@@ -257,7 +257,7 @@ public class CategoriesPage extends PageObject {
         String xpath = String.format("//th//a[contains(text(),'%s')]", columnName);
         $(By.xpath(xpath)).waitUntilClickable().click();
         // Wait for table to reload after sorting
-        waitFor(1).second();
+        waitFor(2).seconds();
         categoriesTable.waitUntilVisible();
     }
 
@@ -362,6 +362,16 @@ public class CategoriesPage extends PageObject {
 
     public int getTotalCategoryCount() {
         return tableRows.size();
+    }
+
+    public List<String> getAvailableParentOptions() {
+        WebElementFacade dropdown = $(By.cssSelector("select[name='parentId']"));
+        dropdown.waitUntilVisible();
+        List<WebElementFacade> options = dropdown.thenFindAll(By.tagName("option"));
+        return options.stream()
+                .map(WebElementFacade::getText)
+                .map(String::trim)
+                .collect(Collectors.toList());
     }
 
     public boolean verifyCombinedFilter(String parentName, String keyword) {

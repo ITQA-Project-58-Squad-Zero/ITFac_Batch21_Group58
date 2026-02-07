@@ -61,8 +61,12 @@ public class AddPlantPage extends PageObject {
     }
 
     public boolean isErrorMessageDisplayed(String message) {
-        return withTimeoutOf(Duration.ofSeconds(5))
-                .find(net.serenitybdd.core.annotations.findby.By.xpath("//div[contains(@class,'text-danger') and contains(text(),'" + message + "')]"))
+        String xpath = "//*[" +
+                "(contains(@class,'text-danger') or contains(@class,'invalid-feedback') or contains(@class,'alert-danger') or contains(@class,'error-message')) " +
+                "and contains(normalize-space(.), '" + message + "')" +
+                "]";
+        return withTimeoutOf(Duration.ofSeconds(10))
+                .find(net.serenitybdd.core.annotations.findby.By.xpath(xpath))
                 .isVisible();
     }
 

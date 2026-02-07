@@ -1,4 +1,4 @@
-Feature: Categories Management
+Feature: Category Management UI - View and Filter
   As a User or Admin
   I want to view the category list and (for admin) use pagination
   So that I can verify list display and role-based actions
@@ -38,21 +38,19 @@ Feature: Categories Management
 
   @categories @login_as_admin @TC008
   Scenario: TC008 Search by Category Name (Admin)
+    Given Admin retrieves the first available category name
     When Admin navigates to the "Categories" page
-    And Admin enters "{string}" in the category search box
+    And Admin enters the first available category name in the category search box
     And Admin clicks the search button
-    Then the categories table should show only matching results for "{string}"
+    Then the categories table should show only matching results for the searched category name
 
   @categories @login_as_admin @TC009
-  Scenario Outline: TC009 Filter by Parent Category (Admin)
+  Scenario: TC009 Filter by Parent Category (Admin)
+    Given Admin retrieves a parent category from the system
     When Admin navigates to the "Categories" page
-    And Admin selects parent category "<parentName>" from the filter dropdown
+    And Admin selects the retrieved parent category from the filter dropdown
     And Admin clicks the search button
-    Then the categories table should show only categories under parent "<parentName>"
-
-    Examples:
-      | parentName |
-      | Indoor     |
+    Then the categories table should show only categories under the selected parent
 
   @categories @login_as_admin @TC010
   Scenario: TC010 Sorting by ID Name Parent (Admin)
@@ -104,9 +102,10 @@ Feature: Categories Management
 
   @categories @login_as_user @TC016
   Scenario: TC016 Category Search Reset Clear (Non-Admin User)
+    Given User retrieves the first available category name
     When User navigates to the "Categories" page
     And User notes the total number of categories displayed
-    When User enters "Indoor" in the category search box
+    When User enters the first available category name in the category search box
     And User clicks the search button
     Then the categories table should show filtered results
     When User clears the search text
@@ -114,31 +113,26 @@ Feature: Categories Management
     Then the full category list should be displayed again
 
   @categories @login_as_admin @TC017
-  Scenario Outline: TC017 Filter by Parent Category Clear Filter (Admin)
+  Scenario: TC017 Filter by Parent Category Clear Filter (Admin)
+    Given Admin retrieves a parent category from the system
     When Admin navigates to the "Categories" page
     And Admin notes the total number of categories displayed
-    When Admin selects parent category "<parentName>" from the filter dropdown
+    When Admin selects the retrieved parent category from the filter dropdown
     And Admin clicks the search button
-    Then the categories table should show only categories under parent "<parentName>"
+    Then the categories table should show only categories under the selected parent
     When Admin clears the parent filter
     And Admin clicks the search button
     Then the full category list should be displayed again
 
-    Examples:
-      | parentName |
-      | Indoor     |
-
   @categories @login_as_admin @TC018
-  Scenario Outline: TC018 Combined Search Parent Filter (Admin)
+  Scenario: TC018 Combined Search Parent Filter (Admin)
+    Given Admin retrieves a parent category from the system
+    And Admin retrieves a subcategory name under the selected parent
     When Admin navigates to the "Categories" page
-    When Admin selects parent category "<parentName>" from the filter dropdown
-    And Admin enters "<keyword>" in the category search box
+    When Admin selects the retrieved parent category from the filter dropdown
+    And Admin enters the retrieved subcategory name in the category search box
     And Admin clicks the search button
-    Then the categories table should show results matching both parent "<parentName>" and keyword "<keyword>"
-
-    Examples:
-      | parentName | keyword  |
-      | Indoor     | Monstera |
+    Then the categories table should show results matching both the selected parent and the searched keyword
 
   @categories @login_as_user @TC019
   Scenario: TC019 Sorting Works With Parent Null Values (Non-Admin User)

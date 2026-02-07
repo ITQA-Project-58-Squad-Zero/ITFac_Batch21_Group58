@@ -1,5 +1,5 @@
 @Plants @User @login_as_user
-Feature: Plants User Actions
+Feature: Plant Management UI - User Actions
   As a Standard User
   I want to view plant information
   But I should not have access to administrative actions

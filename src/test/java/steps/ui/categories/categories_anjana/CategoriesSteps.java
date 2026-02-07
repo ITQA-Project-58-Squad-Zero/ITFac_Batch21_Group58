@@ -120,4 +120,27 @@ public class CategoriesSteps {
     public void verifyDeleteOptionHidden() {
         assertTrue(categoriesPage.areDeleteButtonsHidden(), "Delete option is visible but should not be");
     }
+
+    // Unique category name generation
+    private String uniqueCategoryName;
+
+    @When("Admin enters a unique Category Name")
+    public void enterUniqueCategoryName() {
+        // Generate a unique name within 3-10 character limit
+        uniqueCategoryName = "Cat" + (System.currentTimeMillis() % 100000);
+        currentCategoryName = uniqueCategoryName;
+        categoriesPage.enterCategoryName(uniqueCategoryName);
+    }
+
+    @Then("the unique category should be created successfully and appear in the category list")
+    public void verifyUniqueCategoryCreated() {
+        assertTrue(uniqueCategoryName != null, "Unique category name not set");
+        
+        if (categoriesPage.isValidationMessageDisplayed()) {
+            throw new AssertionError("Category creation failed with message: " + categoriesPage.getValidationMessage());
+        }
+
+        assertTrue(categoriesPage.isCategoryDisplayed(uniqueCategoryName),
+                "Category '" + uniqueCategoryName + "' was not found in the list");
+    }
 }

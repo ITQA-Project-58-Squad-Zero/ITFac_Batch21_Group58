@@ -1,5 +1,5 @@
 @Plants @login_as_admin
-Feature: Plants Search and Sort Functionality
+Feature: Plant Management UI - Search and Sort
 
   @Plants
   Scenario: TC_PL_UI_001 Load Plant List Page
@@ -24,31 +24,32 @@ Feature: Plants Search and Sort Functionality
     Then the admin should be on page 1
     And the Previous button should be disabled
 
-  @Plants @Search
+  @Plants @Search @TC_PL_UI_003
   Scenario: TC_PL_UI_003 Search Plants by Name
-    Given at least one plant exists in the system
+    Given a plant named "Basil" exists in the system
     When Admin navigates to the Plant List page
-    And Admin enters "Monstera" in the search field
+    And Admin enters "Basil" in the search field
     And Admin clicks the Search button
-    Then only plants matching "Monstera" should be displayed
-    And all displayed plant names should contain "Monstera"
+    Then only plants matching "Basil" should be displayed
+    And all displayed plant names should contain "Basil"
 
   @Plants @Search @MultiWord @KnownBug
-  Scenario: TC_PL_UI_003b Search Plants by Multi-Word Name (Known Bug)
-    Given a plant named "Snake Plant" exists in the system
+  Scenario: TC_PL_UI_003b Search Plants by Multi-Word Name 
+    Given a plant with a two-word name exists in the system
     When Admin navigates to the Plant List page
-    And Admin enters "Snake Plant" in the search field
+    And Admin enters the two-word plant name in the search field
     And Admin clicks the Search button
-    Then only plants matching "Snake Plant" should be displayed
-    And the plant "Snake Plant" should be in the results
+    Then only plants matching the searched term should be displayed
+    And the searched plant should be in the results
 
   @Plants @Filter
   Scenario: TC_PL_UI_004 Filter Plants by Category
+    Given at least one category with plants exists
     When Admin navigates to the Plant List page
-    And Admin selects "Succulent" from the category dropdown
+    And Admin selects the first available category from the category dropdown
     And Admin clicks the Search button
-    Then only plants belonging to category "Succulent" should be displayed
-    And all displayed plants should have category "Succulent"
+    Then only plants belonging to the selected category should be displayed
+    And all displayed plants should have the selected category
 
   @Plants @Sort
   Scenario: TC_PL_UI_005 Sort Plants by Name
@@ -83,6 +84,6 @@ Feature: Plants Search and Sort Functionality
   @Plants @EmptyState
   Scenario: TC_PL_UI_009 Display No Plants Message
     When Admin navigates to the Plant List page
-    And Admin enters "NonExistentPlant" in the search box
+    And Admin enters "NonExistentPlant12345" in the search box
     And Admin clicks the "Search" button
     Then a "No plants found" message should be displayed

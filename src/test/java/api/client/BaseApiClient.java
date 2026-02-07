@@ -39,6 +39,16 @@ public class BaseApiClient {
         return SerenityRest.given().spec(builder.build());
     }
 
+    protected RequestSpecification getRequestSpecWithoutAuth() {
+        RequestSpecBuilder builder = new RequestSpecBuilder()
+                .setBaseUri(getBaseUrl())
+                .setContentType("application/json");
+        
+        // Intentionally do not add Authorization header
+        
+        return SerenityRest.given().spec(builder.build());
+    }
+
     public static void setAuthToken(String token) {
         authToken.set(token);
     }

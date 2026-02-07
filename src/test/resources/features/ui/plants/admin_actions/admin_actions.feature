@@ -1,5 +1,5 @@
 @Plants @Admin @login_as_admin
-Feature: Plants Admin Actions
+Feature: Plant Management UI - Admin Actions
   As an Admin
   I want to have exclusive access to administrative actions
   So that I can manage the plant inventory

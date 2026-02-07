@@ -9,7 +9,7 @@ public class Category {
     private int id;
     private String name;
     private Integer parentId;
-    private Object parent;  // may be null for main categories, or { id, name }
+    private Category parent;
     private List<Object> subCategories;
 
     public int getId() {
@@ -36,11 +36,11 @@ public class Category {
         this.parentId = parentId;
     }
 
-    public Object getParent() {
+    public Category getParent() {
         return parent;
     }
 
-    public void setParent(Object parent) {
+    public void setParent(Category parent) {
         this.parent = parent;
     }
 

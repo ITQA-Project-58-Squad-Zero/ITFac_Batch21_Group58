@@ -2,6 +2,7 @@ package steps.api.sales;
 
 import api.client.BaseApiClient;
 import api.client.auth.AuthApiClient;
+import api.client.plants.PlantsApiClient;
 import api.client.sales.SalesApiClient;
 import api.context.ApiResponseContext;
 import api.models.auth.LoginResponse;
@@ -15,6 +16,8 @@ import net.serenitybdd.annotations.Steps;
 import net.serenitybdd.model.environment.EnvironmentSpecificConfiguration;
 import net.thucydides.model.util.EnvironmentVariables;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SalesSteps {
@@ -25,9 +28,117 @@ public class SalesSteps {
     @Steps
     AuthApiClient authApiClient;
 
+    @Steps
+    PlantsApiClient plantsApiClient;
+
     private EnvironmentVariables environmentVariables;
     private Response response;
     private int initialSalesCount;
+    private int firstAvailablePlantId;
+    private int storedSaleId;
+
+    // ===== Dynamic Plant Retrieval Steps =====
+    
+    @Given("a first available plant exists for sale creation")
+    public void aFirstAvailablePlantExistsInTheSystem() {
+        Response plantsResponse = plantsApiClient.getAllPlants();
+        assertThat(plantsResponse.getStatusCode())
+                .withFailMessage("Failed to retrieve plants list")
+                .isEqualTo(200);
+        
+        List<Plant> plants = plantsResponse.jsonPath().getList("", Plant.class);
+        assertThat(plants)
+                .withFailMessage("No plants exist in the system. Please ensure plants are seeded in the database.")
+                .isNotEmpty();
+        
+        firstAvailablePlantId = plants.get(0).getId();
+    }
+
+    @When("I create a sale for the first available plant with quantity {int}")
+    public void iCreateASaleForTheFirstAvailablePlantWithQuantity(int quantity) {
+        if (firstAvailablePlantId == 0) {
+             // Try to fetch plants if not set
+             Response plantsResponse = plantsApiClient.getAllPlants();
+             if (plantsResponse.getStatusCode() == 200) {
+                 try {
+                     Plant[] plants = plantsResponse.as(Plant[].class);
+                     if (plants.length > 0) {
+                         firstAvailablePlantId = plants[0].getId();
+                     }
+                 } catch (Exception e) {
+                     // Try paged fallback
+                     try {
+                         api.models.plants.PagedPlantsResponse paged = plantsResponse.as(api.models.plants.PagedPlantsResponse.class);
+                         if (paged.getContent().length > 0) {
+                             firstAvailablePlantId = paged.getContent()[0].getId();
+                         }
+                     } catch (Exception e2) {
+                         // Ignore
+                     }
+                 }
+             }
+        }
+
+        assertThat(firstAvailablePlantId)
+                .withFailMessage("First available plant ID not set. Ensure 'a first available plant exists in the system' step was executed.")
+                .isGreaterThan(0);
+        
+        response = salesApiClient.createSale(firstAvailablePlantId, quantity);
+        BaseApiClient.setLastResponse(response);
+        ApiResponseContext.setResponse(response);
+    }
+
+    // ===== Dynamic Sale Retrieval Steps =====
+
+    @Given("an existing sale exists in the system")
+    public void anExistingSaleExistsInTheSystem() {
+        Response salesResponse = salesApiClient.getAllSales();
+        assertThat(salesResponse.getStatusCode())
+                .withFailMessage("Failed to retrieve sales list")
+                .isEqualTo(200);
+        
+        SaleResponse[] sales = salesResponse.as(SaleResponse[].class);
+        assertThat(sales)
+                .withFailMessage("No sales exist in the system. Please ensure sales are seeded in the database.")
+                .isNotEmpty();
+        
+        storedSaleId = sales[0].getId();
+    }
+
+    @When("I request the sale details by the stored sale ID")
+    public void iRequestTheSaleDetailsByTheStoredSaleID() {
+        assertThat(storedSaleId)
+                .withFailMessage("Stored sale ID not set. Ensure 'an existing sale exists in the system' step was executed.")
+                .isGreaterThan(0);
+        
+        response = salesApiClient.getSaleById(storedSaleId);
+        BaseApiClient.setLastResponse(response);
+        ApiResponseContext.setResponse(response);
+    }
+
+    @Then("the response body should return correct sale details for the stored sale")
+    public void theResponseBodyShouldReturnCorrectSaleDetailsForTheStoredSale() {
+        SaleResponse sale = response.as(SaleResponse.class);
+        assertThat(sale.getId()).isEqualTo(storedSaleId);
+        assertThat(sale.getPlant()).isNotNull();
+        assertThat(sale.getPlant().getName()).isNotNull();
+        assertThat(sale.getQuantity()).isGreaterThanOrEqualTo(0);
+        assertThat(sale.getTotalPrice()).isGreaterThanOrEqualTo(0);
+        assertThat(sale.getSoldAt()).isNotNull();
+    }
+
+    @When("I attempt to delete the stored sale")
+    public void iAttemptToDeleteTheStoredSale() {
+        assertThat(storedSaleId)
+                .withFailMessage("Stored sale ID not set. Ensure 'an existing sale exists in the system' step was executed.")
+                .isGreaterThan(0);
+        
+        response = salesApiClient.deleteSale(storedSaleId);
+        BaseApiClient.setLastResponse(response);
+        ApiResponseContext.setResponse(response);
+    }
+
+    // ===== Original Steps (unchanged) =====
 
     @Given("I have the current sales count")
     public void iHaveTheCurrentSalesCount() {
@@ -54,8 +165,6 @@ public class SalesSteps {
         SaleResponse[] sales = listResponse.as(SaleResponse[].class);
         assertThat(sales.length).isEqualTo(initialSalesCount);
     }
-
-
 
     @Given("a sale exists with ID {int}")
     public void aSaleExistsWithID(int id) {
@@ -162,7 +271,8 @@ public class SalesSteps {
     }
 
     @When("I request paginated sales with page {int} and size {int}")
-    public void iRequestPaginatedSalesWithPageAndSize(int page, int size) {
+    public void iRequestPaginatedSalesWithPageAndSize(int page, int size
+    ) {
         response = salesApiClient.getPagedSales(page, size);
         BaseApiClient.setLastResponse(response);
         ApiResponseContext.setResponse(response);

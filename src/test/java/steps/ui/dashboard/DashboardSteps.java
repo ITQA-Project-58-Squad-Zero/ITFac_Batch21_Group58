@@ -82,6 +82,59 @@ public class DashboardSteps {
                 "Expected " + expectedCount + " low stock plants but found " + actualCount);
     }
 
+    // Dynamic count verification steps (no hardcoded values)
+    @Then("the Categories card should display a valid Main categories count")
+    public void verifyValidMainCategoryCount() {
+        String actualCount = dashboardPage.getMainCategoryCount();
+        assertTrue(actualCount != null && !actualCount.isEmpty(),
+                "Main categories count is not displayed");
+        try {
+            int count = Integer.parseInt(actualCount);
+            assertTrue(count >= 0, "Main categories count should be non-negative but was " + count);
+        } catch (NumberFormatException e) {
+            assertTrue(false, "Main categories count '" + actualCount + "' is not a valid number");
+        }
+    }
+
+    @Then("the Categories card should display a valid Sub categories count")
+    public void verifyValidSubCategoryCount() {
+        String actualCount = dashboardPage.getSubCategoryCount();
+        assertTrue(actualCount != null && !actualCount.isEmpty(),
+                "Sub categories count is not displayed");
+        try {
+            int count = Integer.parseInt(actualCount);
+            assertTrue(count >= 0, "Sub categories count should be non-negative but was " + count);
+        } catch (NumberFormatException e) {
+            assertTrue(false, "Sub categories count '" + actualCount + "' is not a valid number");
+        }
+    }
+
+    @Then("the Plants card should display a valid Total plants count")
+    public void verifyValidTotalPlantsCount() {
+        String actualCount = dashboardPage.getTotalPlantsCount();
+        assertTrue(actualCount != null && !actualCount.isEmpty(),
+                "Total plants count is not displayed");
+        try {
+            int count = Integer.parseInt(actualCount);
+            assertTrue(count >= 0, "Total plants count should be non-negative but was " + count);
+        } catch (NumberFormatException e) {
+            assertTrue(false, "Total plants count '" + actualCount + "' is not a valid number");
+        }
+    }
+
+    @Then("the Plants card should display a valid Low Stock plants count")
+    public void verifyValidLowStockPlantsCount() {
+        String actualCount = dashboardPage.getLowStockPlantsCount();
+        assertTrue(actualCount != null && !actualCount.isEmpty(),
+                "Low Stock plants count is not displayed");
+        try {
+            int count = Integer.parseInt(actualCount);
+            assertTrue(count >= 0, "Low Stock plants count should be non-negative but was " + count);
+        } catch (NumberFormatException e) {
+            assertTrue(false, "Low Stock plants count '" + actualCount + "' is not a valid number");
+        }
+    }
+
     @Then("the Sales card should display valid Revenue")
     public void verifyRevenue() {
         String actualRevenue = dashboardPage.getRevenue();
