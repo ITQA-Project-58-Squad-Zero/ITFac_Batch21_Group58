@@ -1,5 +1,5 @@
-@plants_api
-Feature: API - Plants Management
+@api @plants_api
+Feature: Plant Management API
   As an Admin
   I want to manage plants via API
   So that I can create, retrieve, and manage plant data
@@ -7,40 +7,40 @@ Feature: API - Plants Management
   Background:
     Given the admin has a valid session
 
-  @admin_auth @TC_PL_API_001
-  Scenario: TC_PL_API_001 Get All Plants Successfully
+  @admin_auth @PM1_API_001
+  Scenario: PM1_API_001 Get Paginated Plant List
     When I request all plants
     Then the response status code should be 200
     And the response body should contain a list of plants
 
-  @admin_auth @TC_PL_API_002
-  Scenario: TC_PL_API_002 Search Plants by Name
+  @admin_auth @PM1_API_002
+  Scenario: PM1_API_002 Search Plants by Name (API)
     Given a first available plant exists in the system
     When I search for plants with the first available plant name
     Then the response status code should be 200
     And all returned plants should have names containing the searched term
 
-  @admin_auth @TC_PL_API_003
-  Scenario: TC_PL_API_003 Filter Plants by Category
+  @admin_auth @PM1_API_003
+  Scenario: PM1_API_003 Filter Plants by Category (API)
     Given a first available category exists in the system
     When I filter plants by the first available category ID
     Then the response status code should be 200
     And all returned plants should belong to the filtered category
 
-  @admin_auth @TC_PL_API_004
-  Scenario: TC_PL_API_004 Sort Plants by Name
+  @admin_auth @PM1_API_004
+  Scenario: PM1_API_004 Sort Plants by Name (API)
     When I request plants sorted by "name" in "asc" order
     Then the response status code should be 200
     And the plants should be sorted by name in ascending order
 
-  @admin_auth @TC_PL_API_005
-  Scenario: TC_PL_API_005 Sort Plants by Price
+  @admin_auth @PM1_API_005
+  Scenario: PM1_API_005 Sort Plants by Price (API)
     When I request plants sorted by "price" in "desc" order
     Then the response status code should be 200
     And the plants should be sorted by price in descending order
 
-  @admin_auth @TC_PL_API_006
-  Scenario: TC_PL_API_006 Sort Plants by Quantity
+  @admin_auth @PM1_API_006
+  Scenario: PM1_API_006 Sort Plants by Quantity (API)
     When I request plants sorted by "quantity" in "asc" order
     Then the response status code should be 200
     And the plants should be sorted by quantity in ascending order
@@ -49,7 +49,7 @@ Feature: API - Plants Management
   # ============================================================================
 
   @admin_auth @PM2_API_A_01
-  Scenario: PM2_API_A_01 Add New Plant with Valid Data
+  Scenario: PM2_API_A_01 Add New Plant (Valid Data) (admin)
     # Test Case: Verify a new plant can be added under a sub-category
     # using POST /api/plants/category/{categoryId}
     # Preconditions: Admin token/session is available, Valid sub-category exists
@@ -59,7 +59,7 @@ Feature: API - Plants Management
     And API returns success and plant is created
 
   @admin_auth @PM2_API_A_02
-  Scenario: PM2_API_A_02 Add Plant with Missing Name
+  Scenario: PM2_API_A_02 Add Plant with Missing Name (admin)
     # Test Case: Verify API blocks plant creation when name is missing
     # Preconditions: Admin token/session is available, Valid sub-category exists
     Given Valid sub-category exists
@@ -68,7 +68,7 @@ Feature: API - Plants Management
     And API returns validation error and plant is not created
 
   @admin_auth @PM2_API_A_03
-  Scenario: PM2_API_A_03 Add Plant with Invalid Category
+  Scenario: PM2_API_A_03 Add Plant with Invalid Category (admin)
     # Test Case: Verify API blocks plant creation when using an invalid/non-existent category ID
     # Preconditions: Admin token/session is available, Valid sub-category exists
     # Expected: API should reject invalid category IDs and return 400 or 404
@@ -79,7 +79,7 @@ Feature: API - Plants Management
     And API returns validation error and plant is not created
 
   @admin_auth @PM2_API_A_04
-  Scenario: PM2_API_A_04 Add Plant with Invalid Price
+  Scenario: PM2_API_A_04 Add Plant with Price Invalid (admin)
     # Test Case: Verify API blocks plant creation when price is 0 or negative
     # Preconditions: Admin token/session is available, Valid sub-category exists
     Given Valid sub-category exists
@@ -91,7 +91,7 @@ Feature: API - Plants Management
   # ============================================================================
 
   @admin_auth @PM2_API_A_05
-  Scenario: PM2_API_A_05 Edit Plant with Valid Data
+  Scenario: PM2_API_A_05 Edit Plant (admin)
     # Test Case: Verify an existing plant can be updated with valid data
     # Preconditions: Admin token/session is available, Valid plant ID exists
     Given Valid plant ID exists

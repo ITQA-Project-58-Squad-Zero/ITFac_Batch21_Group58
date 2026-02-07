@@ -1,4 +1,5 @@
-Feature: Category Management API
+@api
+Feature: Category Management API - Write Operations
   As an Admin
   I want to manage categories
   So that I can organize products effectively

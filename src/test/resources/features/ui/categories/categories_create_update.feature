@@ -1,16 +1,17 @@
+@ui
 Feature: Category Management UI - Create and Update
   As an Admin
   I want to manage categories
   So that I can organize plants effectively
 
   @category @login_as_admin @CM2_UI_A_01
-  Scenario: CM2_UI_A_01 View Add Category Page
+  Scenario: CM2_UI_A_01 View Add Category Page (Admin)
     When Admin navigates to the "Categories" page
     And Admin clicks the "Add A Category" button
     Then the "Add Category" page should open successfully
 
   @category @login_as_admin @CM2_UI_A_02
-  Scenario: CM2_UI_A_02 Validate Category Name Mandatory
+  Scenario: CM2_UI_A_02 Validate Category Name Mandatory (Admin)
     When Admin navigates to the "Categories" page
     And Admin clicks the "Add A Category" button
     And Admin leaves the Category Name empty
@@ -18,7 +19,7 @@ Feature: Category Management UI - Create and Update
     Then Admin should see validation message "Category name is required"
 
   @category @login_as_admin @CM2_UI_A_03
-  Scenario: CM2_UI_A_03 Validate Category Name Length
+  Scenario: CM2_UI_A_03 Validate Category Name Length (Admin)
     When Admin navigates to the "Categories" page
     And Admin clicks the "Add A Category" button
     And Admin enters Category Name "AB"

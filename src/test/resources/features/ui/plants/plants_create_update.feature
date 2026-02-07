@@ -1,3 +1,4 @@
+@ui
 Feature: Plant Management UI - Create and Update
   As an Admin
   I want to manage plants

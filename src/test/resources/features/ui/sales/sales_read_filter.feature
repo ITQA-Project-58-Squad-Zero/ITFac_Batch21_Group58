@@ -1,10 +1,11 @@
+@ui
 Feature: Sales Management UI - View and Access Control
   As an authenticated user
   I want to view sales records and verify role-based access
   So that I can track plant sales transactions securely
 
   @sales @login_as_admin @SM_UI_A_01
-  Scenario: SM_UI_A_01 View Sales List
+  Scenario: SM_UI_A_01 View Sales List (Admin)
     When Admin navigates to the "Sales" page
     Then Admin should see the sales table
     And the sales table should contain the following columns:
@@ -14,7 +15,7 @@ Feature: Sales Management UI - View and Access Control
       | Sold At     |
 
   @sales @login_as_admin @SM_UI_A_02
-  Scenario: SM_UI_A_02 Sort Sales Records
+  Scenario: SM_UI_A_02 Sort Sales Records (Admin)
     Given at least 2 sales records exist
     When Admin navigates to the "Sales" page
     When Admin clicks the "Plant" column header on the sales page
@@ -27,7 +28,7 @@ Feature: Sales Management UI - View and Access Control
     Then records should be sorted by "Sold At" in "ascending" order
 
   @sales @login_as_admin @SM_UI_A_03
-  Scenario: SM_UI_A_03 Verify Sell Plant Button Visibility
+  Scenario: SM_UI_A_03 Verify Sell Plant Button Visibility (Admin)
     When Admin navigates to the "Sales" page
     And Admin clicks the "Sell Plant" button
     Then the "Sell Plant" form should open successfully
@@ -63,7 +64,6 @@ Feature: Sales Management UI - View and Access Control
     Then records should be sorted by "Sold At" in "ascending" order
     When User clicks the "Plant" column header on the sales page
     Then records should be sorted by "Plant" in "ascending" order
-
 
   @sales @login_as_user @SM_UI_U_04
   Scenario: SM_UI_U_04 Block Access to Sell Plant Page via Direct URL (Non-Admin User)

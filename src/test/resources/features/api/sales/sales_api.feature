@@ -1,10 +1,11 @@
+@api
 Feature: Sales Management API
   As an Admin
   I want to manage sales
   So that I can track sales details
 
   @admin_auth @SM_API_A_09
-  Scenario: SM_API_A_09 Get Sale by ID Successfully
+  Scenario: SM_API_A_09 Get Sale by ID Successfully (Admin)
     Given the admin has a valid session
     And an existing sale exists in the system
     When I request the sale details by the stored sale ID
@@ -19,7 +20,7 @@ Feature: Sales Management API
     And the response body should contain a list of sales
 
   @admin_auth @SM_API_A_06
-  Scenario: SM_API_A_06 Create Sale via API Successfully
+  Scenario: SM_API_A_06 Create Sale via API Successfully (Admin)
     Given the admin has a valid session
     And a first available plant exists in the system
     When I create a sale for the first available plant with quantity 1
@@ -28,7 +29,7 @@ Feature: Sales Management API
     And the new sale should be present in the sales list
 
   @admin_auth @SM_API_A_07
-  Scenario: SM_API_A_07 Reject API Sale Creation for Quantity = 0
+  Scenario: SM_API_A_07 Reject API Sale Creation for Quantity = 0 (Admin)
     Given the admin has a valid session
     And a first available plant exists in the system
     And I have the current sales count
@@ -38,7 +39,7 @@ Feature: Sales Management API
     And the sales count should remain unchanged
 
   @admin_auth @SM_API_A_08
-  Scenario: SM_API_A_08 Reject API Sale Creation for Insufficient Stock
+  Scenario: SM_API_A_08 Reject API Sale Creation for Insufficient Stock (Admin)
     Given the admin has a valid session
     And a first available plant exists in the system
     And I have the current sales count
@@ -88,7 +89,7 @@ Feature: Sales Management API
     And the response should contain at most 5 sales records
 
   @admin_auth @SM_API_A_10
-  Scenario: SM_API_A_10 Delete Sale via API Successfully
+  Scenario: SM_API_A_10 Delete Sale via API Successfully (Admin)
     Given the admin has a valid session
     And a first available plant exists in the system
     And I create a sale for the first available plant with quantity 1
