@@ -4,6 +4,9 @@ import net.serenitybdd.annotations.DefaultUrl;
 import net.serenitybdd.core.annotations.findby.FindBy;
 import net.serenitybdd.core.pages.PageObject;
 import net.serenitybdd.core.pages.WebElementFacade;
+import org.openqa.selenium.By;
+
+import org.openqa.selenium.By;
 
 import java.time.Duration;
 
@@ -24,18 +27,26 @@ public class LoginPage extends PageObject {
 
     public void openPage() {
         getDriver().get("http://localhost:8080/ui/login");
+        // Wait for page to load and elements to be available
+        waitForRenderedElements(By.name("username"));
     }
 
     public void enterUsername(String username) {
-        usernameField.waitUntilVisible().type(username);
+        // Find element explicitly to avoid @FindBy initialization race conditions
+        WebElementFacade usernameInput = $(By.name("username"));
+        usernameInput.waitUntilVisible().type(username);
     }
 
     public void enterPassword(String password) {
-        passwordField.waitUntilVisible().type(password);
+        // Find element explicitly to avoid @FindBy initialization race conditions
+        WebElementFacade passwordInput = $(By.name("password"));
+        passwordInput.waitUntilVisible().type(password);
     }
 
     public void clickLogin() {
-        loginButton.waitUntilClickable().click();
+        // Find element explicitly to avoid @FindBy initialization race conditions
+        WebElementFacade submitButton = $(By.cssSelector("button[type='submit']"));
+        submitButton.waitUntilClickable().click();
     }
 
     public boolean isDashboardDisplayed() {
@@ -43,7 +54,7 @@ public class LoginPage extends PageObject {
     }
 
     public String getErrorMessage() {
-        return errorMessage.getText();
+        return $(By.cssSelector("div.alert.alert-danger.text-center")).getText();
     }
 
     public void waitForSuccessfulLogin() {

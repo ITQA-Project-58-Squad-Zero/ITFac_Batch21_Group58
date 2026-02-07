@@ -138,6 +138,56 @@
                     <skip>true</skip>
                 </configuration>
             </plugin>
+            <!-- Extract Serenity report resources from JAR -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.6.0</version>
+                <executions>
+                    <execution>
+                        <id>unpack-serenity-resources</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>net.serenity-bdd</groupId>
+                                    <artifactId>serenity-report-resources</artifactId>
+                                    <version>${serenity.version}</version>
+                                    <type>jar</type>
+                                    <overWrite>true</overWrite>
+                                    <outputDirectory>${project.build.directory}/site/serenity</outputDirectory>
+                                    <includes>**/*</includes>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Copy extracted resources from report-resources subfolder to serenity root -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <id>copy-serenity-resources</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <copy todir="${project.build.directory}/site/serenity" overwrite="true">
+                                    <fileset dir="${project.build.directory}/site/serenity/report-resources"/>
+                                </copy>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>3.1.2</version>
@@ -151,8 +201,8 @@
                     <systemPropertyVariables>
                         <webdriver.base.url>${webdriver.base.url}</webdriver.base.url>
                     </systemPropertyVariables>
-                    <parallel>classes</parallel>
                     <parallel>methods</parallel>
+                    <threadCount>2</threadCount>
                     <useUnlimitedThreads>true</useUnlimitedThreads>
                     <argLine>
                         --add-opens java.base/java.lang=ALL-UNNAMED
@@ -184,13 +234,18 @@
                 <version>${serenity.version}</version>
                 <configuration>
                     <tags>${tags}</tags>
-                    <reports>single-page-html</reports>
-<!--                    <generateFullReport>true</generateFullReport>-->
+                    <reports>single-page-html,navigator</reports>
+                    <generateFullReport>true</generateFullReport>
                 </configuration>
                 <dependencies>
                     <dependency>
                         <groupId>net.serenity-bdd</groupId>
                         <artifactId>serenity-single-page-report</artifactId>
+                        <version>${serenity.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>net.serenity-bdd</groupId>
+                        <artifactId>serenity-navigator-report</artifactId>
                         <version>${serenity.version}</version>
                     </dependency>
                 </dependencies>

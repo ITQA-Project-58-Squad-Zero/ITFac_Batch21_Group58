@@ -48,4 +48,16 @@ public class SideMenu extends PageObject {
                 throw new IllegalArgumentException("Unknown page: " + pageName);
         }
     }
+
+    public boolean isDashboardActive() {
+        return dashboardLink.getAttribute("class").contains("active");
+    }
+
+    public boolean isInventoryDisabled() {
+        return inventoryLink.getAttribute("class").contains("disabled");
+    }
+
+    public String getInventoryTooltip() {
+        return inventoryLink.getAttribute("title");
+    }
 }
