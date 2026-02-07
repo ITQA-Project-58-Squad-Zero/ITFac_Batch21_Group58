@@ -28,6 +28,7 @@ public class CategoriesSteps {
     @When("I request all categories with no name or parentId filter")
     public void iRequestAllCategoriesWithNoFilter() {
         response = categoriesApiClient.getAllCategories();
+        BaseApiClient.setLastResponse(response);
         ApiResponseContext.setResponse(response);
     }
 
@@ -42,6 +43,7 @@ public class CategoriesSteps {
     @When("I request the category by ID {int}")
     public void iRequestTheCategoryById(int id) {
         response = categoriesApiClient.getCategoryById(id);
+        BaseApiClient.setLastResponse(response);
         ApiResponseContext.setResponse(response);
     }
 
@@ -55,6 +57,7 @@ public class CategoriesSteps {
     @When("I request main categories")
     public void iRequestMainCategories() {
         response = categoriesApiClient.getMainCategories();
+        BaseApiClient.setLastResponse(response);
         ApiResponseContext.setResponse(response);
     }
 
@@ -75,6 +78,7 @@ public class CategoriesSteps {
     @When("I request the categories summary")
     public void iRequestTheCategoriesSummary() {
         response = categoriesApiClient.getCategoriesSummary();
+        BaseApiClient.setLastResponse(response);
         ApiResponseContext.setResponse(response);
     }
 

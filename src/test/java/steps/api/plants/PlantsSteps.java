@@ -6,6 +6,8 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.response.Response;
 import net.serenitybdd.annotations.Steps;
+import api.client.BaseApiClient;
+import api.context.ApiResponseContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -19,11 +21,15 @@ public class PlantsSteps {
     @When("I request all plants")
     public void iRequestAllPlants() {
         response = plantsApiClient.getAllPlants();
+        BaseApiClient.setLastResponse(response);
+        ApiResponseContext.setResponse(response);
     }
 
     @When("I search for plants with name {string}")
     public void iSearchForPlantsWithName(String name) {
         response = plantsApiClient.searchPlantsByName(name);
+        BaseApiClient.setLastResponse(response);
+        ApiResponseContext.setResponse(response);
     }
 
     @Then("the response body should contain a list of plants")
@@ -64,6 +70,8 @@ public class PlantsSteps {
     @When("I filter plants by category ID {int}")
     public void iFilterPlantsByCategoryID(int categoryId) {
         response = plantsApiClient.filterPlantsByCategory(categoryId);
+        BaseApiClient.setLastResponse(response);
+        ApiResponseContext.setResponse(response);
     }
 
     @Then("all returned plants should belong to category ID {int}")
@@ -87,6 +95,8 @@ public class PlantsSteps {
     @When("I request plants sorted by {string} in {string} order")
     public void iRequestPlantsSortedByInOrder(String sortBy, String direction) {
         response = plantsApiClient.getSortedPlants(sortBy, direction);
+        BaseApiClient.setLastResponse(response);
+        ApiResponseContext.setResponse(response);
     }
 
     @Then("the plants should be sorted by name in ascending order")
