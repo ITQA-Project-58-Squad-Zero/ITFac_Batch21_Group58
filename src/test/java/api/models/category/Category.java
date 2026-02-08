@@ -10,8 +10,8 @@ import java.util.List;
 public class Category {
     private Integer id;
     private String name;
-    private Object parent; // Can be a String (name), Integer (ID), or Map (nested object)
-    private String parentName; // Mapped from JSON response
+    private Object parent;  
+    private String parentName;  
     private List<String> subCategories;
     
     public Category() {}

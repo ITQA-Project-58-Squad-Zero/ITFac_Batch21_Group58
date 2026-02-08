@@ -96,7 +96,7 @@ public class SalesSteps {
 
     @Then("the sale should not be created")
     public void verifySaleNotCreated() {
-        // Either still on the form page or validation error is visible
+         
         boolean stillOnForm = createSalePage.isStillOnCreateSalePage();
         boolean hasError = createSalePage.isValidationErrorDisplayed();
         assertTrue(stillOnForm || hasError, 
@@ -119,7 +119,7 @@ public class SalesSteps {
     @Then("User should be denied access or redirected")
     public void verifyAccessDeniedOrRedirected() {
         String currentUrl = createSalePage.getDriver().getCurrentUrl();
-        // User should either see a 403/unauthorized page or be redirected away from /sales/new
+         
         boolean isOnSellPlantPage = currentUrl.contains("/ui/sales/new");
         boolean isOnForbiddenPage = currentUrl.contains("403") || 
                                     currentUrl.contains("forbidden") || 
@@ -142,21 +142,21 @@ public class SalesSteps {
     }
 
     @net.serenitybdd.annotations.Steps
-    api.client.plants.PlantsApiClient plantsApiClient; // Reuse for creating plants if needed
+    api.client.plants.PlantsApiClient plantsApiClient;  
 
-    // Assuming we have a SalesApiClient or similar to create sales
-    // For now, we'll assume sales exist or create via UI if critical
-    // Ideally: @Steps SalesApiClient salesApiClient;
+     
+     
+     
 
     @io.cucumber.java.en.Given("at least 2 sales records exist")
     public void ensureTwoSalesRecords() {
          salesPage.open();
-         // Basic check, in a real scenario we'd use API to inject data
-         // salesApiClient.createSale(plantId, quantity); 
+          
+          
          if (!salesPage.isSalesTableDisplayed()) {
-             // Try to create sales via UI if table empty? 
-             // Or fail if prerequisites not met. 
-             // For this task, assuming data exists or previous tests populated it.
+              
+              
+              
          }
     }
 
@@ -179,7 +179,7 @@ public class SalesSteps {
 
     @Then("there should be no option to create a sale")
     public void verifyNoOptionToCreateSale() {
-        // Double check no button and maybe check URL access if not doing it in separate test
+         
         assertTrue(!salesPage.isSellPlantButtonVisible(), "Sell Plant button found visible");
     }
 }

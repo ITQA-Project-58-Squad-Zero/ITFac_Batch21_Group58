@@ -27,24 +27,24 @@ public class LoginPage extends PageObject {
 
     public void openPage() {
         getDriver().get("http://localhost:8080/ui/login");
-        // Wait for page to load and elements to be available
+         
         waitForRenderedElements(By.name("username"));
     }
 
     public void enterUsername(String username) {
-        // Find element explicitly to avoid @FindBy initialization race conditions
+         
         WebElementFacade usernameInput = $(By.name("username"));
         usernameInput.waitUntilVisible().type(username);
     }
 
     public void enterPassword(String password) {
-        // Find element explicitly to avoid @FindBy initialization race conditions
+         
         WebElementFacade passwordInput = $(By.name("password"));
         passwordInput.waitUntilVisible().type(password);
     }
 
     public void clickLogin() {
-        // Find element explicitly to avoid @FindBy initialization race conditions
+         
         WebElementFacade submitButton = $(By.cssSelector("button[type='submit']"));
         submitButton.waitUntilClickable().click();
     }

@@ -37,7 +37,7 @@ public class SalesSteps {
     private int firstAvailablePlantId;
     private int storedSaleId;
 
-    // ===== Dynamic Plant Retrieval Steps =====
+     
     
     @Given("a first available plant exists for sale creation")
     public void aFirstAvailablePlantExistsInTheSystem() {
@@ -57,7 +57,7 @@ public class SalesSteps {
     @When("I create a sale for the first available plant with quantity {int}")
     public void iCreateASaleForTheFirstAvailablePlantWithQuantity(int quantity) {
         if (firstAvailablePlantId == 0) {
-             // Try to fetch plants if not set
+              
              Response plantsResponse = plantsApiClient.getAllPlants();
              if (plantsResponse.getStatusCode() == 200) {
                  try {
@@ -66,14 +66,14 @@ public class SalesSteps {
                          firstAvailablePlantId = plants[0].getId();
                      }
                  } catch (Exception e) {
-                     // Try paged fallback
+                      
                      try {
                          api.models.plants.PagedPlantsResponse paged = plantsResponse.as(api.models.plants.PagedPlantsResponse.class);
                          if (paged.getContent().length > 0) {
                              firstAvailablePlantId = paged.getContent()[0].getId();
                          }
                      } catch (Exception e2) {
-                         // Ignore
+                          
                      }
                  }
              }
@@ -88,7 +88,7 @@ public class SalesSteps {
         ApiResponseContext.setResponse(response);
     }
 
-    // ===== Dynamic Sale Retrieval Steps =====
+     
 
     @Given("an existing sale exists in the system")
     public void anExistingSaleExistsInTheSystem() {
@@ -138,7 +138,7 @@ public class SalesSteps {
         ApiResponseContext.setResponse(response);
     }
 
-    // ===== Original Steps (unchanged) =====
+     
 
     @Given("I have the current sales count")
     public void iHaveTheCurrentSalesCount() {
@@ -280,7 +280,7 @@ public class SalesSteps {
 
     @Then("the response should contain at most {int} sales records")
     public void theResponseShouldContainAtMostSalesRecords(int maxSize) {
-        // Parse the paged response - content array contains the sales
+         
         java.util.List<?> content = response.jsonPath().getList("content");
         assertThat(content).isNotNull();
         assertThat(content.size()).isLessThanOrEqualTo(maxSize);

@@ -13,9 +13,9 @@ import java.util.stream.Collectors;
 @DefaultUrl("/ui/plants")
 public class PlantsPage extends PageObject {
 
-    // ==================================================================================
-    // LOCATORS
-    // ==================================================================================
+     
+     
+     
 
     @FindBy(name = "name")
     WebElementFacade searchInput;
@@ -38,9 +38,9 @@ public class PlantsPage extends PageObject {
     @FindBy(css = "ul.pagination")
     WebElementFacade pagination;
 
-    // ==================================================================================
-    // SEARCH & SORT METHODS
-    // ==================================================================================
+     
+     
+     
 
     public void searchForPlant(String name) {
         searchInput.type(name);
@@ -56,7 +56,7 @@ public class PlantsPage extends PageObject {
 
     public void clickSearchButton() {
         searchButton.click();
-        waitABit(2000); // Wait for table refresh
+        waitABit(2000);  
         waitFor(plantsTable);
     }
 
@@ -188,9 +188,9 @@ public class PlantsPage extends PageObject {
         }
     }
 
-    // ==================================================================================
-    // PAGINATION METHODS
-    // ==================================================================================
+     
+     
+     
 
     public boolean arePaginationControlsVisible() {
         return pagination.isVisible();
@@ -237,9 +237,9 @@ public class PlantsPage extends PageObject {
         waitFor(plantsTable);
     }
 
-    // ==================================================================================
-    // VALIDATION METHODS
-    // ==================================================================================
+     
+     
+     
 
     public boolean allPlantNamesContain(String searchTerm) {
         List<String> plantNames = getCurrentPagePlantNames();
@@ -299,9 +299,9 @@ public class PlantsPage extends PageObject {
         return false;
     }
 
-    // ==================================================================================
-    // ADMIN ACTIONS (VISIBLE)
-    // ==================================================================================
+     
+     
+     
 
     public boolean isAddPlantButtonVisible() {
         return addPlantButton.isVisible();
@@ -347,13 +347,11 @@ public class PlantsPage extends PageObject {
         return true;
     }
 
-    // ==================================================================================
-    // USER CONSTRAINTS (HIDDEN)
-    // ==================================================================================
+     
+     
+     
 
-    /**
-     * Checks if Edit action is HIDDEN (not visible) OR DISABLED for every plant row
-     */
+     
     public boolean areEditButtonsHiddenForAllRows() {
         List<WebElementFacade> rows = findAll(By.cssSelector("table.table tbody tr"));
         if (rows.isEmpty())
@@ -372,10 +370,7 @@ public class PlantsPage extends PageObject {
         return true;
     }
 
-    /**
-     * Checks if Delete action is HIDDEN (not visible) OR DISABLED for every plant
-     * row
-     */
+     
     public boolean areDeleteButtonsHiddenForAllRows() {
         List<WebElementFacade> rows = findAll(By.cssSelector("table.table tbody tr"));
         if (rows.isEmpty())

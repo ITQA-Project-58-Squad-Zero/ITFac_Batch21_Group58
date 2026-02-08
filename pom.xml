@@ -96,7 +96,7 @@
             <version>3.23.1</version>
             <scope>test</scope>
         </dependency>
-        <!-- REST Assured for API Testing -->
+        
         <dependency>
             <groupId>net.serenity-bdd</groupId>
             <artifactId>serenity-rest-assured</artifactId>
@@ -127,7 +127,7 @@
             <version>2.10.1</version>
             <scope>test</scope>
         </dependency>
-        <!-- Database Driver -->
+        
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
@@ -145,7 +145,7 @@
                     <skip>true</skip>
                 </configuration>
             </plugin>
-            <!-- Extract Serenity report resources from JAR -->
+            
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
@@ -173,7 +173,7 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- Copy extracted resources from report-resources subfolder to serenity root -->
+            
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>

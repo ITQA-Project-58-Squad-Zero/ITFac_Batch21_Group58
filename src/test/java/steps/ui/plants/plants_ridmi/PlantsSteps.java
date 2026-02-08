@@ -125,7 +125,7 @@ public class PlantsSteps {
         assertTrue(!editPlantPage.isPageHeaderVisible(), "Edit Plant page is displayed for non-admin user");
     }
 
-    // Dynamic plant ID retrieval
+     
     private int firstAvailablePlantId;
     
     @net.serenitybdd.annotations.Steps
@@ -138,19 +138,19 @@ public class PlantsSteps {
 
     @io.cucumber.java.en.Given("a first available plant exists")
     public void aFirstAvailablePlantExists() {
-        // Navigate to plants page and get first plant ID from the table or use API
+         
         plantsPage.open();
         firstAvailablePlantId = plantsPage.getFirstPlantId();
         
         if (firstAvailablePlantId == 0) {
-            // Seed data using API
+             
             try {
-                // Use shorter name to avoid validation errors (max 20-25 chars)
+                 
                 String shortPlantName = "Plant" + (1000 + new java.util.Random().nextInt(9000));
                 plantsApiClient.createPlant(shortPlantName, 50.0, 10, 1);
             } catch (AssertionError | Exception e) {
-                 // Likely 403 Forbidden if running as User
-                 // Switch to Admin
+                  
+                  
                  String userToken = BaseApiClient.getAuthToken();
                  
                  String adminUser = net.serenitybdd.model.environment.EnvironmentSpecificConfiguration.from(environmentVariables)
@@ -163,13 +163,13 @@ public class PlantsSteps {
                          api.models.auth.LoginResponse login = authApiClient.login(adminUser, adminPass);
                          BaseApiClient.setAuthToken(login.getToken());
                          
-                         // Create Plant
+                          
                          String shortPlantNameAdmin = "Plant" + (1000 + new java.util.Random().nextInt(9000));
                          plantsApiClient.createPlant(shortPlantNameAdmin, 50.0, 10, 1);
                      } catch (Exception ex) {
                          System.err.println("Failed to seed plant data as admin: " + ex.getMessage());
                      } finally {
-                         // Restore User Token
+                          
                          BaseApiClient.setAuthToken(userToken);
                      }
                  } else {
@@ -177,7 +177,7 @@ public class PlantsSteps {
                  }
             }
             
-            plantsPage.open(); // Refresh
+            plantsPage.open();  
             firstAvailablePlantId = plantsPage.getFirstPlantId();
         }
         

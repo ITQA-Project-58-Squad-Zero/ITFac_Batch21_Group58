@@ -44,7 +44,7 @@ public class BaseApiClient {
                 .setBaseUri(getBaseUrl())
                 .setContentType("application/json");
         
-        // Intentionally do not add Authorization header
+         
         
         return SerenityRest.given().spec(builder.build());
     }

@@ -29,16 +29,16 @@ public class PlantsSteps {
 
     private Response response;
 
-    // ========== State Variables ==========
+     
     private int validSubCategoryId;
     private int validParentCategoryId;
     private int validPlantId;
     private String firstAvailablePlantName;
     private int firstAvailableCategoryId;
 
-    // ============================================================================
-    // READ OPERATIONS - Get & Filter Plants
-    // ============================================================================
+     
+     
+     
 
     @When("I request all plants")
     public void iRequestAllPlants() {
@@ -66,7 +66,7 @@ public class PlantsSteps {
         Plant[] plants = response.as(Plant[].class);
 
         if (plants == null || plants.length == 0) {
-            // Create a plant if none exists
+             
             ensureValidSubCategoryExists();
             plantsApiClient.createPlant("AutoPlant" + System.currentTimeMillis() % 10000, 10.0, 10, validSubCategoryId);
             response = plantsApiClient.getAllPlants();
@@ -183,9 +183,9 @@ public class PlantsSteps {
         }
     }
 
-    // ============================================================================
-    // CREATE OPERATIONS - Add New Plants (PM2_API_A_01, PM2_API_A_02, PM2_API_A_03, PM2_API_A_04)
-    // ============================================================================
+     
+     
+     
 
     @Given("Valid sub-category exists")
     public void validSubCategoryExists() {
@@ -209,7 +209,7 @@ public class PlantsSteps {
 
     @When("Send POST request with category that is not a sub-category")
     public void sendPOSTRequestWithInvalidCategory() {
-        // Use a completely invalid category ID that doesn't exist in the system
+         
         int invalidCategoryId = 99999;
         String uniqueName = "Plant" + System.currentTimeMillis() % 100000;
         response = plantsApiClient.createPlant(uniqueName, 100.0, 10, invalidCategoryId);
@@ -225,22 +225,22 @@ public class PlantsSteps {
         ApiResponseContext.setResponse(response);
     }
 
-    // ============================================================================
-    // UPDATE OPERATIONS - Edit Existing Plants (PM2_API_A_05)
-    // ============================================================================
+     
+     
+     
 
     @Given("Valid plant ID exists")
     public void validPlantIDExists() {
         ensureValidSubCategoryExists();
 
-        // Create a plant for editing
+         
         String uniqueName = "EditPlant" + System.currentTimeMillis() % 10000;
         Response createResp = plantsApiClient.createPlant(uniqueName, 100.0, 10, validSubCategoryId);
 
         if (createResp.statusCode() == 201) {
             validPlantId = createResp.as(Plant.class).getId();
         } else {
-            // Fallback: get existing plant
+             
             Response allPlants = plantsApiClient.getAllPlants();
             Plant[] plants = allPlants.as(Plant[].class);
             if (plants != null && plants.length > 0) {
@@ -259,9 +259,9 @@ public class PlantsSteps {
         ApiResponseContext.setResponse(response);
     }
 
-    // ============================================================================
-    // RESPONSE VALIDATION STEPS
-    // ============================================================================
+     
+     
+     
 
     @Then("Verify status code is {int}")
     public void verifyStatusCodeIs(int statusCode) {
@@ -302,8 +302,8 @@ public class PlantsSteps {
 
     @Then("API returns validation error and plant is not created")
     public void apiReturnsValidationErrorAndPlantIsNotCreated() {
-        // Verify response indicates an error (status already checked)
-        // Can optionally verify error message in body
+         
+         
         String body = response.getBody().asString();
         System.out.println("Validation error response: " + body);
     }
@@ -318,24 +318,24 @@ public class PlantsSteps {
         response.then().statusCode(200);
     }
 
-    // ============================================================================
-    // AUTHORIZATION TESTS - Non-Admin User (PM2_API_U_01 to PM2_API_U_05)
-    // ============================================================================
+     
+     
+     
 
     @Given("Valid plant ID exists for verification")
     public void validPlantIDExistsForVerification() {
-        // Reuse admin authentication to create a plant for testing
+         
         ensureAdminAuth();
         ensureValidSubCategoryExists();
 
-        // Create a plant using admin credentials
+         
         String uniqueName = "VerifyPlant" + System.currentTimeMillis() % 10000;
         Response createResp = plantsApiClient.createPlant(uniqueName, 100.0, 10, validSubCategoryId);
 
         if (createResp.statusCode() == 201) {
             validPlantId = createResp.as(Plant.class).getId();
         } else {
-            // Fallback: get existing plant
+             
             Response allPlants = plantsApiClient.getAllPlants();
             Plant[] plants = allPlants.as(Plant[].class);
             if (plants != null && plants.length > 0) {
@@ -379,7 +379,7 @@ public class PlantsSteps {
 
     @When("Send PUT request without authentication token")
     public void sendPUTRequestWithoutAuthenticationToken() {
-        // Clear token temporarily
+         
         String savedToken = BaseApiClient.getAuthToken();
         BaseApiClient.setAuthToken(null);
 
@@ -388,32 +388,32 @@ public class PlantsSteps {
         BaseApiClient.setLastResponse(response);
         ApiResponseContext.setResponse(response);
 
-        // Restore token
+         
         BaseApiClient.setAuthToken(savedToken);
     }
 
     @Then("API blocks plant creation for non-admin user")
     public void apiBlocksPlantCreationForNonAdminUser() {
-        // Status code already verified to be 403
-        // Optionally verify error message
+         
+         
         String body = response.getBody().asString();
         System.out.println("Authorization error response: " + body);
     }
 
     @Then("Verify plant data remains unchanged")
     public void verifyPlantDataRemainsUnchanged() {
-        // Fetch the plant using admin credentials to verify it wasn't changed
+         
         ensureAdminAuth();
         Response getResp = plantsApiClient.getPlantById(validPlantId);
         assertThat(getResp.statusCode()).as("Should be able to fetch plant").isEqualTo(200);
-        // Plant data should still exist and be unchanged
+         
         Plant plant = getResp.as(Plant.class);
         assertThat(plant.getId()).isEqualTo(validPlantId);
     }
 
     @Then("Verify plant still exists in the system")
     public void verifyPlantStillExistsInTheSystem() {
-        // Fetch the plant using admin credentials to verify it still exists
+         
         ensureAdminAuth();
         Response getResp = plantsApiClient.getPlantById(validPlantId);
         assertThat(getResp.statusCode()).as("Plant should still exist").isEqualTo(200);
@@ -423,22 +423,22 @@ public class PlantsSteps {
 
     @Then("Plant is not created in the system")
     public void plantIsNotCreatedInTheSystem() {
-        // Verify the response indicates failure (status already checked)
+         
         String body = response.getBody().asString();
         System.out.println("Plant creation blocked: " + body);
     }
 
     @Then("No data is modified")
     public void noDataIsModified() {
-        // Verify the request was rejected due to missing authentication
-        // Status code already verified to be 401
+         
+         
         String body = response.getBody().asString();
         System.out.println("Authentication error response: " + body);
     }
 
-    // ============================================================================
-    // HELPER METHODS
-    // ============================================================================
+     
+     
+     
 
     private void ensureAdminAuth() {
         if (BaseApiClient.getAuthToken() == null) {
@@ -456,7 +456,7 @@ public class PlantsSteps {
         if (validSubCategoryId == 0) {
             ensureAdminAuth();
 
-            // Try dedicated sub-categories endpoint first
+             
             Response subCatResponse = io.restassured.RestAssured.given()
                     .baseUri("http://localhost:8080")
                     .header("Authorization", "Bearer " + BaseApiClient.getAuthToken())
@@ -471,7 +471,7 @@ public class PlantsSteps {
                 }
             }
 
-            // Fallback: find from all categories
+             
             Response catResponse = io.restassured.RestAssured.given()
                     .baseUri("http://localhost:8080")
                     .header("Authorization", "Bearer " + BaseApiClient.getAuthToken())

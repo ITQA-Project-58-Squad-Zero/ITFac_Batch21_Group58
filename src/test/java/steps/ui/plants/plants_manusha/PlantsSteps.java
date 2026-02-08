@@ -28,7 +28,7 @@ public class PlantsSteps {
     @Then("columns such as {string}, {string}, {string}, {string} and Actions should be visible")
     public void verifyColumnsVisible(String col1, String col2, String col3, String col4) {
         List<String> headers = plantsPage.getTableHeaders();
-        // Check loosely to account for sort icons or extra spaces
+         
         assertTrue(headers.stream().anyMatch(h -> h.contains(col1)), "Column " + col1 + " missing. Found: " + headers);
         assertTrue(headers.stream().anyMatch(h -> h.contains(col2)), "Column " + col2 + " missing. Found: " + headers);
         assertTrue(headers.stream().anyMatch(h -> h.contains(col3)), "Column " + col3 + " missing. Found: " + headers);
@@ -41,7 +41,7 @@ public class PlantsSteps {
         assertTrue(plantsPage.arePaginationControlsVisible(), "Pagination is not displayed");
     }
 
-    // ========== PAGINATION STEPS FOR TC_PL_UI_002 ==========
+     
 
     @Then("pagination controls should be visible")
     public void verifyPaginationControlsVisible() {
@@ -128,7 +128,7 @@ public class PlantsSteps {
         List<String> plantNames = plantsPage.getCurrentPagePlantNames();
         int displayedCount = plantsPage.getDisplayedPlantCount();
 
-        // Better error message showing what was actually found
+         
         String actualResults = plantNames.isEmpty() ? "No plants found" : String.join(", ", plantNames);
 
         assertTrue(displayedCount > 0,
@@ -237,7 +237,7 @@ public class PlantsSteps {
         assertTrue(!data.isEmpty(), "No data found for column " + columnName);
     }
 
-    // ========== LOW STOCK BADGE STEP FOR TC_PL_UI_008 ==========
+     
 
     @Then("plants with quantity below {int} should display a {string} badge")
     public void verifyLowStockBadge(int threshold, String badgeText) {
@@ -248,7 +248,7 @@ public class PlantsSteps {
                         "Plants with quantity < " + threshold + " should have '" + badgeText + "' badge");
     }
 
-    // ========== EMPTY STATE STEP FOR TC_PL_UI_009 ==========
+     
 
     @Then("a {string} message should be displayed")
     public void verifyEmptyStateMessage(String expectedMessage) {
@@ -257,7 +257,7 @@ public class PlantsSteps {
                 + "' was not displayed. The table might not be empty or the message is missing.");
     }
 
-    // ========== ADMIN ACTION STEPS FOR TC_PL_UI_A_001 ==========
+     
 
 
     @Then("the Edit action should be visible for every plant")
@@ -286,13 +286,13 @@ public class PlantsSteps {
 
     @Then("the current user should be identified as \"User\"")
     public void verifyUserIsLoggedIn() {
-        // Since there is no profile name in the UI, we verify by checking that
-        // Admin-only features (Add Plant) are NOT visible.
+         
+         
         assertFalse(plantsPage.isAddPlantButtonVisible(),
                 "User verification failed: Admin 'Add Plant' button is visible, implying wrong role.");
     }
 
-    // ========== DYNAMIC DATA RETRIEVAL STEPS ==========
+     
 
     private String firstAvailablePlantName;
     private String firstAvailableCategoryName;
@@ -304,11 +304,11 @@ public class PlantsSteps {
     @io.cucumber.java.en.Given("at least one plant exists in the system")
     public void verifyAtLeastOnePlantExists() {
         plantsPage.open();
-        // Check if table is empty or has "No plants found"
+         
         if (plantsPage.getDisplayedPlantCount() == 0 || plantsPage.isNoPlantsMessageDisplayed()) {
-             // Create a plant
+              
              plantsApiClient.createPlant("AutoSeedPlant" + System.currentTimeMillis(), 50.0, 10, 1);
-             plantsPage.open(); // Refresh
+             plantsPage.open();  
         }
         assertTrue(plantsPage.getDisplayedPlantCount() > 0, "Precondition: At least one plant should exist in the system");
     }
@@ -316,7 +316,7 @@ public class PlantsSteps {
     @io.cucumber.java.en.Given("a plant named {string} exists in the system")
     public void verifySpecificPlantExists(String plantName) {
         plantsPage.open();
-        // Use search to check existence across all pages
+         
         plantsPage.searchForPlant(plantName);
         List<String> plantNames = plantsPage.getCurrentPagePlantNames();
         boolean exists = plantNames.stream().anyMatch(name -> name.equalsIgnoreCase(plantName));
@@ -330,7 +330,7 @@ public class PlantsSteps {
         }
         
         assertTrue(exists, "Precondition: Plant '" + plantName + "' should exist in the system");
-        // Reset page for the next steps
+         
         plantsPage.open();
     }
 
@@ -352,7 +352,7 @@ public class PlantsSteps {
         plantsPage.open();
         List<String> plantNames = plantsPage.getCurrentPagePlantNames();
         
-        // Find a single-word name (no spaces)
+         
         firstAvailablePlantName = null;
         for (String name : plantNames) {
             if (!name.trim().contains(" ")) {
@@ -362,8 +362,8 @@ public class PlantsSteps {
         }
 
         if (firstAvailablePlantName == null) {
-             // Create a single-word plant if missing
-             String singleWordName = "Fern" + System.currentTimeMillis(); // Ensure single word
+              
+             String singleWordName = "Fern" + System.currentTimeMillis();  
              plantsApiClient.createPlant(singleWordName, 25.0, 50, 1);
              plantsPage.open();
              firstAvailablePlantName = singleWordName;
@@ -383,7 +383,7 @@ public class PlantsSteps {
     public void verifyTwoWordPlantExists() {
         plantsPage.open();
         List<String> plantNames = plantsPage.getCurrentPagePlantNames();
-        // Look for a plant with exactly one space in the name (two words)
+         
         multiWordPlantName = null;
         for (String name : plantNames) {
             String trimmedName = name.trim();
@@ -394,7 +394,7 @@ public class PlantsSteps {
         }
         
         if (multiWordPlantName == null) {
-            // Create a two-word plant
+             
             String mwName = "Aloe Vera" + System.currentTimeMillis();
             plantsApiClient.createPlant(mwName, 50.0, 10, 1);
             plantsPage.open();
@@ -428,12 +428,12 @@ public class PlantsSteps {
 
     @io.cucumber.java.en.Given("at least one category with plants exists")
     public void verifyAtLeastOneCategoryWithPlantsExists() {
-        // Navigate to plants page and get first category
+         
         plantsPage.open();
         List<String> categories = plantsPage.getAvailableCategories();
         assertTrue(!categories.isEmpty() && categories.size() > 1,
                 "No categories available in the dropdown");
-        // First option is usually "All Categories" or similar
+         
         firstAvailableCategoryName = categories.size() > 1 ? categories.get(1) : categories.get(0);
     }
 
@@ -450,7 +450,7 @@ public class PlantsSteps {
         List<String> categories = plantsPage.getColumnData("Category");
         int displayedCount = plantsPage.getDisplayedPlantCount();
 
-        // It's acceptable to have no plants in this category
+         
         if (displayedCount == 0) {
             return;
         }
@@ -469,7 +469,7 @@ public class PlantsSteps {
     public void verifyAllPlantsHaveSelectedCategory() {
         List<String> categories = plantsPage.getColumnData("Category");
         if (categories.isEmpty()) {
-            return; // Acceptable - no plants in this category
+            return;  
         }
         assertTrue(categories.stream().allMatch(c -> c.equalsIgnoreCase(firstAvailableCategoryName)),
                 "Not all displayed plants have category '" + firstAvailableCategoryName + "'");

@@ -22,7 +22,7 @@ public class CategoriesSteps {
 
     @Given("a category exists with ID {int}")
     public void aCategoryExistsWithId(int id) {
-        // Precondition: category is assumed to exist (seeded or created)
+         
     }
 
     @When("I request all categories with no name or parentId filter")
@@ -36,7 +36,7 @@ public class CategoriesSteps {
     public void theResponseBodyShouldBeAListOfCategories() {
         Category[] categories = response.as(Category[].class);
         assertThat(categories).isNotNull();
-        // Response is array/list (can be empty)
+         
         assertThat(categories).as("Response should be an array/list").isNotNull();
     }
 
@@ -66,7 +66,7 @@ public class CategoriesSteps {
         Category[] categories = response.as(Category[].class);
         assertThat(categories).isNotNull();
         for (Category cat : categories) {
-            // Main categories have no parent
+             
             boolean noParent = (cat.getParent() == null);
             assertThat(noParent)
                     .as("Main category id=%d name=%s should have no parent (parent=%s)",
@@ -102,7 +102,7 @@ public class CategoriesSteps {
 
     @Given("a stored category exists in the system")
     public void aFirstAvailableCategoryExistsInTheSystem() {
-        // Fetch all categories to get the first available one
+         
         response = categoriesApiClient.getAllCategories();
         Category[] categories = response.as(Category[].class);
         
@@ -111,7 +111,7 @@ public class CategoriesSteps {
                 .isNotNull()
                 .isNotEmpty();
         
-        // Store the ID of the first category
+         
         storedCategoryId = categories[0].getId();
         System.out.println("Stored category ID for test: " + storedCategoryId);
     }

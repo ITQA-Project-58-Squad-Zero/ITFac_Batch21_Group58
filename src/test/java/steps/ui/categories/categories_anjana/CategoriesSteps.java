@@ -32,7 +32,7 @@ public class CategoriesSteps {
     @When("Admin enters Category Name {string}")
     public void enterCategoryName(String name) {
         if ("TestCat".equals(name)) {
-            // Generate a unique name shorter than 10 characters (e.g., Cat12345)
+             
             name = "Cat" + (System.currentTimeMillis() % 100000);
         }
         currentCategoryName = name;
@@ -79,7 +79,7 @@ public class CategoriesSteps {
 
     @Given("User is logged in")
     public void userIsLoggedIn() {
-        // Handled by @login_as_user hook
+         
     }
 
     @Then("the \"Add A Category\" button should not be visible")
@@ -90,7 +90,7 @@ public class CategoriesSteps {
     @When("User attempts to access the Add Category page directly")
     public void attemptDirectAccess() {
         String baseUrl = categoriesPage.getDriver().getCurrentUrl().split("/ui")[0]; 
-        if (baseUrl.isEmpty()) baseUrl = "http://localhost:8080"; // Fallback
+        if (baseUrl.isEmpty()) baseUrl = "http://localhost:8080";  
         categoriesPage.navigateToUrl(baseUrl + "/ui/categories/add");
     }
 
@@ -121,12 +121,12 @@ public class CategoriesSteps {
         assertTrue(categoriesPage.areDeleteButtonsHidden(), "Delete option is visible but should not be");
     }
 
-    // Unique category name generation
+     
     private String uniqueCategoryName;
 
     @When("Admin enters a unique Category Name")
     public void enterUniqueCategoryName() {
-        // Generate a unique name within 3-10 character limit
+         
         uniqueCategoryName = "Cat" + (System.currentTimeMillis() % 100000);
         currentCategoryName = uniqueCategoryName;
         categoriesPage.enterCategoryName(uniqueCategoryName);

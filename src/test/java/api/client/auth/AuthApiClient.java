@@ -11,7 +11,7 @@ public class AuthApiClient extends BaseApiClient {
     public LoginResponse login(String username, String password) {
         LoginRequest request = new LoginRequest(username, password);
         
-        // Use getRequestSpec() from BaseApiClient which sets the Base URI
+         
         Response response = getRequestSpec()
                 .body(request)
                 .when()

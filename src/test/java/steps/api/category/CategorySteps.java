@@ -41,7 +41,7 @@ public class CategorySteps {
         
         Map<String, Object> body = new HashMap<>();
         body.put("name", name);
-        // Ensure name is within length limit (3-10) for tests if it's dynamic
+         
         
         Response resp = categoryApiClient.createCategory(body);
         if (resp.getStatusCode() != 201 && resp.getStatusCode() != 400) {
@@ -66,8 +66,8 @@ public class CategorySteps {
 
     @When("I create a category with name {string}")
     public void iCreateACategoryWithName(String name) {
-        // Name must be 3-10 characters.
-        String uniqueSuffix = String.valueOf(System.currentTimeMillis()).substring(10); // 3 digits
+         
+        String uniqueSuffix = String.valueOf(System.currentTimeMillis()).substring(10);  
         String finalName = name;
         if (finalName.length() > 7) {
             finalName = finalName.substring(0, 7);
@@ -88,7 +88,7 @@ public class CategorySteps {
         
         response = categoryApiClient.createCategory(body);
         if (response.getStatusCode() >= 400 && !"Validation failed".equals(response.jsonPath().getString("message"))) {
-             // System.out.println("DEBUG: Create '" + name + "' failed with " + response.getStatusCode());
+              
         }
         BaseApiClient.setLastResponse(response);
         ApiResponseContext.setResponse(response);
@@ -96,7 +96,7 @@ public class CategorySteps {
 
     @When("I create a category with missing name")
     public void iCreateACategoryWithMissingName() {
-        Map<String, Object> body = new HashMap<>(); // Empty body
+        Map<String, Object> body = new HashMap<>();  
         response = categoryApiClient.createCategory(body);
         BaseApiClient.setLastResponse(response);
         ApiResponseContext.setResponse(response);
@@ -107,7 +107,7 @@ public class CategorySteps {
         Response listResp = categoryApiClient.getAllCategories();
         Category[] categories = listResp.as(Category[].class);
         
-        // Find existing category (DelCat or OldCat depending on scenario)
+         
         Category oldCategory = Arrays.stream(categories)
                 .filter(c -> "OldCat".equals(c.getName()) || "DelCat".equals(c.getName()) || "NewCat".equals(c.getName()))
                 .findFirst()
@@ -147,7 +147,7 @@ public class CategorySteps {
 
     @When("I delete the category")
     public void iDeleteTheCategory() {
-        // Fallback or specific default if needed, but feature should prefer the named version
+         
         iDeleteTheCategoryWithName("DelCat");
     }
 
@@ -177,8 +177,8 @@ public class CategorySteps {
     @Then("the response body should contain a validation error for missing name")
     public void theResponseBodyShouldContainAValidationErrorForMissingName() {
         String body = response.getBody().asString();
-        assertThat(body).containsIgnoringCase("name"); // Adjust based on actual error
-        // Or check specific validation message field
+        assertThat(body).containsIgnoringCase("name");  
+         
     }
 
     @Then("the category {string} should no longer exist")
@@ -202,7 +202,7 @@ public class CategorySteps {
 
     @Then("no new duplicate category should be created")
     public void noNewDuplicateCategoryShouldBeCreated() {
-         // Logic to verify count or existence
+          
          Response listResp = categoryApiClient.getAllCategories();
          Category[] categories = listResp.as(Category[].class);
          
@@ -210,13 +210,13 @@ public class CategorySteps {
                  .filter(c -> "DupCat".equals(c.getName()))
                  .count();
                  
-         assertThat(count).isEqualTo(1); // Should still be just 1
+         assertThat(count).isEqualTo(1);  
     }
 
     @Then("the response should indicate insufficient permissions")
     public void theResponseShouldIndicateInsufficientPermissions() {
         String body = response.getBody().asString();
-        // Relaxed assertion to match actual API response: {"status":403,"error":"Forbidden"}
+         
         assertThat(response.getStatusCode()).isEqualTo(403);
         assertThat(body.toLowerCase()).containsAnyOf("permission", "forbidden", "authorize", "access");
     }
@@ -234,7 +234,7 @@ public class CategorySteps {
         Map<String, Object> body = new HashMap<>();
         body.put("name", name);
         
-        // Use a nested object if the server expects com.qatraining.entity.Category
+         
         Map<String, Object> parentObj = new HashMap<>();
         parentObj.put("id", parent.getId());
         body.put("parent", parentObj); 

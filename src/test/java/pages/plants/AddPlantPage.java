@@ -72,7 +72,7 @@ public class AddPlantPage extends PageObject {
 
     public void clearAllFields() {
         plantNameInput.clear();
-        categoryDropdown.selectByVisibleText("-- Select Sub Category --"); // Assuming this resets it or just leaving it alone if it's default
+        categoryDropdown.selectByVisibleText("-- Select Sub Category --");  
         priceInput.clear();
         quantityInput.clear();
     }

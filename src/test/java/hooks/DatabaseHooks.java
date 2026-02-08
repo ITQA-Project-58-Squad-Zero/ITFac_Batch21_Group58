@@ -42,12 +42,12 @@ public class DatabaseHooks {
     private static void executeSqlFromFile(String filePath) {
         Path path = Paths.get(filePath);
         if (!Files.exists(path)) {
-             // fallback for running from different dir
+              
              path = Paths.get("..", filePath);
              if (!Files.exists(path)) {
-                 // Try to load from classpath if possible, but file system is easier for now given structure
-                 // or try absolute path based on project root if available.
-                 // let's try a direct approach relative to user workspace if failing.
+                  
+                  
+                  
                  LOGGER.error("SQL file not found: {}", filePath);
                  return;
              }
@@ -96,7 +96,7 @@ public class DatabaseHooks {
     }
     
     private static List<String> splitSqlStatements(String sqlScript) {
-        // Remove comment lines (starting with --)
+         
         String cleanScript = sqlScript.replaceAll("(?m)^\\s*--.*$", "");
         
         List<String> statements = new ArrayList<>();

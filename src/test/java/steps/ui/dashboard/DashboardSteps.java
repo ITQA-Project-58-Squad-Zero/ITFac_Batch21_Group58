@@ -82,7 +82,7 @@ public class DashboardSteps {
                 "Expected " + expectedCount + " low stock plants but found " + actualCount);
     }
 
-    // Dynamic count verification steps (no hardcoded values)
+     
     @Then("the Categories card should display a valid Main categories count")
     public void verifyValidMainCategoryCount() {
         String actualCount = dashboardPage.getMainCategoryCount();
@@ -140,7 +140,7 @@ public class DashboardSteps {
         String actualRevenue = dashboardPage.getRevenue();
         assertTrue(actualRevenue.startsWith("Rs "),
                 "Expected revenue to start with 'Rs ' but found " + actualRevenue);
-        // Extract number and verify it's a valid number
+         
         String amount = actualRevenue.replace("Rs ", "").trim();
         try {
             Double.parseDouble(amount);

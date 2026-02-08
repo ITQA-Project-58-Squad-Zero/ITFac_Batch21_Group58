@@ -29,7 +29,7 @@ public class CreateSalePage extends PageObject {
 
     public void selectFirstAvailablePlant() {
         Select select = new Select(plantDropdown);
-        // Select the first available plant (index 1, as 0 is the placeholder)
+         
         if (select.getOptions().size() > 1) {
             select.selectByIndex(1);
         }
@@ -49,7 +49,7 @@ public class CreateSalePage extends PageObject {
     public String getSelectedPlantName() {
         Select select = new Select(plantDropdown);
         String selectedText = select.getFirstSelectedOption().getText();
-        // Extract plant name from "Orchid (Stock: 14)" format
+         
         if (selectedText.contains("(")) {
             return selectedText.substring(0, selectedText.indexOf("(")).trim();
         }

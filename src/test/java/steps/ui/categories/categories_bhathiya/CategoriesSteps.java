@@ -121,12 +121,12 @@ public class CategoriesSteps {
     @When("Admin selects parent category {string} from the filter dropdown")
     public void selectParentCategory(String parentName) {
         categoriesPage.selectParentCategory(parentName);
-        // Verify selection was made (the page object method throws exception if it fails,
-        // but we double-check here for better error messages)
+         
+         
         String selectedValue = categoriesPage.getSelectedParentValue();
         String selectedText = categoriesPage.getSelectedParentText();
         
-        // Only fail if we explicitly got "All Parents" (empty value)
+         
         if (selectedValue == null || selectedValue.isEmpty()) {
             fail(String.format("Parent category '%s' was not selected. Dropdown still shows: value='%s', text='%s'. " +
                     "This might indicate the dropdown selection didn't work properly.", 
@@ -137,7 +137,7 @@ public class CategoriesSteps {
 
     @Then("the categories table should show only categories under parent {string}")
     public void verifyFilteredByParent(String parentName) {
-        // First, verify that a parent was actually selected (not "All Parents")
+         
         String selectedValue = categoriesPage.getSelectedParentValue();
         if (selectedValue == null || selectedValue.isEmpty()) {
             fail("No parent category is selected - dropdown shows 'All Parents'. Cannot verify filter.");
@@ -145,33 +145,33 @@ public class CategoriesSteps {
         
         List<String> parentNames = categoriesPage.getAllParentNames();
         
-        // If table is empty, that's acceptable (no categories match the filter)
+         
         if (parentNames.isEmpty()) {
             assertTrue(true, "Table is empty - no categories match the parent filter '" + parentName + "'");
             return;
         }
         
-        // Normalize the expected parent name for comparison
+         
         String normalizedExpected = parentName.trim().toLowerCase();
         
-        // When filtering by a specific parent, all displayed categories should have that parent
-        // Categories with "-" (no parent) should NOT appear when filtering by a specific parent
+         
+         
         List<String> mismatchedParents = new java.util.ArrayList<>();
         int matchingCount = 0;
         
         for (String parent : parentNames) {
             String trimmedParent = parent.trim();
             
-            // Categories with "-" should not appear when filtering by a specific parent
+             
             if (trimmedParent.equals("-") || trimmedParent.isEmpty()) {
                 mismatchedParents.add("- (no parent)");
                 continue;
             }
             
-            // Check if parent matches (case-insensitive, with flexible matching)
+             
             String normalizedParent = trimmedParent.toLowerCase();
             
-            // Allow exact match, contains match, or reverse contains (in case of partial names)
+             
             boolean matches = normalizedParent.equals(normalizedExpected) ||
                              normalizedParent.contains(normalizedExpected) ||
                              normalizedExpected.contains(normalizedParent);
@@ -183,7 +183,7 @@ public class CategoriesSteps {
             }
         }
         
-        // If we found mismatched parents (especially root categories with "-"), fail
+         
         if (!mismatchedParents.isEmpty()) {
             fail(String.format("When filtering by parent '%s', all displayed categories should have that parent. " +
                     "Found %d matching categories, but also found %d category/categories with different parent(s): %s. " +
@@ -192,19 +192,19 @@ public class CategoriesSteps {
                     parentName, matchingCount, mismatchedParents.size(), mismatchedParents, parentNames));
         }
         
-        // Verify we have at least some matching categories
+         
         assertTrue(matchingCount > 0, 
                 String.format("No categories found with parent '%s'. All displayed parents: %s", 
                         parentName, parentNames));
         
-        // If we get here, all parents match
+         
         assertTrue(true, String.format("All %d categories are correctly filtered by parent '%s'", 
                 matchingCount, parentName));
     }
 
     @When("Admin clicks the category {string} column header")
     public void clickColumnHeader(String columnName) {
-        // Use smart click that ensures ascending order on first click
+         
         categoriesPage.clickColumnHeaderToAscending(columnName);
     }
 
@@ -274,12 +274,12 @@ public class CategoriesSteps {
 
     @Then("the categories should be sorted by Parent in descending order")
     public void verifySortedByParentDescending() {
-        // Ensure we are in descending order (sometimes toggle fails)
-        // If the first element is empty and last is not, we might be in Ascending (assuming nulls first)
+         
+         
         List<String> parents = categoriesPage.getAllParentNames();
         if (parents.size() > 1) {
             boolean appearsAscending = parents.get(0).equals("-") && !parents.get(parents.size()-1).equals("-");
-            // Or check actual sort order
+             
             List<String> sortedAsc = parents.stream()
                      .map(p -> p.equals("-") ? "" : p)
                      .sorted(String.CASE_INSENSITIVE_ORDER)
@@ -289,7 +289,7 @@ public class CategoriesSteps {
                      .collect(Collectors.toList());
             
             if (actual.equals(sortedAsc)) {
-                 // It is confirming to Ascending, so toggle again
+                  
                  categoriesPage.clickColumnHeader("Parent");
                  parents = categoriesPage.getAllParentNames();
             }
@@ -298,10 +298,10 @@ public class CategoriesSteps {
         List<String> sortedParents = parents.stream()
                 .map(p -> p.equals("-") ? "" : p)
                 .sorted((a, b) -> {
-                    // Expect Descending: Z -> A -> "" (Empty last) or "" -> Z -> A (Empty first)?
-                    // Based on previous failure: UI puts Empty LAST in Descending? 
-                    // No, invalid assumption.
-                    // Let's assume standard String desc: Z..A..""
+                     
+                     
+                     
+                     
                     return b.compareToIgnoreCase(a);
                 })
                 .collect(Collectors.toList());
@@ -309,10 +309,10 @@ public class CategoriesSteps {
                 .map(p -> p.equals("-") ? "" : p)
                 .collect(Collectors.toList());
         
-        // Handle UI specific logic where nulls might come first/last independent of sort
-        // If strictly equal fails, we resort to checking if it is "generally" descending
+         
+         
         if (!sortedParents.equals(actualParents)) {
-             // Try "Nulls First" Descending: "" ... Z ... A
+              
             List<String> sortedNullsFirst = parents.stream()
                 .map(p -> p.equals("-") ? "" : p)
                 .sorted((a, b) -> {
@@ -323,7 +323,7 @@ public class CategoriesSteps {
                 .collect(Collectors.toList());
             
              if (actualParents.equals(sortedNullsFirst)) {
-                 return; // Accepted
+                 return;  
              }
         }
         
@@ -345,17 +345,17 @@ public class CategoriesSteps {
     public void verifyLimitedRowsOnInitialPage() {
         int rowCount = categoriesPage.getCurrentPageRowCount();
         assertTrue(rowCount > 0, "Initial page should show at least one row");
-        // Typically page size is 10, 20, or 25, so we check it's reasonable
+         
         assertTrue(rowCount <= 50, "Initial page should show limited rows (page size), not all records");
     }
 
     @When("User notes the current page number and first row data")
     public void noteCurrentPageAndFirstRow() {
-        // Store state for later comparison
+         
         String currentPage = categoriesPage.getActivePageNumber();
         String firstRow = categoriesPage.getFirstRowData();
-        // Store in a way that can be retrieved later - using a simple approach
-        // In a real scenario, you might use Scenario context or a state object
+         
+         
     }
 
 
@@ -415,12 +415,12 @@ public class CategoriesSteps {
 
     @When("Admin notes the total number of categories displayed")
     public void noteTotalCategories() {
-        // Store for later comparison - similar to page number tracking
+         
     }
 
     @When("User notes the total number of categories displayed")
     public void userNoteTotalCategories() {
-        // Store for later comparison
+         
     }
 
     @When("Admin clears the parent filter")
@@ -448,7 +448,7 @@ public class CategoriesSteps {
         }
     }
 
-    // ========== DYNAMIC DATA RETRIEVAL STEPS ==========
+     
 
     private String firstAvailableCategoryName;
     private String retrievedParentCategoryName;
@@ -515,7 +515,7 @@ public class CategoriesSteps {
     public void adminRetrievesParentCategory() {
         categoriesPage.open();
         List<String> parentOptions = categoriesPage.getAvailableParentOptions();
-        // Skip first option which is usually "All Parents"
+         
         for (String parent : parentOptions) {
             if (!parent.isEmpty() && !parent.equals("All Parents") && !parent.equals("-")) {
                 retrievedParentCategoryName = parent;

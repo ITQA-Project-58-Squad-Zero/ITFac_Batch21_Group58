@@ -61,7 +61,7 @@ public class SalesPage extends PageObject {
     }
 
     public boolean areDeleteButtonsVisible() {
-        // Check if any delete buttons are visible
+         
         for (WebElementFacade deleteButton : deleteButtons) {
             if (deleteButton.isVisible()) {
                 return true;
@@ -75,17 +75,17 @@ public class SalesPage extends PageObject {
     }
 
     public void clickColumnHeader(String columnName) {
-        // Assuming headers are <a> tags inside <th>
-        // Map column name to text in header
-        // Plant, Quantity, Total Price, Sold At
+         
+         
+         
         findBy("//th/a[contains(text(), '" + columnName + "')]").click();
     }
 
     public List<String> getColumnData(String columnName) {
-        // Map column name to index (1-based for xpath nth-child)
+         
         int columnIndex = 0;
         switch (columnName) {
-            case "Plant": columnIndex = 1; break; // Name is first
+            case "Plant": columnIndex = 1; break;  
             case "Quantity": columnIndex = 2; break;
             case "Total Price": columnIndex = 3; break;
             case "Sold At": columnIndex = 4; break;
@@ -105,14 +105,14 @@ public class SalesPage extends PageObject {
             String current = data.get(i);
             String next = data.get(i + 1);
             
-            // Try numeric comparison first for Price/Quantity
+             
             try {
                  double v1 = Double.parseDouble(current.replaceAll("[^\\d.]", ""));
                  double v2 = Double.parseDouble(next.replaceAll("[^\\d.]", ""));
                  if (order.equalsIgnoreCase("ascending") && v1 > v2) return false;
                  if (order.equalsIgnoreCase("descending") && v1 < v2) return false;
             } catch (NumberFormatException e) {
-                 // Fallback to string comparison
+                  
                  int comparison = current.compareToIgnoreCase(next);
                  if (order.equalsIgnoreCase("ascending") && comparison > 0) return false;
                  if (order.equalsIgnoreCase("descending") && comparison < 0) return false;

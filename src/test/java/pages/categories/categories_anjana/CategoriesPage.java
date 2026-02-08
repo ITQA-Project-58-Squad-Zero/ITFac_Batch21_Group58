@@ -57,7 +57,7 @@ public class CategoriesPage extends PageObject {
     }
 
     public boolean isCategoryDisplayed(String name) {
-        // Wait up to 10 seconds for the category to appear in the table
+         
         return withTimeoutOf(java.time.Duration.ofSeconds(10))
                 .find(org.openqa.selenium.By.cssSelector("table.table"))
                 .containsText(name);
@@ -114,7 +114,7 @@ public class CategoriesPage extends PageObject {
         try {
             header = pageHeader.getText();
         } catch (Exception e) {
-            // Header not found, likely blocked/redirected
+             
             return true;
         }
         return isAccessDenied() || 

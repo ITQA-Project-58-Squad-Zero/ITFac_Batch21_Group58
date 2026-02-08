@@ -16,7 +16,7 @@ public class DashboardPage extends PageObject {
     @FindBy(css = "div.dashboard-card")
     List<WebElementFacade> dashboardCards;
 
-    // Categories Card
+     
     @FindBy(xpath = "//h6[contains(text(), 'Categories')]")
     WebElementFacade categoriesCardTitle;
 
@@ -29,7 +29,7 @@ public class DashboardPage extends PageObject {
     @FindBy(xpath = "//div[contains(@class, 'card-body') and .//h6[contains(text(), 'Categories')]]//div[contains(text(), 'Sub')]/preceding-sibling::div")
     WebElementFacade subCategoriesCount;
 
-    // Plants Card
+     
     @FindBy(xpath = "//h6[contains(text(), 'Plants')]")
     WebElementFacade plantsCardTitle;
 
@@ -42,7 +42,7 @@ public class DashboardPage extends PageObject {
     @FindBy(xpath = "//a[contains(text(), 'Manage Plants')]")
     WebElementFacade managePlantsButton;
 
-    // Sales Card
+     
     @FindBy(xpath = "//h6[contains(text(), 'Sales')]")
     WebElementFacade salesCardTitle;
 
@@ -55,7 +55,7 @@ public class DashboardPage extends PageObject {
     @FindBy(xpath = "//a[contains(text(), 'View Sales')]")
     WebElementFacade viewSalesButton;
 
-    // Inventory Card
+     
     @FindBy(xpath = "//h6[contains(text(), 'Inventory')]")
     WebElementFacade inventoryCardTitle;
 
